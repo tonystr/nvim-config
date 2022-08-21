@@ -14,6 +14,7 @@ require'packer'.startup(function(use)
 	use 'github/copilot.vim'
 	use 'kana/vim-textobj-user' -- NOTE: Learn some text objects or uninstall
 	use { 'RishabhRD/nvim-cheat.sh', requires = 'RishabhRD/popfix' }
+	use 'junegunn/vim-easy-align'
 
 	-- Lsp
 	use 'neovim/nvim-lspconfig'

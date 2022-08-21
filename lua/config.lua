@@ -3,7 +3,7 @@ require('plugins')
 
 -- Treesitter coniguration
 
-require'nvim-treesitter.install'.compilers = { "gcc" }
+require'nvim-treesitter.install'.compilers = { "clang", "gcc" }
 require'nvim-treesitter.configs'.setup {
 	ensure_installed = {},
 	sync_install = false,
@@ -19,8 +19,8 @@ require'nvim-treesitter.configs'.setup {
 	}
 }
 
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+-- vim.opt.foldmethod = "expr"
+-- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 -- LSP configuration
 

@@ -1,9 +1,9 @@
 " Global variables
-let $MYVIMRC='C:\Users\tonys\AppData\Local\nvim\init.vim'
-let $LUACONF='C:\Users\tonys\AppData\Local\nvim\lua\config.lua'
-let $PLUGINS='C:\Users\tonys\AppData\Local\nvim\lua\plugins.lua'
-let $STARTUPTHEME='C:\Users\tonys\AppData\Local\nvim\lua\startup\themes\my_theme.lua'
-let g:python3_host_prog = 'C:\\Users\\tonys\\AppData\\Local\\Programs\\Python\\Python310\\python.EXE'
+let $MYVIMRC='~\AppData\Local\nvim\init.vim'
+let $LUACONF='~\AppData\Local\nvim\lua\config.lua'
+let $PLUGINS='~\AppData\Local\nvim\lua\plugins.lua'
+let $STARTUPTHEME='~\AppData\Local\nvim\lua\startup\themes\my_theme.lua'
+let g:python3_host_prog = '~\AppData\Local\Programs\Python\Python310\python.EXE'
 set termguicolors
 
 " Setting language to NPPONGO
@@ -40,6 +40,8 @@ nnoremap <silent> gT :tabp<CR>
 nnoremap <silent> <C-l> :nohlsearch<CR>
 nnoremap <silent> <C-z> <Nop>
 imap <C-c> <Esc>
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 
 " Telescope mappings
 " Find files using Telescope command-line sugar.
@@ -76,26 +78,26 @@ nnoremap gR <cmd>TroubleToggle lsp_references<cr>
 
 " Barbar keybindings
 " Move to previous/next
-nnoremap <silent>    <A-,> <Cmd>BufferPrevious<CR>
-nnoremap <silent>    <A-.> <Cmd>BufferNext<CR>
+nnoremap <silent> <A-,> <Cmd>BufferPrevious<CR>
+nnoremap <silent> <A-.> <Cmd>BufferNext<CR>
 " Re-order to previous/next
-nnoremap <silent>    <A-<> <Cmd>BufferMovePrevious<CR>
-nnoremap <silent>    <A->> <Cmd>BufferMoveNext<CR>
+nnoremap <silent> <A-<> <Cmd>BufferMovePrevious<CR>
+nnoremap <silent> <A->> <Cmd>BufferMoveNext<CR>
 " Goto buffer in position...
-nnoremap <silent>    <A-1> <Cmd>BufferGoto 1<CR>
-nnoremap <silent>    <A-2> <Cmd>BufferGoto 2<CR>
-nnoremap <silent>    <A-3> <Cmd>BufferGoto 3<CR>
-nnoremap <silent>    <A-4> <Cmd>BufferGoto 4<CR>
-nnoremap <silent>    <A-5> <Cmd>BufferGoto 5<CR>
-nnoremap <silent>    <A-6> <Cmd>BufferGoto 6<CR>
-nnoremap <silent>    <A-7> <Cmd>BufferGoto 7<CR>
-nnoremap <silent>    <A-8> <Cmd>BufferGoto 8<CR>
-nnoremap <silent>    <A-9> <Cmd>BufferGoto 9<CR>
-nnoremap <silent>    <A-0> <Cmd>BufferLast<CR>
+nnoremap <silent> <A-1> <Cmd>BufferGoto 1<CR>
+nnoremap <silent> <A-2> <Cmd>BufferGoto 2<CR>
+nnoremap <silent> <A-3> <Cmd>BufferGoto 3<CR>
+nnoremap <silent> <A-4> <Cmd>BufferGoto 4<CR>
+nnoremap <silent> <A-5> <Cmd>BufferGoto 5<CR>
+nnoremap <silent> <A-6> <Cmd>BufferGoto 6<CR>
+nnoremap <silent> <A-7> <Cmd>BufferGoto 7<CR>
+nnoremap <silent> <A-8> <Cmd>BufferGoto 8<CR>
+nnoremap <silent> <A-9> <Cmd>BufferGoto 9<CR>
+nnoremap <silent> <A-0> <Cmd>BufferLast<CR>
 " Pin/unpin buffer
-nnoremap <silent>    <A-p> <Cmd>BufferPin<CR>
+nnoremap <silent> <A-p> <Cmd>BufferPin<CR>
 " Close buffer
-nnoremap <silent>    <A-w> <Cmd>BufferClose<CR>
+nnoremap <silent> <A-w> <Cmd>BufferClose<CR>
 " Sort automatically by...
 nnoremap <silent> <Space>bb <Cmd>BufferOrderByBufferNumber<CR>
 nnoremap <silent> <Space>bd <Cmd>BufferOrderByDirectory<CR>
@@ -147,5 +149,5 @@ set wildmenu
 set wildignore+=**/node_modules/**
 set hidden
 au BufRead * normal zR
-autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
+" autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
 
