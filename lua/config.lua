@@ -27,7 +27,7 @@ require'nvim-treesitter.configs'.setup {
 local lsp_installer = require("nvim-lsp-installer")
 lsp_installer.setup{}
 
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 local servers = require'nvim-lsp-installer'.get_installed_servers()
 local illuminate = require'illuminate'
 for _, server in ipairs(servers) do
@@ -68,7 +68,6 @@ cmp.setup({
 
 -- Setups
 
-require'bufferline'.setup{}
 require'gitsigns'.setup()
 require'startup'.setup({ theme = 'my_theme' })
 require'todo-comments'.setup()

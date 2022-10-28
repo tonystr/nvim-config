@@ -29,7 +29,7 @@ require'packer'.startup(function(use)
 
 	-- UI
 	use { 'romgrk/barbar.nvim', requires = 'nvim-web-devicons', config = function()
-		require'bufferline'.setup{
+		require'bufferline'.setup {
 			auto_hide = true,
 			icon_cusom_colors = true,
 			icon_separator_active = '',
