@@ -3,18 +3,20 @@ require'packer'.startup(function(use)
 
 	-- Misc
 	use 'wbthomason/packer.nvim'
+	use 'lewis6991/impatient.nvim'
 	use 'sheerun/vim-polyglot'
 	use 'tpope/vim-surround'
-	use 'karb94/neoscroll.nvim'
 	use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
-	use 'kyazdani42/nvim-web-devicons'
+	use 'nvim-treesitter/nvim-treesitter-context'
 	use 'tpope/vim-commentary'
 	use 'vim-scripts/FastFold'
 	use 'tpope/vim-repeat'
 	use 'github/copilot.vim'
 	use 'kana/vim-textobj-user' -- NOTE: Learn some text objects or uninstall
-	use { 'RishabhRD/nvim-cheat.sh', requires = 'RishabhRD/popfix' }
+	-- use { 'RishabhRD/nvim-cheat.sh', requires = 'RishabhRD/popfix' }
 	use 'junegunn/vim-easy-align'
+	use 'lukas-reineke/indent-blankline.nvim'
+	use 'ThePrimeagen/refactoring.nvim'
 
 	-- Lsp
 	use 'neovim/nvim-lspconfig'
@@ -28,15 +30,17 @@ require'packer'.startup(function(use)
 	use 'lewis6991/gitsigns.nvim'
 
 	-- UI
+	use 'kyazdani42/nvim-web-devicons'
 	use { 'romgrk/barbar.nvim', requires = 'nvim-web-devicons', config = function()
-		require'bufferline'.setup {
+		require'bufferline'.setup{
 			auto_hide = true,
 			icon_cusom_colors = true,
 			icon_separator_active = '',
 			icon_separator_inactive = '',
-			icon_close_tab = '',
+			-- icon_close_tab = '',
 		}
 	end}
+	use 'karb94/neoscroll.nvim'
 	use { 'nvim-telescope/telescope.nvim', tag = '0.1.0', requires = 'nvim-lua/plenary.nvim' }
 	use { 'stevearc/dressing.nvim', after = 'telescope.nvim' } -- NOTE: Still not sure what this does, rename popup menu?
 	use { 'folke/trouble.nvim', requires = 'nvim-web-devicons', config = function()
@@ -47,6 +51,7 @@ require'packer'.startup(function(use)
 	use 'kevinhwang91/promise-async'
 	use 'norcalli/nvim-colorizer.lua'
 	use 'RRethy/vim-illuminate'
+	use { 'nvim-neo-tree/neo-tree.nvim', requires = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim", }, branch = "v2.x" }
 
 	-- Themes
 	use 'JoosepAlviste/palenightfall.nvim'
@@ -56,6 +61,7 @@ end)
 
 require'colorizer'.setup{}
 require'neoscroll'.setup()
+require'indent_blankline'.setup { show_current_context = true }
 
 -- NOTE: Plugins to check out in the future
 -- neogen: keybinding to create documentation comments
