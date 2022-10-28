@@ -9,6 +9,7 @@ set termguicolors
 " Setting language to NPPONGO
 set langmenu=ja_JP
 let $LANG = 'ja_JP'
+let mapleader = " "
 source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
 
@@ -80,6 +81,8 @@ nnoremap gR <cmd>TroubleToggle lsp_references<cr>
 " Move to previous/next
 nnoremap <silent> <A-,> <Cmd>BufferPrevious<CR>
 nnoremap <silent> <A-.> <Cmd>BufferNext<CR>
+nnoremap <silent> <A-Left> <Cmd>BufferPrevious<CR>
+nnoremap <silent> <A-Right> <Cmd>BufferNext<CR>
 " Re-order to previous/next
 nnoremap <silent> <A-<> <Cmd>BufferMovePrevious<CR>
 nnoremap <silent> <A->> <Cmd>BufferMoveNext<CR>
@@ -136,7 +139,7 @@ set number relativenumber
 set cursorline
 set tabstop=4 shiftwidth=4 softtabstop=4 autoindent
 set scrolloff=5 sidescrolloff=10
-" set mouse=a
+set mouse=a
 set nowrap
 set list
 set listchars+=tab:\|\ 
@@ -149,5 +152,16 @@ set wildmenu
 set wildignore+=**/node_modules/**
 set hidden
 au BufRead * normal zR
+let mapleader = " "
 " autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
+
+" Neovide settings
+if exists("g:neovide")
+    let g:neovide_refresh_rate=165
+    let g:neovide_refresh_rate_idle=30
+    let g:neovide_remember_window_size=v:true
+    hi Normal guibg=#1f1f28
+    let g:neovide_confirm_quit=v:false
+    set guifont=Fira\ Code:h12
+endif
 
