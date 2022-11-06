@@ -44,6 +44,10 @@ imap <C-c> <Esc>
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
+" Visual mode
+vnoremap <silent> < <gv
+vnoremap <silent> > >gv
+
 " Telescope mappings
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
@@ -52,6 +56,10 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
+" NeoTree
+nnoremap <leader>e <cmd>Neotree toggle<cr>
+nnoremap <leader>o <cmd>Neotree focus<cr>
+
 " LSP key mappings
 let g:lsp_diagnostics_echo_cursor = 1
 nnoremap <silent> gd :lua vim.lsp.buf.definition()<CR>
@@ -59,10 +67,11 @@ nnoremap <silent> gD :lua vim.lsp.buf.declaration()<CR>
 " nnoremap <silent> gi :lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> gw :lua vim.lsp.buf.document_symbol()<CR>
 nnoremap <silent> gw :lua vim.lsp.buf.workspace_symbol()<CR>
+nnoremap <silent> <leader>so :lua require('telescope.builtin').lsp_document_symbols()<CR>
 nnoremap <silent> gr :lua vim.lsp.buf.references()<CR>
 nnoremap <silent> [d :lua vim.diagnostic.goto_prev()<CR>
 nnoremap <silent> ]d :lua vim.diagnostic.goto_next()<CR>
-nnoremap <silent> \d :lua vim.diagnostic.open_float()<CR>
+nnoremap <silent> <leader>d :lua vim.diagnostic.open_float()<CR>
 "nnoremap <silent> gt :lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> K :lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> <C-k> :lua vim.lsp.buf.signature_help()<CR>
@@ -107,7 +116,7 @@ nnoremap <silent> <Space>bd <Cmd>BufferOrderByDirectory<CR>
 nnoremap <silent> <Space>bl <Cmd>BufferOrderByLanguage<CR>
 nnoremap <silent> <Space>bw <Cmd>BufferOrderByWindowNumber<CR>
 
-" Tony's special highlighting
+" Tony's special highlighting based on kanagawa
 colors kanagawa
 hi Normal ctermbg=none guibg=none
 hi LineNr ctermbg=none
@@ -119,8 +128,8 @@ hi EndOfBuffer ctermfg=black
 hi Comment guifg=#666677
 hi Whitespace guifg=#4a4a58
 hi VertSplit ctermbg=none guibg=none guifg=#4a4a58
-hi StatusLine cterm=none ctermbg=none guibg=none guifg=#4e5579
-hi StatusLineNC cterm=none ctermbg=none guibg=none guifg=#4e5579
+" hi StatusLine cterm=none ctermbg=none guibg=none guifg=#4e5579
+" hi StatusLineNC cterm=none ctermbg=none guibg=none guifg=#4e5579
 hi Folded ctermbg=none ctermfg=yellow guibg=none
 hi SignColumn ctermbg=none guibg=none
 hi Search guibg=#3c66f2 guifg=#ffffff
@@ -153,6 +162,8 @@ set wildignore+=**/node_modules/**
 set hidden
 au BufRead * normal zR
 let mapleader = " "
+set noshowmode
+set signcolumn=yes
 " autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
 
 " Neovide settings
@@ -161,7 +172,8 @@ if exists("g:neovide")
     let g:neovide_refresh_rate_idle=30
     let g:neovide_remember_window_size=v:true
     hi Normal guibg=#1f1f28
+    " hi Normal guibg=#2a2a37
     let g:neovide_confirm_quit=v:false
-    set guifont=Fira\ Code:h12
+    set guifont=Fira\ Code:h13
 endif
 

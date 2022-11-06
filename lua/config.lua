@@ -1,3 +1,4 @@
+local vim = vim
 
 require('plugins')
 
@@ -24,10 +25,10 @@ require'nvim-treesitter.configs'.setup {
 
 -- LSP configuration
 
-local lsp_installer = require("nvim-lsp-installer")
+local lsp_installer = require'nvim-lsp-installer'
 lsp_installer.setup{}
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require'cmp_nvim_lsp'.default_capabilities(vim.lsp.protocol.make_client_capabilities())
 local servers = require'nvim-lsp-installer'.get_installed_servers()
 local illuminate = require'illuminate'
 for _, server in ipairs(servers) do
@@ -39,11 +40,25 @@ for _, server in ipairs(servers) do
 	}
 end
 
+require'lspconfig'.volar.setup{
+  init_options = {
+    typescript = {
+      tsdk = 'C:\\Users\\Tony\\AppData\\Local\\Yarn\\Data\\global\\node_modules\\typescript\\lib'
+      -- Alternative location if installed as root:
+      -- tsdk = '/usr/local/lib/node_modules/typescript/lib'
+    }
+  }
+}
+
+
+
 local signs = { Error = "", Warn = "", Hint = "", Info = "" }
 for type, icon in pairs(signs) do
 	local hl = "DiagnosticSign" .. type
 	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
+
+vim.o.completeopt = 'menuone,noselect'
 
 -- cmp configuration
 
@@ -67,8 +82,11 @@ cmp.setup({
 })
 
 -- Setups
-
 require'gitsigns'.setup()
 require'startup'.setup({ theme = 'my_theme' })
 require'todo-comments'.setup()
--- require'ufo'.setup{ fold_virt_text_handler = ufo_handler }
+require'lualine'.setup {
+	sections = {
+		lualine_x = {'filetype'}
+	}
+}

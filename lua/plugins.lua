@@ -1,4 +1,6 @@
 
+-- TODO: nvim lualine
+
 require'packer'.startup(function(use)
 
 	-- Misc
@@ -22,6 +24,8 @@ require'packer'.startup(function(use)
 	use 'neovim/nvim-lspconfig'
 	use 'williamboman/nvim-lsp-installer'
 	use { 'hrsh7th/nvim-cmp', requires = { 'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline' }}
+	use 'saadparwaiz1/cmp_luasnip'
+	use 'L3MON4D3/LuaSnip'
 	use { 'onsails/lspkind.nvim', requires = 'nvim-cmp' }
 	use 'ray-x/lsp_signature.nvim'
 
@@ -52,6 +56,7 @@ require'packer'.startup(function(use)
 	use 'norcalli/nvim-colorizer.lua'
 	use 'RRethy/vim-illuminate'
 	use { 'nvim-neo-tree/neo-tree.nvim', requires = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim", }, branch = "v2.x" }
+	use 'nvim-lualine/lualine.nvim'
 
 	-- Themes
 	use 'JoosepAlviste/palenightfall.nvim'
@@ -59,8 +64,14 @@ require'packer'.startup(function(use)
 	use 'mattn/emmet-vim'
 end)
 
+luasnip = require 'luasnip'
+
 require'colorizer'.setup{}
-require'neoscroll'.setup()
+-- require'neoscroll'.setup{}
+-- require'neoscroll.config'.set_mappings({
+-- 	['<C-u>'] = { 'scroll', { '-vim.wo.scroll', 'true', '100' }},
+-- 	['<C-d>'] = { 'scroll', { 'vim.wo.scroll', 'true', '100' }},
+-- })
 require'indent_blankline'.setup { show_current_context = true }
 
 -- NOTE: Plugins to check out in the future
