@@ -19,13 +19,14 @@ require'packer'.startup(function(use)
 	use 'junegunn/vim-easy-align'
 	use 'lukas-reineke/indent-blankline.nvim'
 	use 'ThePrimeagen/refactoring.nvim'
+	use 'leafOfTree/vim-vue-plugin'
 
 	-- Lsp
 	use 'neovim/nvim-lspconfig'
 	use 'williamboman/nvim-lsp-installer'
 	use { 'hrsh7th/nvim-cmp', requires = { 'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline' }}
-	use 'saadparwaiz1/cmp_luasnip'
 	use 'L3MON4D3/LuaSnip'
+	use 'saadparwaiz1/cmp_luasnip'
 	use { 'onsails/lspkind.nvim', requires = 'nvim-cmp' }
 	use 'ray-x/lsp_signature.nvim'
 
@@ -46,6 +47,7 @@ require'packer'.startup(function(use)
 	end}
 	use 'karb94/neoscroll.nvim'
 	use { 'nvim-telescope/telescope.nvim', tag = '0.1.0', requires = 'nvim-lua/plenary.nvim' }
+	use 'nvim-telescope/telescope-file-browser.nvim'
 	use { 'stevearc/dressing.nvim', after = 'telescope.nvim' } -- NOTE: Still not sure what this does, rename popup menu?
 	use { 'folke/trouble.nvim', requires = 'nvim-web-devicons', config = function()
 		require'trouble'.setup{}
@@ -57,6 +59,7 @@ require'packer'.startup(function(use)
 	use 'RRethy/vim-illuminate'
 	use { 'nvim-neo-tree/neo-tree.nvim', requires = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim", }, branch = "v2.x" }
 	use 'nvim-lualine/lualine.nvim'
+	use 'folke/which-key.nvim'
 
 	-- Themes
 	use 'JoosepAlviste/palenightfall.nvim'

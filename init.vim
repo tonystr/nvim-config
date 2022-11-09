@@ -43,6 +43,7 @@ nnoremap <silent> <C-z> <Nop>
 imap <C-c> <Esc>
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
+let g:user_emmet_leader_key='<C-n>'
 
 " Visual mode
 vnoremap <silent> < <gv
@@ -111,10 +112,10 @@ nnoremap <silent> <A-p> <Cmd>BufferPin<CR>
 " Close buffer
 nnoremap <silent> <A-w> <Cmd>BufferClose<CR>
 " Sort automatically by...
-nnoremap <silent> <Space>bb <Cmd>BufferOrderByBufferNumber<CR>
-nnoremap <silent> <Space>bd <Cmd>BufferOrderByDirectory<CR>
-nnoremap <silent> <Space>bl <Cmd>BufferOrderByLanguage<CR>
-nnoremap <silent> <Space>bw <Cmd>BufferOrderByWindowNumber<CR>
+nnoremap <silent> <leader>bb <Cmd>BufferOrderByBufferNumber<CR>
+nnoremap <silent> <leader>bd <Cmd>BufferOrderByDirectory<CR>
+nnoremap <silent> <leader>bl <Cmd>BufferOrderByLanguage<CR>
+nnoremap <silent> <leader>bw <Cmd>BufferOrderByWindowNumber<CR>
 
 " Tony's special highlighting based on kanagawa
 colors kanagawa
@@ -142,6 +143,7 @@ hi TelescopeBorder guibg=none
 hi TelescopeSelection guibg=none guifg=#ffffff
 hi MoreMsg guibg=none guifg=#ffd282
 hi illuminatedWord guibg=#33333a
+hi Statement cterm=nocombine gui=nocombine
 
 " Editor preferences
 set number relativenumber

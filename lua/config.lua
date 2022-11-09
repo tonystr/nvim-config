@@ -81,6 +81,68 @@ cmp.setup({
 	})
 })
 
+
+-- Emmet snippets
+
+vim.g.polyglot_disabled = { 'vue' }
+vim.g.user_emmet_settings = {
+	html = {
+		snippets = {
+			['!!'] = [[<script setup>
+</script>
+
+<template>
+</template>
+
+<style lang="scss" scoped>
+</style>]]
+		}
+	}
+}
+
+
+vim.g.vim_vue_plugin_config = {
+	syntax = {
+		template = { 'html' },
+		script = { 'javascript', 'typescript' },
+		style = { 'scss' },
+	},
+	full_syntax = {},
+	initial_indent = {},
+	attribute = 0,
+	keyword = 0,
+	foldexpr = 0,
+	debug = 0,
+}
+
+-- Telescope configuration
+
+require'telescope'.setup {
+	defaults = {
+		layout_strategy = 'vertical',
+		layout_config = {
+			vertical = { width = 0.8 }
+		},
+	},
+	extensions = {
+		file_browser = {
+			-- theme = "ivy",
+			hijack_netrw = true,
+			-- mappings = {
+			--   ["i"] = {
+			--     -- your custom insert mode mappings
+			--   },
+			--   ["n"] = {
+			--     -- your custom normal mode mappings
+			--   },
+			-- },
+		},
+	},
+}
+-- To get telescope-file-browser loaded and working with telescope,
+-- you need to call load_extension, somewhere after setup function:
+require'telescope'.load_extension'file_browser'
+
 -- Setups
 require'gitsigns'.setup()
 require'startup'.setup({ theme = 'my_theme' })
