@@ -130,12 +130,28 @@ require'telescope'.setup {
 -- you need to call load_extension, somewhere after setup function:
 require'telescope'.load_extension'file_browser'
 
+-- Gitblame configuration
+vim.g.gitblame_enabled = 0
+vim.g.gitblame_message_template = '		 <author> • <date> • <summary>'
+vim.g.gitblame_message_when_no_blame = '		 No blame information available'
+vim.g.gitblame_message_when_not_committed = '		 Not committed yet'
+vim.g.gitblame_message_when_not_tracked = '		 Not tracked yet'
+vim.g.gitblame_message_when_no_repo = '		 No git repository found'
+vim.g.gitblame_date_format = '%r'
+
+
+-- Lualine configuration
+require'lualine'.setup {
+	sections = {
+		-- lualine_c = {{
+		-- 	git_blame.get_current_blame_text,
+		-- 	cond = git_blame.is_blame_text_available
+		-- }},
+		lualine_x = {'filetype'}
+	}
+}
+
 -- Setups
 require'gitsigns'.setup()
 require'startup'.setup({ theme = 'my_theme' })
 require'todo-comments'.setup()
-require'lualine'.setup {
-	sections = {
-		lualine_x = {'filetype'}
-	}
-}

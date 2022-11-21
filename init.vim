@@ -86,6 +86,7 @@ nnoremap <leader>xd <cmd>TroubleToggle document_diagnostics<cr>
 nnoremap <leader>xq <cmd>TroubleToggle quickfix<cr>
 nnoremap <leader>xl <cmd>TroubleToggle loclist<cr>
 nnoremap gR <cmd>TroubleToggle lsp_references<cr>
+nnoremap <silent> gb :GitBlameToggle<cr>
 
 " Barbar keybindings
 " Move to previous/next
