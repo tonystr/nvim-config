@@ -88,13 +88,13 @@ vim.g.polyglot_disabled = { 'vue' }
 vim.g.user_emmet_settings = {
 	html = {
 		snippets = {
-			['!!'] = [[<script setup>
+			['!!'] = [[<script setup lang="ts">
 </script>
 
 <template>
 </template>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 </style>]]
 		}
 	}
@@ -126,16 +126,7 @@ require'telescope'.setup {
 	},
 	extensions = {
 		file_browser = {
-			-- theme = "ivy",
 			hijack_netrw = true,
-			-- mappings = {
-			--   ["i"] = {
-			--     -- your custom insert mode mappings
-			--   },
-			--   ["n"] = {
-			--     -- your custom normal mode mappings
-			--   },
-			-- },
 		},
 	},
 }

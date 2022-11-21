@@ -17,8 +17,8 @@ require'packer'.startup(function(use)
 	use 'kana/vim-textobj-user' -- NOTE: Learn some text objects or uninstall
 	-- use { 'RishabhRD/nvim-cheat.sh', requires = 'RishabhRD/popfix' }
 	use 'junegunn/vim-easy-align'
-	use 'lukas-reineke/indent-blankline.nvim'
-	use 'ThePrimeagen/refactoring.nvim'
+	-- use 'lukas-reineke/indent-blankline.nvim'
+	-- use 'ThePrimeagen/refactoring.nvim'
 	use 'leafOfTree/vim-vue-plugin'
 
 	-- Lsp
@@ -45,10 +45,10 @@ require'packer'.startup(function(use)
 			-- icon_close_tab = '',
 		}
 	end}
-	use 'karb94/neoscroll.nvim'
+	-- use 'karb94/neoscroll.nvim'
 	use { 'nvim-telescope/telescope.nvim', tag = '0.1.0', requires = 'nvim-lua/plenary.nvim' }
 	use 'nvim-telescope/telescope-file-browser.nvim'
-	use { 'stevearc/dressing.nvim', after = 'telescope.nvim' } -- NOTE: Still not sure what this does, rename popup menu?
+	use { 'stevearc/dressing.nvim', after = 'telescope.nvim' }
 	use { 'folke/trouble.nvim', requires = 'nvim-web-devicons', config = function()
 		require'trouble'.setup{}
 	end}
@@ -62,8 +62,8 @@ require'packer'.startup(function(use)
 	use 'folke/which-key.nvim'
 
 	-- Themes
-	use 'JoosepAlviste/palenightfall.nvim'
 	use 'rebelot/kanagawa.nvim'
+
 	use 'mattn/emmet-vim'
 end)
 
@@ -75,7 +75,7 @@ require'colorizer'.setup{}
 -- 	['<C-u>'] = { 'scroll', { '-vim.wo.scroll', 'true', '100' }},
 -- 	['<C-d>'] = { 'scroll', { 'vim.wo.scroll', 'true', '100' }},
 -- })
-require'indent_blankline'.setup { show_current_context = true }
+-- require'indent_blankline'.setup { show_current_context = true }
 
 -- NOTE: Plugins to check out in the future
 -- neogen: keybinding to create documentation comments

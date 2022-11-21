@@ -43,7 +43,7 @@ nnoremap <silent> <C-z> <Nop>
 imap <C-c> <Esc>
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
-let g:user_emmet_leader_key='<C-n>'
+let g:user_emmet_leader_key='<C-y>'
 
 " Visual mode
 vnoremap <silent> < <gv
@@ -152,8 +152,8 @@ set tabstop=4 shiftwidth=4 softtabstop=4 autoindent
 set scrolloff=5 sidescrolloff=10
 set mouse=a
 set nowrap
-set list
-set listchars+=tab:\|\ 
+" set list
+" set listchars+=tab:|\ 
 set encoding=UTF-8
 set formatoptions-=cro
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
