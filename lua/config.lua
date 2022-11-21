@@ -1,10 +1,11 @@
 local vim = vim
 
+local env = require('env')
 require('plugins')
 
 -- Treesitter coniguration
 
-require'nvim-treesitter.install'.compilers = { "clang", "gcc" }
+require'nvim-treesitter.install'.compilers = env.c_compilers
 require'nvim-treesitter.configs'.setup {
 	ensure_installed = {},
 	sync_install = false,
@@ -19,9 +20,6 @@ require'nvim-treesitter.configs'.setup {
 		enable = true,
 	}
 }
-
--- vim.opt.foldmethod = "expr"
--- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 -- LSP configuration
 
@@ -43,9 +41,7 @@ end
 require'lspconfig'.volar.setup{
   init_options = {
     typescript = {
-      tsdk = 'C:\\Users\\Tony\\AppData\\Local\\Yarn\\Data\\global\\node_modules\\typescript\\lib'
-      -- Alternative location if installed as root:
-      -- tsdk = '/usr/local/lib/node_modules/typescript/lib'
+      tsdk = env.tsdk
     }
   }
 }
