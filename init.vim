@@ -6,12 +6,7 @@ let $STARTUPTHEME='~\AppData\Local\nvim\lua\startup\themes\my_theme.lua'
 let g:python3_host_prog = '~\AppData\Local\Programs\Python\Python310\python.EXE'
 set termguicolors
 
-" Setting language to NPPONGO
-set langmenu=ja_JP
-let $LANG = 'ja_JP'
 let mapleader = " "
-source $VIMRUNTIME/delmenu.vim
-source $VIMRUNTIME/menu.vim
 
 " PLUGINS and lua configs
 lua require("config")
@@ -32,6 +27,15 @@ func! File_manager() abort
     endif
 endfunc
 
+" Show syntax highlighting groups for word under cursor
+nmap <leader>z :call <SID>SynStack()<CR>
+function! <SID>SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
+
 " Key mappings
 noremap <silent> <C-s> <Esc>:w<CR>
 nnoremap <silent> gof :call File_manager()<CR>
@@ -45,6 +49,10 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 let g:user_emmet_leader_key='<C-y>'
 
+" Emmet bindings
+inoremap <C-h> <Plug>(emmet-expand-abbr)
+nnoremap <C-h> <Plug>(emmet-expand-abbr)
+
 " Visual mode
 vnoremap <silent> < <gv
 vnoremap <silent> > >gv
@@ -53,9 +61,22 @@ vnoremap <silent> > >gv
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <C-p> <cmd>Telescope find_files<cr>
+nnoremap <leader>fo <cmd>Telescope oldfiles<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+nnoremap <leader>fr <cmd>Telescope registers<cr>
+nnoremap <leader>fs <cmd>Telescope spell_suggest<cr>
+nnoremap <leader>fd <cmd>Telescope diagnostics<cr>
+nnoremap <leader>so :lua require('telescope.builtin').lsp_document_symbols()<CR>
+nnoremap <silent> gr <cmd>Telescope lsp_references<cr>
+nnoremap <silent> gR :lua vim.lsp.buf.references()<CR>
+" Git commands
+nnoremap <leader>gs <cmd>Telescope git_status<cr>
+nnoremap <leader>gc <cmd>Telescope git_commits<cr>
+nnoremap <leader>gbc <cmd>Telescope git_bcommits<cr>
+nnoremap <leader>gbr <cmd>Telescope git_branches<cr>
+nnoremap <leader>gbl :GitBlameToggle<cr>
 
 " NeoTree
 nnoremap <leader>e <cmd>Neotree toggle<cr>
@@ -66,10 +87,8 @@ let g:lsp_diagnostics_echo_cursor = 1
 nnoremap <silent> gd :lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> gD :lua vim.lsp.buf.declaration()<CR>
 " nnoremap <silent> gi :lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> gw :lua vim.lsp.buf.document_symbol()<CR>
-nnoremap <silent> gw :lua vim.lsp.buf.workspace_symbol()<CR>
-nnoremap <silent> <leader>so :lua require('telescope.builtin').lsp_document_symbols()<CR>
-nnoremap <silent> gr :lua vim.lsp.buf.references()<CR>
+nnoremap <leader>w :lua vim.lsp.buf.document_symbol()<CR>
+nnoremap <leader>w :lua vim.lsp.buf.workspace_symbol()<CR>
 nnoremap <silent> [d :lua vim.diagnostic.goto_prev()<CR>
 nnoremap <silent> ]d :lua vim.diagnostic.goto_next()<CR>
 nnoremap <silent> <leader>d :lua vim.diagnostic.open_float()<CR>
@@ -79,21 +98,17 @@ nnoremap <silent> <C-k> :lua vim.lsp.buf.signature_help()<CR>
 nnoremap <silent> <leader>af :lua vim.lsp.buf.code_action()<CR>
 nnoremap <silent> <leader>rn :lua vim.lsp.buf.rename()<CR>
 
-" Trouble keybindings
-nnoremap <leader>xx <cmd>TroubleToggle<cr>
-nnoremap <leader>xw <cmd>TroubleToggle workspace_diagnostics<cr>
-nnoremap <leader>xd <cmd>TroubleToggle document_diagnostics<cr>
-nnoremap <leader>xq <cmd>TroubleToggle quickfix<cr>
-nnoremap <leader>xl <cmd>TroubleToggle loclist<cr>
-nnoremap gR <cmd>TroubleToggle lsp_references<cr>
-nnoremap <silent> gb :GitBlameToggle<cr>
-
 " Barbar keybindings
 " Move to previous/next
 nnoremap <silent> <A-,> <Cmd>BufferPrevious<CR>
 nnoremap <silent> <A-.> <Cmd>BufferNext<CR>
 nnoremap <silent> <A-Left> <Cmd>BufferPrevious<CR>
 nnoremap <silent> <A-Right> <Cmd>BufferNext<CR>
+" Move between windows
+nnoremap <silent> <A-h> <Cmd>wincmd h<CR>
+nnoremap <silent> <A-j> <Cmd>wincmd j<CR>
+nnoremap <silent> <A-k> <Cmd>wincmd k<CR>
+nnoremap <silent> <A-l> <Cmd>wincmd l<CR>
 " Re-order to previous/next
 nnoremap <silent> <A-<> <Cmd>BufferMovePrevious<CR>
 nnoremap <silent> <A->> <Cmd>BufferMoveNext<CR>
@@ -117,6 +132,18 @@ nnoremap <silent> <leader>bb <Cmd>BufferOrderByBufferNumber<CR>
 nnoremap <silent> <leader>bd <Cmd>BufferOrderByDirectory<CR>
 nnoremap <silent> <leader>bl <Cmd>BufferOrderByLanguage<CR>
 nnoremap <silent> <leader>bw <Cmd>BufferOrderByWindowNumber<CR>
+
+" Objectively correct clipboard mappings (thx: https://ezhik.me/blog/vim-clipboard/)
+set clipboard=
+nnoremap <C-v> "+p
+vnoremap <C-v> "+p
+inoremap <C-v> <C-r>+
+noremap ""y ""y
+noremap ""yy ""yy
+noremap ""p ""p
+noremap ""P ""P
+noremap <expr> y (v:register ==# '"' ? '"+' : '') . 'y'
+noremap <expr> yy (v:register ==# '"' ? '"+' : '') . 'yy'
 
 " Tony's special highlighting based on kanagawa
 colors kanagawa
@@ -145,6 +172,7 @@ hi TelescopeSelection guibg=none guifg=#ffffff
 hi MoreMsg guibg=none guifg=#ffd282
 hi illuminatedWord guibg=#33333a
 hi Statement cterm=nocombine gui=nocombine
+hi VueComponentName guifg=#ffcb6b
 
 " Editor preferences
 set number relativenumber
@@ -164,10 +192,10 @@ set wildmenu
 set wildignore+=**/node_modules/**
 set hidden
 au BufRead * normal zR
-let mapleader = " "
 set noshowmode
-set signcolumn=yes
-" autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
+set signcolumn=yes " Always show gutter
+set ignorecase " Ignore case when searching
+set smartcase " Case sensitive if caps or "\C"
 
 " Neovide settings
 if exists("g:neovide")

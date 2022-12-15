@@ -5,7 +5,10 @@ require('plugins')
 
 -- Treesitter coniguration
 
-require'nvim-treesitter.install'.compilers = env.c_compilers
+local tsi = require'nvim-treesitter.install'
+tsi.compilers = { "clang", "gcc" }
+tsi.prefer_git = false
+
 require'nvim-treesitter.configs'.setup {
 	ensure_installed = {},
 	sync_install = false,
@@ -26,16 +29,22 @@ require'nvim-treesitter.configs'.setup {
 local lsp_installer = require'nvim-lsp-installer'
 lsp_installer.setup{}
 
-local capabilities = require'cmp_nvim_lsp'.default_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require'cmp_nvim_lsp'.default_capabilities(
+	vim.lsp.protocol.make_client_capabilities()
+)
 local servers = require'nvim-lsp-installer'.get_installed_servers()
 local illuminate = require'illuminate'
 for _, server in ipairs(servers) do
+	if (server.name == "tailwindcss") then goto continue end
+
 	require 'lspconfig'[server.name].setup{
 		capabilities = capabilities,
 		on_attach = function(client)
 			illuminate.on_attach(client)
 		end,
 	}
+
+	::continue::
 end
 
 require'lspconfig'.volar.setup{

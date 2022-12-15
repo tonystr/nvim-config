@@ -20,6 +20,10 @@ require'packer'.startup(function(use)
 	-- use 'lukas-reineke/indent-blankline.nvim'
 	-- use 'ThePrimeagen/refactoring.nvim'
 	use 'leafOfTree/vim-vue-plugin'
+	use 'AndrewRadev/inline_edit.vim'
+	use 'tpope/vim-unimpaired'
+	use 'AndrewRadev/splitjoin.vim'
+	use 'prettier/vim-prettier'
 
 	-- Lsp
 	use 'neovim/nvim-lspconfig'
@@ -50,9 +54,6 @@ require'packer'.startup(function(use)
 	use { 'nvim-telescope/telescope.nvim', tag = '0.1.0', requires = 'nvim-lua/plenary.nvim' }
 	use 'nvim-telescope/telescope-file-browser.nvim'
 	use { 'stevearc/dressing.nvim', after = 'telescope.nvim' }
-	use { 'folke/trouble.nvim', requires = 'nvim-web-devicons', config = function()
-		require'trouble'.setup{}
-	end}
 	use 'startup-nvim/startup.nvim'
 	use 'folke/todo-comments.nvim'
 	use 'kevinhwang91/promise-async'
@@ -61,6 +62,10 @@ require'packer'.startup(function(use)
 	use { 'nvim-neo-tree/neo-tree.nvim', requires = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim", }, branch = "v2.x" }
 	use 'nvim-lualine/lualine.nvim'
 	use 'folke/which-key.nvim'
+	use 'sudormrfbin/cheatsheet.nvim'
+	use { 'pwntester/octo.nvim', requires = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim', 'kyazdani42/nvim-web-devicons', }, config = function()
+		require'octo'.setup()
+	end }
 
 	-- Themes
 	use 'rebelot/kanagawa.nvim'
