@@ -1,6 +1,3 @@
-
--- TODO: nvim lualine
-
 require'packer'.startup(function(use)
 
 	-- Misc
@@ -104,25 +101,14 @@ end)
 
 luasnip = require 'luasnip'
 
--- require'neoscroll'.setup{}
--- require'neoscroll.config'.set_mappings({
--- 	['<C-u>'] = { 'scroll', { '-vim.wo.scroll', 'true', '100' }},
--- 	['<C-d>'] = { 'scroll', { 'vim.wo.scroll', 'true', '100' }},
--- })
--- require'indent_blankline'.setup { show_current_context = true }
+-- Below you'll find the land of the lost
 
+-- require'indent_blankline'.setup { show_current_context = true }
 -- NOTE: Plugins to check out in the future
 -- neogen: keybinding to create documentation comments
 -- hlargs.nvim: highlight arguments differently from variables
--- use 'norcalli/nvim-colorizer.lua' -- BUG: doesn't work
 -- use 'nvim-neorg/neorg' -- Learn this if you want to use it
 -- use 'tpope/vim-speeddating' -- NOTE: Why have this if you dont know how to use it
 -- use 'christoomey/vim-titlecase' -- NOTE: Why have this if you dont know how to use it
--- use {'akinsho/bufferline.nvim', tag = "v2.*", requires = 'kyazdani42/nvim-web-devicons', config = function()
--- end}
--- use { 'tiagovla/scope.nvim', config = function()
--- 	require'scope'.setup{}
--- end}
 -- use 'windwp/nvim-ts-autotag' -- WARN: think this works i just never enabled it
 -- use 'kevinhwang91/nvim-ufo' -- BUG: doesn't work
--- use 'yuttie/comfortable-motion.vim' -- cool inertia scroll but wonk??

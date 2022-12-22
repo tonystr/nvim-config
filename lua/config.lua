@@ -1,7 +1,4 @@
-local vim = vim
-
 local env = require('env')
-require('plugins')
 
 -- Treesitter coniguration
 
@@ -166,5 +163,20 @@ vim.g.gitblame_message_when_not_tracked = '		 Not tracked yet'
 vim.g.gitblame_message_when_no_repo = '		 No git repository found'
 vim.g.gitblame_date_format = '%r'
 
-
--- Setups
+-- Open explorer where current file is located
+vim.cmd([[
+func! File_manager() abort
+    if has("win32")
+        if exists("b:netrw_curdir")
+            let path = substitute(b:netrw_curdir, "/", "\\", "g")
+        elseif expand("%:p") == ""
+            let path = expand("%:p:h")
+        else
+            let path = expand("%:p")
+        endif
+        silent exe '!start explorer.exe /select,' .. path
+    else
+        echomsg "Not yet implemented!"
+    endif
+endfunc
+]])
