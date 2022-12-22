@@ -1,15 +1,53 @@
+
+-- PLUGINS and lua configs
+require'config'
+
+vim.g.mapleader = ' '
+vim.g.python3_host_prog = '~/AppData/Local/Programs/Python/Python310/python.EXE'
+
+-- Editor preferences
+vim.o.termguicolors = true
+vim.o.relativenumber = true
+vim.o.cursorline = true
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
+vim.o.softtabstop = 4
+vim.o.autoindent = true
+vim.o.scrolloff = 5
+vim.o.sidescrolloff = 10
+vim.o.mouse = 'a'
+vim.o.wrap = false -- Instead of nowrap
+vim.o.encoding = 'UTF-8'
+vim.o.formatoptions = 'qlj'
+vim.o.path = vim.o.path .. '**'
+vim.o.wildmenu = true
+vim.o.wildignore = '**/node_modules/**'
+vim.o.hidden = true
+vim.o.noshowmode = true
+vim.o.signcolumn = 'yes' -- Always show gutter
+vim.o.ignorecase = true -- Ignore case when searching
+vim.o.smartcase = true -- Case sensitive if caps or "\C"
+vim.o.undofile = true -- Enable undo history
+
+-- Hack for setting formatoptions
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = '*',
+    command = 'setlocal formatoptions-=c formatoptions-=r formatoptions-=o',
+})
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = '*',
+    command = 'ColorizerAttachToBuffer',
+})
+
+vim.cmd([[
+
 " Global variables
-let $MYVIMRC='~\AppData\Local\nvim\init.vim'
+let $MYVIMRC='~\AppData\Local\nvim\init.lua'
+let $INIT='~\AppData\Local\nvim\init.lua'
 let $LUACONF='~\AppData\Local\nvim\lua\config.lua'
+let $ENV='~\AppData\Local\nvim\lua\env.lua'
 let $PLUGINS='~\AppData\Local\nvim\lua\plugins.lua'
 let $STARTUPTHEME='~\AppData\Local\nvim\lua\startup\themes\my_theme.lua'
-let g:python3_host_prog = '~\AppData\Local\Programs\Python\Python310\python.EXE'
-set termguicolors
-
-let mapleader = " "
-
-" PLUGINS and lua configs
-lua require("config")
 
 " Open explorer where current file is located
 func! File_manager() abort
@@ -27,15 +65,6 @@ func! File_manager() abort
     endif
 endfunc
 
-" Show syntax highlighting groups for word under cursor
-nmap <leader>z :call <SID>SynStack()<CR>
-function! <SID>SynStack()
-  if !exists("*synstack")
-    return
-  endif
-  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-endfunc
-
 " Key mappings
 noremap <silent> <C-s> <Esc>:w<CR>
 nnoremap <silent> gof :call File_manager()<CR>
@@ -47,7 +76,6 @@ nnoremap <silent> <C-z> <Nop>
 imap <C-c> <Esc>
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
-let g:user_emmet_leader_key='<C-y>'
 
 " Emmet bindings
 inoremap <C-h> <Plug>(emmet-expand-abbr)
@@ -174,37 +202,15 @@ hi illuminatedWord guibg=#33333a
 hi Statement cterm=nocombine gui=nocombine
 hi VueComponentName guifg=#ffcb6b
 
-" Editor preferences
-set number relativenumber
-set cursorline
-set tabstop=4 shiftwidth=4 softtabstop=4 autoindent
-set scrolloff=5 sidescrolloff=10
-set mouse=a
-set nowrap
-" set list
-" set listchars+=tab:|\ 
-set encoding=UTF-8
-set formatoptions-=cro
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-autocmd FileType * ColorizerAttachToBuffer
-set path+=**
-set wildmenu
-set wildignore+=**/node_modules/**
-set hidden
-au BufRead * normal zR
-set noshowmode
-set signcolumn=yes " Always show gutter
-set ignorecase " Ignore case when searching
-set smartcase " Case sensitive if caps or "\C"
-
 " Neovide settings
 if exists("g:neovide")
-    let g:neovide_refresh_rate=165
+    let g:neovide_refresh_rate=60
     let g:neovide_refresh_rate_idle=30
     let g:neovide_remember_window_size=v:true
     hi Normal guibg=#1f1f28
     " hi Normal guibg=#2a2a37
     let g:neovide_confirm_quit=v:false
-    set guifont=Fira\ Code:h13
+    set guifont=FiraCode\ Nerd\ Font\ Mono:h11.5
 endif
+]])
 

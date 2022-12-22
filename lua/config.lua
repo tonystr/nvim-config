@@ -42,6 +42,13 @@ for _, server in ipairs(servers) do
 		on_attach = function(client)
 			illuminate.on_attach(client)
 		end,
+		settings = {
+			Lua = {
+				diagnostics = {
+					globals = { "vim" }
+				}
+			}
+		}
 	}
 
 	::continue::
@@ -54,8 +61,6 @@ require'lspconfig'.volar.setup{
     }
   }
 }
-
-
 
 local signs = { Error = "", Warn = "", Hint = "", Info = "" }
 for type, icon in pairs(signs) do
@@ -86,6 +91,27 @@ cmp.setup({
 	})
 })
 
+-- Toggleterm lazygit
+
+local Terminal  = require('toggleterm.terminal').Terminal
+local lazygit = Terminal:new({
+	cmd = 'lazygit',
+	direction = 'float',
+	hiddden = true,
+	float_opts = {
+		border = 'curved',
+		highlights = {
+			border = "Comment",
+			background = "Normal",
+		}
+	}
+})
+
+function _lazygit_toggle()
+	lazygit:toggle()
+end
+
+vim.api.nvim_set_keymap('n', '<leader>gg', '<cmd>lua _lazygit_toggle()<CR>', { noremap = true, silent = true })
 
 -- Emmet snippets
 
@@ -129,15 +155,7 @@ require'telescope'.setup {
 			vertical = { width = 0.8 }
 		},
 	},
-	extensions = {
-		file_browser = {
-			hijack_netrw = true,
-		},
-	},
 }
--- To get telescope-file-browser loaded and working with telescope,
--- you need to call load_extension, somewhere after setup function:
-require'telescope'.load_extension'file_browser'
 
 -- Gitblame configuration
 vim.g.gitblame_enabled = 0
@@ -149,18 +167,4 @@ vim.g.gitblame_message_when_no_repo = '		 No git repository found'
 vim.g.gitblame_date_format = '%r'
 
 
--- Lualine configuration
-require'lualine'.setup {
-	sections = {
-		-- lualine_c = {{
-		-- 	git_blame.get_current_blame_text,
-		-- 	cond = git_blame.is_blame_text_available
-		-- }},
-		lualine_x = {'filetype'}
-	}
-}
-
 -- Setups
-require'gitsigns'.setup()
-require'startup'.setup({ theme = 'my_theme' })
-require'todo-comments'.setup()
