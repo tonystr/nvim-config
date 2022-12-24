@@ -1,63 +1,95 @@
-require'packer'.startup(function(use)
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"--single-branch",
+		"https://github.com/folke/lazy.nvim.git",
+		lazypath,
+	})
+end
+vim.opt.runtimepath:prepend(lazypath)
 
-	-- Core
-	use { 'wbthomason/packer.nvim' }
-	use { 'lewis6991/impatient.nvim', config = function()
-		require'impatient'
-	end }
+local jsfts = { 'js', 'ts', 'jsx', 'tsx', 'vue' };
+
+require'lazy'.setup({
 
 	-- Misc
-	-- use { 'sheerun/vim-polyglot', event = 'BufRead' }
-	use { 'tpope/vim-surround', keys = {{'n', 'ys'}} }
-	use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
-	use { 'nvim-treesitter/nvim-treesitter-context' }
-	use { 'tpope/vim-commentary', event = 'BufRead' }
-	-- use { 'vim-scripts/FastFold' } -- NOTE: Not using folds at this time
-	use { 'tpope/vim-repeat', event = 'BufRead', keys = {{'n', 'gc'}, {'v', 'gc'}} }
-	use { 'github/copilot.vim', event = 'BufWinEnter' }
-	use { 'kana/vim-textobj-user', event = 'BufRead' } -- NOTE: Learn some text objects or uninstall
-	use { 'junegunn/vim-easy-align', keys = {{'n', 'ga'}}, config = function()
-		vim.keymap.set('n', 'ga', '<Plug>(EasyAlign)', {});
-		vim.keymap.set('v', 'ga', '<Plug>(EasyAlign)', {});
-	end}
-	-- use 'lukas-reineke/indent-blankline.nvim'
-	-- use 'ThePrimeagen/refactoring.nvim'
-	use { 'leafOfTree/vim-vue-plugin', event = 'BufRead' }
-	use { 'AndrewRadev/splitjoin.vim', keys = {{'n', 'gS'}, {'n', 'gJ'}} }
-	use { 'prettier/vim-prettier', cmd = 'Prettier' }
-	use { 'mattn/emmet-vim', keys = { { 'n', '<C-h>' }, { 'n', '<C-y>' }, { 'i', '<C-h>' }, { 'i', '<C-y>' } }, config = function()
-		vim.keymap.set('n', '<C-h>', '<Plug>(emmet-expand-abbr)', {});
-		vim.keymap.set('n', '<C-y>', '<Plug>(emmet-expand-yank)', {});
-		vim.keymap.set('i', '<C-h>', '<Plug>(emmet-expand-abbr)', {});
-		vim.keymap.set('i', '<C-y>', '<Plug>(emmet-expand-yank)', {});
-	end }
-	use { 'folke/persistence.nvim', config = function()
+	-- { 'sheerun/vim-polyglot', event = 'BufRead' },
+	{ 'tpope/vim-surround', keys = { 'ys', 'ds', 'cs', { 'S', mode = 'v' }, { 'gS', mode = 'v' } } },
+	{ 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
+	{ 'nvim-treesitter/nvim-treesitter-context' },
+	{ 'tpope/vim-commentary', keys = { { 'gc', mode = { 'n', 'v' } }, 'gcc' } },
+	-- { 'vim-scripts/FastFold' } -- NOTE: Not using folds at this time
+	{ 'tpope/vim-repeat', event = 'BufRead' },
+	{ 'github/copilot.vim', event = 'BufWinEnter' },
+	{ 'kana/vim-textobj-user', event = 'BufRead' }, -- NOTE: Learn some text objects or uninstall
+	{ 'junegunn/vim-easy-align', keys = {
+		{ 'ga', '<Plug>(EasyAlign)', mode = { 'n', 'v' } },
+	}},
+	-- 'lukas-reineke/indent-blankline.nvim'
+	-- 'ThePrimeagen/refactoring.nvim'
+	{ 'leafOfTree/vim-vue-plugin', ft = 'vue' },
+	{ 'AndrewRadev/splitjoin.vim', keys = { { 'gS', mode = { 'n', 'v' } }, { 'gJ', mode = { 'n', 'v' } } } },
+	{ 'prettier/vim-prettier', cmd = 'Prettier', ft = jsfts },
+	{ 'mattn/emmet-vim', keys = {
+		{ '<Plug>(emmet-expand-abbr)' },
+		{ '<Plug>(emmet-expand-abbr)', mode = 'i' },
+		{ '<Plug>(emmet-expand-yank)' },
+		{ '<Plug>(emmet-expand-yank)', mode = 'i' },
+	}},
+	{ 'folke/persistence.nvim', lazy = true, config = function()
 		require'persistence'.setup()
-	end }
+	end },
 
 	-- Lsp
-	use 'neovim/nvim-lspconfig'
-	use 'williamboman/nvim-lsp-installer'
-	use { 'hrsh7th/nvim-cmp', requires = {
-		{ 'hrsh7th/cmp-nvim-lsp', before = 'nvim-cmp' },
-		{ 'hrsh7th/cmp-buffer',   before = 'nvim-cmp' },
-		{ 'hrsh7th/cmp-path',     before = 'nvim-cmp' },
-		{ 'hrsh7th/cmp-cmdline',  before = 'nvim-cmp' },
-	}}
-	use 'L3MON4D3/LuaSnip'
-	use 'saadparwaiz1/cmp_luasnip'
-	use { 'onsails/lspkind.nvim', requires = 'nvim-cmp' }
-	use 'ray-x/lsp_signature.nvim'
+	'neovim/nvim-lspconfig',
+	'williamboman/nvim-lsp-installer',
+	{ 'L3MON4D3/LuaSnip', lazy = true },
+	{ 'saadparwaiz1/cmp_luasnip', lazy = true },
+	{ 'onsails/lspkind.nvim', lazy = true },
+	{ 'hrsh7th/nvim-cmp',
+		event = 'InsertEnter',
+		dependencies = {
+			{ 'hrsh7th/cmp-nvim-lsp', },
+			{ 'hrsh7th/cmp-buffer',   },
+			{ 'hrsh7th/cmp-path',     },
+			{ 'hrsh7th/cmp-cmdline',  },
+		},
+		config = function()
+			local lspkind = require'lspkind'
+			local cmp = require'cmp'
+			cmp.setup{
+				formatting = {
+					format = lspkind.cmp_format({
+						mode = 'symbol', -- show only symbol annotations
+						maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+					})
+				},
+				mapping = cmp.mapping.preset.insert {
+					['<CR>'] = cmp.mapping.confirm { select = true },
+				},
+				snippet = {
+					expand = function(args)
+						require'luasnip'.lsp_expand(args.body)
+					end,
+				},
+				sources = cmp.config.sources(
+					{ { name = 'nvim_lsp' } },
+					{ { name = 'buffer' } }
+				)
+			}
+		end
+	},
 
 	-- Git
-	use { 'tpope/vim-fugitive' }
-	use { 'lewis6991/gitsigns.nvim', event = 'BufRead', config = function()
+	{ 'tpope/vim-fugitive' },
+	{ 'lewis6991/gitsigns.nvim', event = 'BufRead', config = function()
 		require'gitsigns'.setup()
-	end}
-	use { 'f-person/git-blame.nvim', keys = { 'n', '<leader>gbl' }, config = function()
-		vim.keymap.set('n', '<leader>gbl', ':GitBlameToggle<CR>', {});
-	end }
-	use { 'sindrets/diffview.nvim', event = 'BufRead', config = function()
+	end},
+	{ 'f-person/git-blame.nvim', keys = { { '<leader>gbl', '<cmd>GitBlameToggle<cr>' } } },
+	{ 'sindrets/diffview.nvim', lazy = true, config = function()
 		require('diffview').setup({
 			enhanced_diff_hl = true,
 			view = {
@@ -66,11 +98,14 @@ require'packer'.startup(function(use)
 				},
 			},
 		})
-	end}
+	end},
 
 	-- Terminal & lazygit
-	use { 'akinsho/toggleterm.nvim',
-		tag = '*',
+	{ 'akinsho/toggleterm.nvim',
+		version = '*',
+		keys = {
+			'<leader>gg', '<leader>tt'
+		},
 		config = function()
 			require('toggleterm').setup({
 				float_opts = {
@@ -90,19 +125,19 @@ require'packer'.startup(function(use)
 					highlights = {
 						border = "Comment",
 						background = "Normal",
-					}
-				}
+					},
+				},
 			})
 
-			vim.keymap.set('n', '<leader>gg', function() lazygit:toggle() end, {});
-			vim.keymap.set('n', '<leader>tt', ':ToggleTerm<CR>', {});
+			vim.keymap.set('n', '<leader>gg', function()
+				lazygit:toggle()
+			end)
 		end,
-		keys = { '<leader>gg', '<leader>tt' },
-	}
+	},
 
 	-- UI
-	use 'kyazdani42/nvim-web-devicons'
-	use { 'romgrk/barbar.nvim', requires = 'nvim-web-devicons', config = function()
+	{ 'kyazdani42/nvim-web-devicons', lazy = true },
+	{ 'romgrk/barbar.nvim', dependencies = 'nvim-web-devicons', event='BufWinEnter', config = function()
 		require'bufferline'.setup{
 			auto_hide = true,
 			icon_cusom_colors = true,
@@ -110,12 +145,12 @@ require'packer'.startup(function(use)
 			icon_separator_inactive = '',
 			-- icon_close_tab = '',
 		}
-	end}
-	use { 'nvim-telescope/telescope.nvim', tag = '0.1.0', requires = 'nvim-lua/plenary.nvim' }
-	use { 'stevearc/dressing.nvim', after = 'telescope.nvim' }
-	use { 'startup-nvim/startup.nvim',
-		cmd = { 'Startup' },
-		setup = function()
+	end},
+	{ 'nvim-telescope/telescope.nvim', cmd = 'Telescope', version = '0.1.0', dependencies = 'nvim-lua/plenary.nvim' },
+	{ 'stevearc/dressing.nvim', event = 'VeryLazy' },
+	{ 'startup-nvim/startup.nvim',
+		cmd = 'Startup',
+		init = function()
 			vim.api.nvim_create_autocmd('VimEnter', { callback = function()
 				if vim.fn.argc() == 0 and vim.fn.line2byte('$') == -1 then
 					vim.cmd('Startup display')
@@ -126,46 +161,50 @@ require'packer'.startup(function(use)
 		config = function()
 			require'startup'.setup({ theme = 'my_theme' })
 		end
-	}
-	use { 'folke/todo-comments.nvim', event = 'BufRead', config = function()
+	},
+	{ 'folke/todo-comments.nvim', event = 'BufRead', config = function()
 		require'todo-comments'.setup()
-	end}
-	use 'kevinhwang91/promise-async'
-	use { 'norcalli/nvim-colorizer.lua', config = function()
+	end},
+	{ 'kevinhwang91/promise-async', lazy = true },
+	{ 'norcalli/nvim-colorizer.lua', config = function()
 		require'colorizer'.setup{}
-	end}
-	use { 'RRethy/vim-illuminate' } -- Required because its used in $LUACONF
-	use {
+	end},
+	{ 'RRethy/vim-illuminate', lazy = true },
+	{
 		'nvim-neo-tree/neo-tree.nvim',
-		requires = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim", },
+		dependencies = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim", },
 		branch = "v2.x",
-		keys = { { 'n', '<leader>e' }, { 'n', '<leader>o' } },
+		keys = {
+			{ '<leader>e', '<cmd>NeoTreeFocusToggle<cr>' },
+			{ '<leader>o', '<cmd>NeoTreeFocus<cr>' }
+		},
 		config = function()
-			vim.keymap.set('n', '<leader>e', ':NeoTreeShowToggle<CR>')
-			vim.keymap.set('n', '<leader>o', ':NeoTreeFocus<CR>')
+			require'neo-tree'.setup{
+				disable_netrw = true,
+			}
 		end,
-	}
-	use { 'nvim-lualine/lualine.nvim', event = 'BufWinEnter', config = function()
+	},
+	{ 'nvim-lualine/lualine.nvim', event = 'BufWinEnter', config = function()
 		require'lualine'.setup {
-			sections = { lualine_x = {'filetype'} }
+			sections = { lualine_x = {'filetype'} },
 		}
-	end}
-	use 'folke/which-key.nvim'
+	end},
+	{ 'folke/which-key.nvim', cmd = 'WhichKey' },
 
-	-- Themes
-	use 'rebelot/kanagawa.nvim'
-end)
+	-- Theme
+	'rebelot/kanagawa.nvim'
+})
 
 luasnip = require 'luasnip'
 
 -- Below you'll find the land of the lost
 
--- require'indent_blankline'.setup { show_current_context = true }
+-- require'indent_blankline'.setup { show_current_context = true },
 -- neogen: keybinding to create documentation comments
 -- hlargs.nvim: highlight arguments differently from variables
--- use 'nvim-neorg/neorg' -- Learn this if you want to use it
--- use 'tpope/vim-speeddating' -- NOTE: Why have this if you dont know how to use it
--- use 'christoomey/vim-titlecase' -- NOTE: Why have this if you dont know how to use it
--- use 'windwp/nvim-ts-autotag' -- WARN: think this works i just never enabled it
--- use 'kevinhwang91/nvim-ufo' -- BUG: doesn't work
--- use { 'tpope/vim-unimpaired', event = 'BufRead' } -- NOTE: Never used any of the bindings
+-- 'nvim-neorg/neorg' -- Learn this if you want to use it
+-- 'tpope/vim-speeddating' -- NOTE: Why have this if you dont know how to use it
+-- 'christoomey/vim-titlecase' -- NOTE: Why have this if you dont know how to use it
+-- 'windwp/nvim-ts-autotag' -- WARN: think this works i just never enabled it
+-- 'kevinhwang91/nvim-ufo' -- BUG: doesn't work
+-- { 'tpope/vim-unimpaired', event = 'BufRead' } -- NOTE: Never used any of the bindings

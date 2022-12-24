@@ -2,16 +2,16 @@ local maps = { i = {}, n = {}, v = {}, t = {}, [""] = {} }
 
 -- Key mappings
 maps['']['<space>'] = '<nop>'
-maps.n['gof'] = ':call File_manager()<CR>'
-maps.n['<C-t>'] = ':tabnew<CR>'
-maps.n['gt'] = ':tabn<CR>'
-maps.n['gT'] = ':tabp<CR>'
-maps.n['<C-l>'] = ':nohlsearch<CR>'
+maps.n['gof'] = '<cmd>call File_manager()<CR>'
+maps.n['<C-t>'] = '<cmd>tabnew<CR>'
+maps.n['gt'] = '<cmd>tabn<CR>'
+maps.n['gT'] = '<cmd>tabp<CR>'
+maps.n['<C-l>'] = '<cmd>nohlsearch<CR>'
 maps.n['<C-z>'] = '<Nop>'
-maps.n['<C-s>'] = '<Esc>:w<CR>'
+maps.n['<C-s>'] = '<Esc><cmd>w<CR>'
 maps.n['<C-c>'] = '<Esc>'
-maps.n['ga'] = '<Plug>(EasyAlign)'
-maps.v['ga'] = '<Plug>(EasyAlign)'
+-- maps.n['ga'] = '<Plug>(EasyAlign)'
+-- maps.v['ga'] = '<Plug>(EasyAlign)'
 
 -- Telescope mappings
 -- Find files using Telescope command-line sugar.
@@ -33,7 +33,7 @@ maps.n['<leader>gs'] = '<cmd>Telescope git_status<cr>'
 maps.n['<leader>gc'] = '<cmd>Telescope git_commits<cr>'
 maps.n['<leader>gbc'] = '<cmd>Telescope git_bcommits<cr>'
 maps.n['<leader>gbr'] = '<cmd>Telescope git_branches<cr>'
-maps.n['<leader>gbl'] = ':GitBlameToggle<cr>'
+maps.n['<leader>gbl'] = '<cmd>GitBlameToggle<cr>'
 
 -- LSP key mappings
 maps.n['gd'] = function() vim.lsp.buf.definition() end
@@ -52,12 +52,14 @@ maps.n['<leader>af'] = function() vim.lsp.buf.code_action() end
 maps.n['<leader>rn'] = function() vim.lsp.buf.rename() end
 
 -- NeoTree
-maps.n['<leader>e'] = '<cmd>Neotree toggle<cr>'
-maps.n['<leader>o'] = '<cmd>Neotree focus<cr>'
+-- maps.n['<leader>e'] = '<cmd>NeoTreeFocusToggle<cr>'
+-- maps.n['<leader>o'] = '<Plug>NeoTreeFocus'
 
 -- Emmet bindings
 maps.n['<C-h>'] = '<Plug>(emmet-expand-abbr)'
 maps.i['<C-h>'] = '<Plug>(emmet-expand-abbr)'
+maps.n['<C-y>'] = '<Plug>(emmet-expand-yank)'
+maps.i['<C-y>'] = '<Plug>(emmet-expand-yank)'
 
 -- Visual mode
 maps.v['<'] = '<gv'

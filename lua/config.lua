@@ -65,24 +65,6 @@ vim.o.completeopt = 'menuone,noselect'
 
 -- cmp configuration
 
-local lspkind = require('lspkind')
-local cmp = require'cmp'
-cmp.setup({
-	formatting = {
-		format = lspkind.cmp_format({
-			mode = 'symbol', -- show only symbol annotations
-			maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-		})
-	},
-	mapping = cmp.mapping.preset.insert({
-		['<CR>'] = cmp.mapping.confirm({ select = true }),
-	}),
-	sources = cmp.config.sources({
-		{ name = 'nvim_lsp' },
-	}, {
-		{ name = 'buffer' },
-	})
-})
 
 -- Emmet snippets
 
