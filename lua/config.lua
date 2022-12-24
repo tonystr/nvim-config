@@ -32,8 +32,6 @@ local capabilities = require'cmp_nvim_lsp'.default_capabilities(
 local servers = require'nvim-lsp-installer'.get_installed_servers()
 local illuminate = require'illuminate'
 for _, server in ipairs(servers) do
-	if (server.name == "tailwindcss") then goto continue end
-
 	require 'lspconfig'[server.name].setup{
 		capabilities = capabilities,
 		on_attach = function(client)
@@ -47,8 +45,6 @@ for _, server in ipairs(servers) do
 			}
 		}
 	}
-
-	::continue::
 end
 
 require'lspconfig'.volar.setup{
@@ -87,28 +83,6 @@ cmp.setup({
 		{ name = 'buffer' },
 	})
 })
-
--- Toggleterm lazygit
-
-local Terminal  = require('toggleterm.terminal').Terminal
-local lazygit = Terminal:new({
-	cmd = 'lazygit',
-	direction = 'float',
-	hiddden = true,
-	float_opts = {
-		border = 'curved',
-		highlights = {
-			border = "Comment",
-			background = "Normal",
-		}
-	}
-})
-
-function _lazygit_toggle()
-	lazygit:toggle()
-end
-
-vim.api.nvim_set_keymap('n', '<leader>gg', '<cmd>lua _lazygit_toggle()<CR>', { noremap = true, silent = true })
 
 -- Emmet snippets
 

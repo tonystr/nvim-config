@@ -11,7 +11,7 @@ maps.n['<C-z>'] = '<Nop>'
 maps.n['<C-s>'] = '<Esc>:w<CR>'
 maps.n['<C-c>'] = '<Esc>'
 maps.n['ga'] = '<Plug>(EasyAlign)'
-maps.n['ga'] = '<Plug>(EasyAlign)'
+maps.v['ga'] = '<Plug>(EasyAlign)'
 
 -- Telescope mappings
 -- Find files using Telescope command-line sugar.
