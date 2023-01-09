@@ -1,4 +1,4 @@
-local maps = { i = {}, n = {}, v = {}, t = {}, [""] = {} }
+local maps = { i = {}, n = {}, v = {}, t = {}, x = {}, [''] = {} }
 
 -- Key mappings
 maps['']['<space>'] = '<nop>'
@@ -10,8 +10,8 @@ maps.n['<C-l>'] = '<cmd>nohlsearch<CR>'
 maps.n['<C-z>'] = '<Nop>'
 maps.n['<C-s>'] = '<Esc><cmd>w<CR>'
 maps.n['<C-c>'] = '<Esc>'
--- maps.n['ga'] = '<Plug>(EasyAlign)'
--- maps.v['ga'] = '<Plug>(EasyAlign)'
+maps.x['/'] = '<Esc>/\\%V'
+maps.n['<leader>fm'] = '<cmd>FormatModifications<cr>'
 
 -- Telescope mappings
 -- Find files using Telescope command-line sugar.

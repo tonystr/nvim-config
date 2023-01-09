@@ -34,8 +34,9 @@ local illuminate = require'illuminate'
 for _, server in ipairs(servers) do
 	require 'lspconfig'[server.name].setup{
 		capabilities = capabilities,
-		on_attach = function(client)
+		on_attach = function(client, bufnr)
 			illuminate.on_attach(client)
+			-- require 'lsp-format-modifications'.attach(client, bufnr)
 		end,
 		settings = {
 			Lua = {
@@ -99,17 +100,6 @@ vim.g.vim_vue_plugin_config = {
 	debug = 0,
 }
 
--- Telescope configuration
-
-require'telescope'.setup {
-	defaults = {
-		layout_strategy = 'vertical',
-		layout_config = {
-			vertical = { width = 0.8 }
-		},
-	},
-}
-
 -- Gitblame configuration
 vim.g.gitblame_enabled = 0
 vim.g.gitblame_message_template = '		 <author> • <date> • <summary>'
@@ -119,6 +109,28 @@ vim.g.gitblame_message_when_not_tracked = '		 Not tracked yet'
 vim.g.gitblame_message_when_no_repo = '		 No git repository found'
 vim.g.gitblame_date_format = '%r'
 
+-- Rooting
+local root_names = { '.git', 'package.json', 'node_modules', 'yarn.lock' }
+local root_cache = {}
+
+local set_root = function()
+	local path = vim.api.nvim_buf_get_name(0)
+	if path == '' then return end
+	path = vim.fs.dirname(path)
+
+	local root = root_cache[path]
+	if root == nil then
+		local root_file = vim.fs.find(root_names, { path = path, upward = true })[1]
+		if root_file == nil then return end
+		root = vim.fs.dirname(root_file)
+		root_cache[path] = root
+	end
+
+	vim.fn.chdir(root)
+end
+
+local root_augroup = vim.api.nvim_create_augroup('CustomAutoRoot', {})
+vim.api.nvim_create_autocmd('BufEnter', { group = root_augroup, callback = set_root })
 -- Open explorer where current file is located
 vim.cmd([[
 func! File_manager() abort

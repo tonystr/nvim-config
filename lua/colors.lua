@@ -20,6 +20,8 @@ hi(0, 'DiagnosticWarn', { fg='#ffcb6b' })
 hi(0, 'TelescopeSelection', { bg='none', fg='#ffffff' })
 hi(0, 'MoreMsg', { bg='none', fg='#ffd282' })
 hi(0, 'illuminatedWord', { bg='#33333a' })
+hi(0, 'illuminatedWordRead', { bg='#33333a' })
+hi(0, 'illuminatedWordWrite', { bg='#33333a' })
 -- hi(0, 'Statement', { cterm=nocombine gui=nocombine })
 -- hi(0, 'VueComponentName', { fg='#ffcb6b' })
 

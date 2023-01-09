@@ -16,7 +16,6 @@ local jsfts = { 'js', 'ts', 'jsx', 'tsx', 'vue' };
 require'lazy'.setup({
 
 	-- Misc
-	-- { 'sheerun/vim-polyglot', event = 'BufRead' },
 	{ 'tpope/vim-surround', keys = { 'ys', 'ds', 'cs', { 'S', mode = 'v' }, { 'gS', mode = 'v' } } },
 	{ 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
 	{ 'nvim-treesitter/nvim-treesitter-context' },
@@ -49,13 +48,16 @@ require'lazy'.setup({
 	{ 'L3MON4D3/LuaSnip', lazy = true },
 	{ 'saadparwaiz1/cmp_luasnip', lazy = true },
 	{ 'onsails/lspkind.nvim', lazy = true },
+	{ 'RRethy/vim-illuminate', lazy = true },
+	-- { 'joechrisellis/lsp-format-modifications.nvim', lazy = true },
 	{ 'hrsh7th/nvim-cmp',
 		event = 'InsertEnter',
 		dependencies = {
-			{ 'hrsh7th/cmp-nvim-lsp', },
-			{ 'hrsh7th/cmp-buffer',   },
-			{ 'hrsh7th/cmp-path',     },
-			{ 'hrsh7th/cmp-cmdline',  },
+			{ 'hrsh7th/cmp-nvim-lsp'  },
+			{ 'hrsh7th/cmp-buffer'    },
+			{ 'hrsh7th/cmp-path'      },
+			{ 'hrsh7th/cmp-cmdline'   },
+			{ 'RRethy/vim-illuminate' },
 		},
 		config = function()
 			local lspkind = require'lspkind'
@@ -104,7 +106,8 @@ require'lazy'.setup({
 	{ 'akinsho/toggleterm.nvim',
 		version = '*',
 		keys = {
-			'<leader>gg', '<leader>tt'
+			'<leader>gg',
+			{ '<leader>tt', '<cmd>ToggleTerm<cr>' },
 		},
 		config = function()
 			require('toggleterm').setup({
@@ -136,7 +139,14 @@ require'lazy'.setup({
 	},
 
 	-- UI
+
+	-- not work
+	-- { 'barrett-ruth/import-cost.nvim', build = 'echo HELLO', config = function ()
+	-- 	require'import-cost'.setup()
+	-- end },
+
 	{ 'kyazdani42/nvim-web-devicons', lazy = true },
+
 	{ 'romgrk/barbar.nvim', dependencies = 'nvim-web-devicons', event='BufWinEnter', config = function()
 		require'bufferline'.setup{
 			auto_hide = true,
@@ -146,30 +156,49 @@ require'lazy'.setup({
 			-- icon_close_tab = '',
 		}
 	end},
-	{ 'nvim-telescope/telescope.nvim', cmd = 'Telescope', version = '0.1.0', dependencies = 'nvim-lua/plenary.nvim' },
+
+	{ 'nvim-telescope/telescope.nvim', cmd = 'Telescope', version = '0.1.0', dependencies = 'nvim-lua/plenary.nvim', config = function ()
+		require'telescope'.setup {
+			defaults = {
+				layout_strategy = 'vertical',
+				layout_config = {
+					vertical = { width = 0.8 }
+				},
+				file_ignore_patterns = { 'collab-onboard/.*' },
+			},
+		}
+	end },
+
 	{ 'stevearc/dressing.nvim', event = 'VeryLazy' },
+
 	{ 'startup-nvim/startup.nvim',
-		cmd = 'Startup',
-		init = function()
-			vim.api.nvim_create_autocmd('VimEnter', { callback = function()
-				if vim.fn.argc() == 0 and vim.fn.line2byte('$') == -1 then
-					vim.cmd('Startup display')
-					vim.cmd('bd 1')
-				end
-			end })
-		end,
+		-- cmd = 'Startup', BUG: populates search (/) register with \s\+$ on startup
+		-- init = function()
+		-- 	vim.api.nvim_create_autocmd('VimEnter', { callback = function()
+		-- 		if vim.fn.argc() == 0 and vim.fn.line2byte('$') == -1 then
+					-- vim.cmd('Startup')
+					-- vim.cmd('bd 1')
+				-- end
+			-- end })
+		-- end,
 		config = function()
+			-- vim.g.startup_disable_on_startup = true
 			require'startup'.setup({ theme = 'my_theme' })
 		end
 	},
+
 	{ 'folke/todo-comments.nvim', event = 'BufRead', config = function()
 		require'todo-comments'.setup()
 	end},
+
+	{ 'folke/twilight.nvim', cmd = 'Twilight' },
+
 	{ 'kevinhwang91/promise-async', lazy = true },
+
 	{ 'norcalli/nvim-colorizer.lua', config = function()
 		require'colorizer'.setup{}
 	end},
-	{ 'RRethy/vim-illuminate', lazy = true },
+
 	{
 		'nvim-neo-tree/neo-tree.nvim',
 		dependencies = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim", },
