@@ -1,4 +1,4 @@
-local maps = { i = {}, n = {}, v = {}, t = {}, x = {}, [''] = {} }
+local maps = { i = {}, n = {}, v = {}, t = {}, x = {}, c = {}, [''] = {} }
 
 -- Key mappings
 maps['']['<space>'] = '<nop>'
@@ -104,6 +104,7 @@ maps.n['<leader>bw'] = '<Cmd>BufferOrderByWindowNumber<CR>'
 maps.n['<C-v>'] = '"+p'
 maps.v['<C-v>'] = '"+p'
 maps.i['<C-v>'] = '<C-r>+'
+maps.c['<C-v>'] = '<C-r>+'
 maps['']['""y'] = '""y'
 maps['']['""yy'] = '""yy'
 maps['']['""p'] = '""p'

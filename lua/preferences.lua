@@ -2,6 +2,9 @@
 vim.g.mapleader = ' '
 vim.g.python3_host_prog = '~/AppData/Local/Programs/Python/Python310/python.EXE'
 vim.g.lsp_diagnostics_echo_cursor = 1
+vim.g.indent_blankline_char_blankline = ':'
+-- vim.g.indent_blankline_show_first_indent_level = false
+vim.g.indent_blankline_show_trailing_blankline_indent = false
 
 -- Editor preferences
 vim.o.termguicolors = true
@@ -46,6 +49,7 @@ if vim.g.neovide then
     vim.g.neovide_refresh_rate_idle = 30
     vim.g.neovide_remember_window_size = true
     vim.g.neovide_confirm_quit = false
+	vim.g.neovide_floating_opacity = 1.0
 else
     vim.api.nvim_set_hl(0, 'Normal', { ctermbg='none', bg='none' })
 end

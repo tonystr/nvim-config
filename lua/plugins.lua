@@ -16,7 +16,10 @@ local jsfts = { 'js', 'ts', 'jsx', 'tsx', 'vue' };
 require'lazy'.setup({
 
 	-- Misc
-	{ 'tpope/vim-surround', keys = { 'ys', 'ds', 'cs', { 'S', mode = 'v' }, { 'gS', mode = 'v' } } },
+	{ 'sheerun/vim-polyglot', config = function()
+		vim.g.polyglot_disabled = { 'vue' }
+	end },
+	{ 'tpope/vim-surround', keys = { 'ys', 'ds', 'cs', { 'S', mode = 'v' } } },
 	{ 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
 	{ 'nvim-treesitter/nvim-treesitter-context' },
 	{ 'tpope/vim-commentary', keys = { { 'gc', mode = { 'n', 'v' } }, 'gcc' } },
@@ -27,10 +30,10 @@ require'lazy'.setup({
 	{ 'junegunn/vim-easy-align', keys = {
 		{ 'ga', '<Plug>(EasyAlign)', mode = { 'n', 'v' } },
 	}},
-	-- 'lukas-reineke/indent-blankline.nvim'
+	'lukas-reineke/indent-blankline.nvim',
 	-- 'ThePrimeagen/refactoring.nvim'
 	{ 'leafOfTree/vim-vue-plugin', ft = 'vue' },
-	{ 'AndrewRadev/splitjoin.vim', keys = { { 'gS', mode = { 'n', 'v' } }, { 'gJ', mode = { 'n', 'v' } } } },
+	{ 'AndrewRadev/splitjoin.vim' }, -- keys = { { 'gS', mode = { 'n', 'v' } }, { 'gJ', mode = { 'n', 'v' } } } },
 	{ 'prettier/vim-prettier', cmd = 'Prettier', ft = jsfts },
 	{ 'mattn/emmet-vim', keys = {
 		{ '<Plug>(emmet-expand-abbr)' },
@@ -91,7 +94,7 @@ require'lazy'.setup({
 		require'gitsigns'.setup()
 	end},
 	{ 'f-person/git-blame.nvim', keys = { { '<leader>gbl', '<cmd>GitBlameToggle<cr>' } } },
-	{ 'sindrets/diffview.nvim', lazy = true, config = function()
+	{ 'sindrets/diffview.nvim', config = function()
 		require('diffview').setup({
 			enhanced_diff_hl = true,
 			view = {

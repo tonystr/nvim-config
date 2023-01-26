@@ -69,7 +69,6 @@ vim.o.completeopt = 'menuone,noselect'
 
 -- Emmet snippets
 
-vim.g.polyglot_disabled = { 'vue' }
 vim.g.user_emmet_settings = {
 	html = {
 		snippets = {
