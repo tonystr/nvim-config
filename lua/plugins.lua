@@ -16,9 +16,7 @@ local jsfts = { 'js', 'ts', 'jsx', 'tsx', 'vue' };
 require'lazy'.setup({
 
 	-- Misc
-	{ 'sheerun/vim-polyglot', config = function()
-		vim.g.polyglot_disabled = { 'vue' }
-	end },
+	{ 'sheerun/vim-polyglot' },
 	{ 'tpope/vim-surround', keys = { 'ys', 'ds', 'cs', { 'S', mode = 'v' } } },
 	{ 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
 	{ 'nvim-treesitter/nvim-treesitter-context' },
@@ -26,11 +24,15 @@ require'lazy'.setup({
 	-- { 'vim-scripts/FastFold' } -- NOTE: Not using folds at this time
 	{ 'tpope/vim-repeat', event = 'BufRead' },
 	{ 'github/copilot.vim', event = 'BufWinEnter' },
-	{ 'kana/vim-textobj-user', event = 'BufRead' }, -- NOTE: Learn some text objects or uninstall
 	{ 'junegunn/vim-easy-align', keys = {
 		{ 'ga', '<Plug>(EasyAlign)', mode = { 'n', 'v' } },
 	}},
-	'lukas-reineke/indent-blankline.nvim',
+	{ 'lukas-reineke/indent-blankline.nvim', config = function ()
+		require'indent_blankline'.setup {
+			show_current_context = true,
+		}
+	end
+	},
 	-- 'ThePrimeagen/refactoring.nvim'
 	{ 'leafOfTree/vim-vue-plugin', ft = 'vue' },
 	{ 'AndrewRadev/splitjoin.vim' }, -- keys = { { 'gS', mode = { 'n', 'v' } }, { 'gJ', mode = { 'n', 'v' } } } },
@@ -44,10 +46,18 @@ require'lazy'.setup({
 	{ 'folke/persistence.nvim', lazy = true, config = function()
 		require'persistence'.setup()
 	end },
+	{ 'vim-test/vim-test' },
+	{ 'aurum77/live-server.nvim', config = function()
+		require'live_server.util'.install()
+	end, cmd = { "LiveServer", "LiveServerStart", "LiveServerStop", } },
 
 	-- Lsp
-	'neovim/nvim-lspconfig',
-	'williamboman/nvim-lsp-installer',
+	{ 'williamboman/mason.nvim', config = function()
+		require'mason'.setup()
+	end },
+	{ 'williamboman/mason-lspconfig.nvim' },
+	{ 'neovim/nvim-lspconfig' },
+
 	{ 'L3MON4D3/LuaSnip', lazy = true },
 	{ 'saadparwaiz1/cmp_luasnip', lazy = true },
 	{ 'onsails/lspkind.nvim', lazy = true },
@@ -61,16 +71,26 @@ require'lazy'.setup({
 			{ 'hrsh7th/cmp-path'      },
 			{ 'hrsh7th/cmp-cmdline'   },
 			{ 'RRethy/vim-illuminate' },
+			{ 'roobert/tailwindcss-colorizer-cmp.nvim' },
 		},
 		config = function()
 			local lspkind = require'lspkind'
 			local cmp = require'cmp'
+			require'tailwindcss-colorizer-cmp'.setup{
+				color_square_width = 1,
+			}
 			cmp.setup{
 				formatting = {
-					format = lspkind.cmp_format({
-						mode = 'symbol', -- show only symbol annotations
-						maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-					})
+					format = function (entry, item)
+						lspkind.cmp_format({
+							mode = 'symbol', -- show only symbol annotations
+							maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+						})(entry, item)
+						return require'tailwindcss-colorizer-cmp'.formatter(entry, item)
+					end
+				},
+				window = {
+					scrollbar = false,
 				},
 				mapping = cmp.mapping.preset.insert {
 					['<CR>'] = cmp.mapping.confirm { select = true },
@@ -144,11 +164,13 @@ require'lazy'.setup({
 	-- UI
 
 	-- not work
-	-- { 'barrett-ruth/import-cost.nvim', build = 'echo HELLO', config = function ()
-	-- 	require'import-cost'.setup()
-	-- end },
+	{ 'barrett-ruth/import-cost.nvim', build = 'sh install.sh npm', config = true },
 
 	{ 'kyazdani42/nvim-web-devicons', lazy = true },
+
+	{ 'folke/zen-mode.nvim', config = function ()
+		require'zen-mode'.setup();
+	end },
 
 	{ 'romgrk/barbar.nvim', dependencies = 'nvim-web-devicons', event='BufWinEnter', config = function()
 		require'bufferline'.setup{
@@ -196,10 +218,12 @@ require'lazy'.setup({
 
 	{ 'folke/twilight.nvim', cmd = 'Twilight' },
 
-	{ 'kevinhwang91/promise-async', lazy = true },
-
-	{ 'norcalli/nvim-colorizer.lua', config = function()
-		require'colorizer'.setup{}
+	{ 'NvChad/nvim-colorizer.lua', config = function()
+		require'colorizer'.setup {
+			user_default_options = {
+				tailwind = 'both',
+			},
+		}
 	end},
 
 	{
@@ -222,6 +246,43 @@ require'lazy'.setup({
 		}
 	end},
 	{ 'folke/which-key.nvim', cmd = 'WhichKey' },
+
+	-- better text-objects
+	{
+		"echasnovski/mini.ai",
+		-- keys = {
+		--   { "a", mode = { "x", "o" } },
+		--   { "i", mode = { "x", "o" } },
+		-- },
+		event = "VeryLazy",
+		dependencies = {
+			{
+				"nvim-treesitter/nvim-treesitter-textobjects",
+				init = function()
+					-- no need to load the plugin, since we only need its queries
+					require("lazy.core.loader").disable_rtp_plugin("nvim-treesitter-textobjects")
+				end,
+			},
+		},
+		opts = function()
+			local ai = require("mini.ai")
+			return {
+				n_lines = 500,
+				custom_textobjects = {
+					o = ai.gen_spec.treesitter({
+						a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+						i = { "@block.inner", "@conditional.inner", "@loop.inner" },
+					}, {}),
+					f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
+					c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
+				},
+			}
+		end,
+		config = function(_, opts)
+			local ai = require("mini.ai")
+			ai.setup(opts)
+		end,
+	},
 
 	-- Theme
 	'rebelot/kanagawa.nvim'

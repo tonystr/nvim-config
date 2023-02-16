@@ -23,38 +23,47 @@ require'nvim-treesitter.configs'.setup {
 
 -- LSP configuration
 
-local lsp_installer = require'nvim-lsp-installer'
-lsp_installer.setup{}
+local m = require'mason-lspconfig'
+
+m.setup {
+	ensure_installed = { 'tsserver', 'volar' },
+}
 
 local capabilities = require'cmp_nvim_lsp'.default_capabilities(
 	vim.lsp.protocol.make_client_capabilities()
 )
-local servers = require'nvim-lsp-installer'.get_installed_servers()
 local illuminate = require'illuminate'
-for _, server in ipairs(servers) do
-	require 'lspconfig'[server.name].setup{
-		capabilities = capabilities,
-		on_attach = function(client, bufnr)
-			illuminate.on_attach(client)
-			-- require 'lsp-format-modifications'.attach(client, bufnr)
-		end,
-		settings = {
-			Lua = {
-				diagnostics = {
-					globals = { "vim" }
+m.setup_handlers {
+	function (server)
+		require'lspconfig'[server].setup{
+			capabilities = capabilities,
+			on_attach = function(client, bufnr)
+				illuminate.on_attach(client)
+				-- require 'lsp-format-modifications'.attach(client, bufnr)
+			end,
+			settings = {
+				Lua = {
+					diagnostics = {
+						globals = { "vim" }
+					}
+				}
+			},
+			init_options = {
+				typescript = {
+					tsdk = env.tsdk
 				}
 			}
 		}
-	}
-end
-
-require'lspconfig'.volar.setup{
-  init_options = {
-    typescript = {
-      tsdk = env.tsdk
-    }
-  }
+	end
 }
+
+-- require'lspconfig'.volar.setup{
+--   init_options = {
+--     typescript = {
+--       tsdk = env.tsdk
+--     }
+--   }
+-- }
 
 local signs = { Error = "", Warn = "", Hint = "", Info = "" }
 for type, icon in pairs(signs) do
@@ -63,9 +72,6 @@ for type, icon in pairs(signs) do
 end
 
 vim.o.completeopt = 'menuone,noselect'
-
--- cmp configuration
-
 
 -- Emmet snippets
 

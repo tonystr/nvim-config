@@ -2,9 +2,10 @@
 vim.g.mapleader = ' '
 vim.g.python3_host_prog = '~/AppData/Local/Programs/Python/Python310/python.EXE'
 vim.g.lsp_diagnostics_echo_cursor = 1
-vim.g.indent_blankline_char_blankline = ':'
+-- vim.g.indent_blankline_char_blankline = ':'
 -- vim.g.indent_blankline_show_first_indent_level = false
 vim.g.indent_blankline_show_trailing_blankline_indent = false
+vim.g.polyglot_disabled = { 'vue' }
 
 -- Editor preferences
 vim.o.termguicolors = true

@@ -11,7 +11,10 @@ maps.n['<C-z>'] = '<Nop>'
 maps.n['<C-s>'] = '<Esc><cmd>w<CR>'
 maps.n['<C-c>'] = '<Esc>'
 maps.x['/'] = '<Esc>/\\%V'
-maps.n['<leader>fm'] = '<cmd>FormatModifications<cr>'
+maps.n['<leader>fm'] = '<cmd>Prettier<CR>'
+-- Save on escape
+maps.i['<Esc>'] = '<Esc><cmd>w<CR>'
+maps.n['<Esc>'] = '<Esc><cmd>w<CR>'
 
 -- Telescope mappings
 -- Find files using Telescope command-line sugar.
