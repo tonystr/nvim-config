@@ -32,6 +32,10 @@ m.setup {
 local capabilities = require'cmp_nvim_lsp'.default_capabilities(
 	vim.lsp.protocol.make_client_capabilities()
 )
+capabilities.textDocument.foldingRange = {
+	dynamicRegistration = false,
+	lineFoldingOnly = true,
+}
 local illuminate = require'illuminate'
 m.setup_handlers {
 	function (server)
@@ -56,6 +60,7 @@ m.setup_handlers {
 		}
 	end
 }
+require'ufo'.setup()
 
 -- require'lspconfig'.volar.setup{
 --   init_options = {

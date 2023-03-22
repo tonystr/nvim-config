@@ -8,6 +8,8 @@ vim.g.indent_blankline_show_trailing_blankline_indent = false
 vim.g.polyglot_disabled = { 'vue' }
 vim.g.vimwiki_list = {{ syntax = 'markdown', ext = '.md' }};
 
+vim.g.delimitMate_expand_cr = 1
+
 -- Editor preferences
 vim.o.termguicolors = true
 vim.wo.number = true
@@ -33,6 +35,15 @@ vim.o.ignorecase = true -- Ignore case when searching
 vim.o.smartcase = true -- Case sensitive if caps or "\C"
 vim.o.undofile = true -- Enable undo history
 vim.o.clipboard = ''
+
+vim.g.vimwiki_list = { { path = '~/vimwiki/', syntax = 'markdown', ext = '.md' } }
+
+-- Folding
+vim.o.foldcolumn = '0'
+vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 
 -- Hack for setting formatoptions
 vim.api.nvim_create_autocmd('FileType', {

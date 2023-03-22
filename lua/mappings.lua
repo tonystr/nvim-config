@@ -10,12 +10,27 @@ maps.n['gT'] = '<cmd>tabp<CR>'
 maps.n['<C-l>'] = '<cmd>nohlsearch<CR>'
 maps.n['<Esc>'] = '<cmd>nohlsearch<CR>'
 maps.n['<C-z>'] = '<Nop>'
-maps.n['<C-s>'] = '<Esc><cmd>w<CR>'
+maps.n['<C-s>'] = '<cmd>w<CR>'
 maps.i['<C-s>'] = '<Esc><cmd>w<CR>'
 maps.i['<C-Backspace>'] = '<C-w>'
 maps.n['<C-c>'] = '<Esc>'
-maps.x['/'] = '<Esc>/\\%V'
+-- maps.n['/'] = '<Esc>/\\v'
+maps.n['<C-/>'] = '<Esc>/'
 maps.n['<leader>fm'] = '<cmd>Prettier<CR>'
+maps.t['<Esc>'] = '<cmd>ToggleTerm<CR>'
+
+maps.n['zR'] = function() require'ufo'.openAllFolds() end
+maps.n['zM'] = function() require'ufo'.closeAllFolds() end
+
+-- Execute macro over visual range  TODO: lua implementation
+vim.cmd[[
+xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
+
+function! ExecuteMacroOverVisualRange()
+  echo "@".getcmdline()
+  execute ":'<,'>normal @".nr2char(getchar())
+endfunction
+]]
 
 -- Telescope mappings
 -- Find files using Telescope command-line sugar.
@@ -29,7 +44,6 @@ maps.n['<leader>fh'] = '<cmd>Telescope help_tags<cr>'
 maps.n['<leader>fr'] = '<cmd>Telescope registers<cr>'
 maps.n['<leader>fs'] = '<cmd>Telescope spell_suggest<cr>'
 maps.n['<leader>fd'] = '<cmd>Telescope diagnostics<cr>'
--- TODO: do it the lua way
 maps.n['<leader>so'] = function() require("telescope.builtin").lsp_document_symbols() end
 maps.n['gr'] = '<cmd>Telescope lsp_references<cr>'
 maps.n['gR'] = function() vim.lsp.buf.references() end

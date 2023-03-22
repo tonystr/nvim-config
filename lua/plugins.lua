@@ -151,6 +151,9 @@ require'lazy'.setup({
 		}
 	end },
 	{ 'stevearc/dressing.nvim', event = 'VeryLazy' },
+
+	{ 'kevinhwang91/nvim-ufo', dependencies = 'kevinhwang91/promise-async' },
+
 	-- TODO: Lazyload this
 	{ 'startup-nvim/startup.nvim',
 		config = function()
@@ -160,6 +163,7 @@ require'lazy'.setup({
 	{ 'folke/todo-comments.nvim', event = 'BufRead', config = function()
 		require'todo-comments'.setup()
 	end},
+
 	{ 'NvChad/nvim-colorizer.lua', config = function()
 		require'colorizer'.setup {
 			user_default_options = {
