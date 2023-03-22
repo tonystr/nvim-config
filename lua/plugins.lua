@@ -19,7 +19,6 @@ require'lazy'.setup({
 	{ 'sheerun/vim-polyglot' },
 	{ 'tpope/vim-surround', keys = { 'ys', 'ds', 'cs', { 'S', mode = 'v' } } },
 	{ 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
-	{ 'nvim-treesitter/nvim-treesitter-context' },
 	{ 'tpope/vim-commentary', keys = { { 'gc', mode = { 'n', 'v' } }, 'gcc' } },
 	-- { 'vim-scripts/FastFold' } -- NOTE: Not using folds at this time
 	{ 'tpope/vim-repeat', event = 'BufRead' },
@@ -43,13 +42,8 @@ require'lazy'.setup({
 		{ '<Plug>(emmet-expand-yank)' },
 		{ '<Plug>(emmet-expand-yank)', mode = 'i' },
 	}},
-	{ 'folke/persistence.nvim', lazy = true, config = function()
-		require'persistence'.setup()
-	end },
-	{ 'vim-test/vim-test' },
-	{ 'aurum77/live-server.nvim', config = function()
-		require'live_server.util'.install()
-	end, cmd = { "LiveServer", "LiveServerStart", "LiveServerStop", } },
+	'vimwiki/vimwiki',
+	'tommcdo/vim-exchange',
 
 	-- Lsp
 	{ 'williamboman/mason.nvim', config = function()
@@ -114,61 +108,25 @@ require'lazy'.setup({
 		require'gitsigns'.setup()
 	end},
 	{ 'f-person/git-blame.nvim', keys = { { '<leader>gbl', '<cmd>GitBlameToggle<cr>' } } },
-	{ 'sindrets/diffview.nvim', config = function()
-		require('diffview').setup({
-			enhanced_diff_hl = true,
-			view = {
-				merge_tool = {
-					layout = 'diff3_mixed',
-				},
-			},
-		})
-	end},
-
-	-- Terminal & lazygit
-	{ 'akinsho/toggleterm.nvim',
-		version = '*',
-		keys = {
-			'<leader>gg',
-			{ '<leader>tt', '<cmd>ToggleTerm<cr>' },
-		},
+	{
+		'sindrets/diffview.nvim',
 		config = function()
-			require('toggleterm').setup({
-				float_opts = {
-					border = 'curved',
-				},
-			})
-
-			-- Toggleterm lazygit
-
-			local Terminal  = require('toggleterm.terminal').Terminal
-			local lazygit = Terminal:new({
-				cmd = 'lazygit',
-				direction = 'float',
-				hiddden = true,
-				float_opts = {
-					border = 'curved',
-					highlights = {
-						border = "Comment",
-						background = "Normal",
+			require('diffview').setup({
+				enhanced_diff_hl = true,
+				view = {
+					merge_tool = {
+						layout = 'diff3_mixed',
 					},
 				},
 			})
-
-			vim.keymap.set('n', '<leader>gg', function()
-				lazygit:toggle()
-			end)
 		end,
+		cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewToggleFiles', 'DiffviewFileHistory', 'DiffviewFocusFiles', 'DiffviewLog', 'DiffviewRefresh', },
 	},
 
 	-- UI
-
-	-- not work
 	{ 'barrett-ruth/import-cost.nvim', build = 'sh install.sh npm', config = true },
-
 	{ 'kyazdani42/nvim-web-devicons', lazy = true },
-
-	{ 'folke/zen-mode.nvim', config = function ()
+	{ 'folke/zen-mode.nvim', cmd = { 'ZenMode' }, config = function()
 		require'zen-mode'.setup();
 	end },
 
@@ -178,7 +136,6 @@ require'lazy'.setup({
 			icon_cusom_colors = true,
 			icon_separator_active = '',
 			icon_separator_inactive = '',
-			-- icon_close_tab = '',
 		}
 	end},
 
@@ -193,31 +150,16 @@ require'lazy'.setup({
 			},
 		}
 	end },
-
 	{ 'stevearc/dressing.nvim', event = 'VeryLazy' },
-
+	-- TODO: Lazyload this
 	{ 'startup-nvim/startup.nvim',
-		-- cmd = 'Startup', BUG: populates search (/) register with \s\+$ on startup
-		-- init = function()
-		-- 	vim.api.nvim_create_autocmd('VimEnter', { callback = function()
-		-- 		if vim.fn.argc() == 0 and vim.fn.line2byte('$') == -1 then
-					-- vim.cmd('Startup')
-					-- vim.cmd('bd 1')
-				-- end
-			-- end })
-		-- end,
 		config = function()
-			-- vim.g.startup_disable_on_startup = true
 			require'startup'.setup({ theme = 'my_theme' })
 		end
 	},
-
 	{ 'folke/todo-comments.nvim', event = 'BufRead', config = function()
 		require'todo-comments'.setup()
 	end},
-
-	{ 'folke/twilight.nvim', cmd = 'Twilight' },
-
 	{ 'NvChad/nvim-colorizer.lua', config = function()
 		require'colorizer'.setup {
 			user_default_options = {
@@ -225,14 +167,13 @@ require'lazy'.setup({
 			},
 		}
 	end},
-
 	{
 		'nvim-neo-tree/neo-tree.nvim',
 		dependencies = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim", },
 		branch = "v2.x",
 		keys = {
 			{ '<leader>e', '<cmd>NeoTreeFocusToggle<cr>' },
-			{ '<leader>o', '<cmd>NeoTreeFocus<cr>' }
+			{ '<leader>E', '<cmd>NeoTreeFocus<cr>' }
 		},
 		config = function()
 			require'neo-tree'.setup{
@@ -241,8 +182,25 @@ require'lazy'.setup({
 		end,
 	},
 	{ 'nvim-lualine/lualine.nvim', event = 'BufWinEnter', config = function()
+		vim.o.shortmess = vim.o.shortmess .. 'S';
 		require'lualine'.setup {
-			sections = { lualine_x = {'filetype'} },
+			sections = {
+				lualine_b = {
+					'filename',
+					'diagnostics',
+				},
+				lualine_c = {},
+				lualine_x = {'searchcount', 'filetype'},
+				lualine_y = {
+					'branch',
+					{ 'diff', symbols = { added = ' ', modified = '柳', removed = ' ' } }
+				},
+				lualine_z = {},
+			},
+			options = {
+				section_separators = { left = '', right = '' },
+				component_separators = { left = '', right = '' },
+			},
 		}
 	end},
 	{ 'folke/which-key.nvim', cmd = 'WhichKey' },
@@ -297,7 +255,6 @@ luasnip = require 'luasnip'
 -- hlargs.nvim: highlight arguments differently from variables
 -- 'nvim-neorg/neorg' -- Learn this if you want to use it
 -- 'tpope/vim-speeddating' -- NOTE: Why have this if you dont know how to use it
--- 'christoomey/vim-titlecase' -- NOTE: Why have this if you dont know how to use it
 -- 'windwp/nvim-ts-autotag' -- WARN: think this works i just never enabled it
--- 'kevinhwang91/nvim-ufo' -- BUG: doesn't work
 -- { 'tpope/vim-unimpaired', event = 'BufRead' } -- NOTE: Never used any of the bindings
+-- { 'nvim-treesitter/nvim-treesitter-context' } -- never used this

@@ -2,23 +2,25 @@ local maps = { i = {}, n = {}, v = {}, t = {}, x = {}, c = {}, [''] = {} }
 
 -- Key mappings
 maps['']['<space>'] = '<nop>'
-maps.n['gof'] = '<cmd>call File_manager()<CR>'
+maps.n['<leader>of'] = '<cmd>call File_manager()<CR>'
+maps.n['<leader>ot'] = '<cmd>silent !wt -d .<CR>'
 maps.n['<C-t>'] = '<cmd>tabnew<CR>'
 maps.n['gt'] = '<cmd>tabn<CR>'
 maps.n['gT'] = '<cmd>tabp<CR>'
 maps.n['<C-l>'] = '<cmd>nohlsearch<CR>'
+maps.n['<Esc>'] = '<cmd>nohlsearch<CR>'
 maps.n['<C-z>'] = '<Nop>'
 maps.n['<C-s>'] = '<Esc><cmd>w<CR>'
+maps.i['<C-s>'] = '<Esc><cmd>w<CR>'
+maps.i['<C-Backspace>'] = '<C-w>'
 maps.n['<C-c>'] = '<Esc>'
 maps.x['/'] = '<Esc>/\\%V'
 maps.n['<leader>fm'] = '<cmd>Prettier<CR>'
--- Save on escape
-maps.i['<Esc>'] = '<Esc><cmd>w<CR>'
-maps.n['<Esc>'] = '<Esc><cmd>w<CR>'
 
 -- Telescope mappings
 -- Find files using Telescope command-line sugar.
 maps.n['<leader>ff'] = '<cmd>Telescope find_files<cr>'
+maps.n['<leader>fj'] = '<cmd>Telescope jumplist<cr>'
 maps.n['<C-p>'] = '<cmd>Telescope find_files<cr>'
 maps.n['<leader>fo'] = '<cmd>Telescope oldfiles<cr>'
 maps.n['<leader>fg'] = '<cmd>Telescope live_grep<cr>'
@@ -53,10 +55,6 @@ maps.n['gl'] = function() print('hello world') end
 maps.n['<C-k>'] = function() vim.lsp.buf.signature_help() end
 maps.n['<leader>af'] = function() vim.lsp.buf.code_action() end
 maps.n['<leader>rn'] = function() vim.lsp.buf.rename() end
-
--- NeoTree
--- maps.n['<leader>e'] = '<cmd>NeoTreeFocusToggle<cr>'
--- maps.n['<leader>o'] = '<Plug>NeoTreeFocus'
 
 -- Emmet bindings
 maps.n['<C-h>'] = '<Plug>(emmet-expand-abbr)'
