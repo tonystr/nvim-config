@@ -34,7 +34,7 @@ require'lazy'.setup({
 	},
 	-- 'ThePrimeagen/refactoring.nvim'
 	{ 'leafOfTree/vim-vue-plugin', ft = 'vue' },
-	{ 'AndrewRadev/splitjoin.vim' }, -- keys = { { 'gS', mode = { 'n', 'v' } }, { 'gJ', mode = { 'n', 'v' } } } },
+	{ 'AndrewRadev/splitjoin.vim', event = 'BufWinEnter' }, -- keys = { { 'gS', mode = { 'n', 'v' } }, { 'gJ', mode = { 'n', 'v' } } } },
 	{ 'prettier/vim-prettier', cmd = 'Prettier', ft = jsfts },
 	{ 'mattn/emmet-vim', keys = {
 		{ '<Plug>(emmet-expand-abbr)' },
@@ -107,7 +107,7 @@ require'lazy'.setup({
 	{ 'lewis6991/gitsigns.nvim', event = 'BufRead', config = function()
 		require'gitsigns'.setup()
 	end},
-	{ 'f-person/git-blame.nvim', keys = { { '<leader>gbl', '<cmd>GitBlameToggle<cr>' } } },
+	{ 'f-person/git-blame.nvim' },
 	{
 		'sindrets/diffview.nvim',
 		config = function()
@@ -187,6 +187,8 @@ require'lazy'.setup({
 	},
 	{ 'nvim-lualine/lualine.nvim', event = 'BufWinEnter', config = function()
 		vim.o.shortmess = vim.o.shortmess .. 'S';
+		local git_blame = require('gitblame')
+
 		require'lualine'.setup {
 			sections = {
 				lualine_b = {
@@ -194,7 +196,10 @@ require'lazy'.setup({
 					'diagnostics',
 				},
 				lualine_c = {},
-				lualine_x = {'searchcount', 'filetype'},
+				lualine_x = {
+					'searchcount',
+					{ git_blame.get_current_blame_text, cond = git_blame.is_blame_text_available }
+				},
 				lualine_y = {
 					'branch',
 					{ 'diff', symbols = { added = ' ', modified = '柳', removed = ' ' } }

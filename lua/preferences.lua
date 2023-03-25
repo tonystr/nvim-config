@@ -6,8 +6,9 @@ vim.g.lsp_diagnostics_echo_cursor = 1
 -- vim.g.indent_blankline_show_first_indent_level = false
 vim.g.indent_blankline_show_trailing_blankline_indent = false
 vim.g.polyglot_disabled = { 'vue' }
-vim.g.vimwiki_list = {{ syntax = 'markdown', ext = '.md' }};
+vim.g.vimwiki_list = {{ path = '~/OneDrive/vimwiki/', syntax = 'markdown', ext = '.md' }}
 
+vim.g.splitjoin_html_attributes_bracket_on_new_line = 1
 vim.g.delimitMate_expand_cr = 1
 
 -- Editor preferences
@@ -36,8 +37,6 @@ vim.o.smartcase = true -- Case sensitive if caps or "\C"
 vim.o.undofile = true -- Enable undo history
 vim.o.clipboard = ''
 
-vim.g.vimwiki_list = { { path = '~/vimwiki/', syntax = 'markdown', ext = '.md' } }
-
 -- Folding
 vim.o.foldcolumn = '0'
 vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
@@ -57,13 +56,15 @@ vim.api.nvim_create_autocmd('FileType', {
 
 -- Neovide settings
 if vim.g.neovide then
-    vim.o.guifont='FiraCode Nerd Font Mono:h11.5'
+    vim.o.guifont='FiraCode Nerd Font Mono:h11:#e-subpixelantialias'
     vim.api.nvim_set_hl(0, 'Normal', { bg = '#1f1f28' })
     vim.g.neovide_refresh_rate = 60
-    vim.g.neovide_refresh_rate_idle = 30
+    vim.g.neovide_refresh_rate_idle = 60
     vim.g.neovide_remember_window_size = true
     vim.g.neovide_confirm_quit = false
 	vim.g.neovide_floating_opacity = 1.0
+    vim.g.neovide_hide_mouse_when_typing = true
+    -- vim.g.neovide_cursor_animate_command_line = false
 else
     vim.api.nvim_set_hl(0, 'Normal', { ctermbg='none', bg='none' })
 end
