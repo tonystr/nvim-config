@@ -3,7 +3,7 @@ local env = require('env')
 -- Treesitter coniguration
 
 local tsi = require'nvim-treesitter.install'
-tsi.compilers = { "clang", "gcc" }
+tsi.compilers = { "zig", "clang", "gcc" }
 tsi.prefer_git = false
 
 require'nvim-treesitter.configs'.setup {
