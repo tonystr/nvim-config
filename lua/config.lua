@@ -1,5 +1,6 @@
 local env = require('env')
 
+
 -- Treesitter coniguration
 
 local tsi = require'nvim-treesitter.install'
@@ -158,4 +159,9 @@ func! File_manager() abort
         echomsg "Not yet implemented!"
     endif
 endfunc
+
+" vimwiki diary template
+autocmd BufNewFile ~/OneDrive/vimwiki/diary/[0-9\-]*.md :silent 0!echo \# %:t:r
+autocmd BufNewFile ~/OneDrive/vimwiki/diary/[0-9\-]*.md :silent r ~/OneDrive/vimwiki/diary/template.md
 ]])
+
