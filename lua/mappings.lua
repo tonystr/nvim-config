@@ -143,6 +143,13 @@ vim.keymap.set('n', 'yy', '', {
 	expr = true,
 })
 
+vim.keymap.set('v', 'y', '', {
+    callback = function()
+        return vim.v.register == '"' and '"+y' or 'y'
+    end,
+    expr = true,
+})
+
 
 -- Render maps table into vim keyboard mappings
 for mode, mappings in pairs(maps) do

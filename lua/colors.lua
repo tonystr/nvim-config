@@ -27,6 +27,8 @@ hi(0, 'IndentBlanklineChar', { fg='#2f2f3f' })
 hi(0, 'Pmenu', { bg='#2a2a37' })
 hi(0, 'PmenuSel', { bg='#c0a36e', fg='#000000' })
 hi(0, 'PmenuThumb', { bg='#3c3c4a' })
+hi(0, 'lualine_c_normal', { fg='#666677' })
+hi(0, 'lualine_c_inactive', { fg='#666677' })
 
 -- hi(0, 'GitSignsAdd', { bg='' })
 -- hi(0, 'GitSignsChange', { bg='' })

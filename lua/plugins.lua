@@ -211,6 +211,9 @@ require'lazy'.setup({
 				component_separators = { left = '', right = '' },
 			},
 		}
+
+		vim.api.nvim_set_hl(0, 'lualine_c_normal', { fg='#666677' })
+		vim.api.nvim_set_hl(0, 'lualine_c_inactive', { fg='#666677' })
 	end},
 	{ 'folke/which-key.nvim', cmd = 'WhichKey' },
 
