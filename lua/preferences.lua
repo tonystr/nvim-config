@@ -56,7 +56,7 @@ vim.api.nvim_create_autocmd('FileType', {
 
 -- Neovide settings
 if vim.g.neovide then
-    vim.o.guifont='FiraCode Nerd Font Mono:h11:#e-subpixelantialias'
+    vim.o.guifont='Cascadia Code:h11.5:#e-subpixelantialias'
     vim.api.nvim_set_hl(0, 'Normal', { bg = '#1f1f28' })
     vim.g.neovide_refresh_rate = 60
     vim.g.neovide_refresh_rate_idle = 60
