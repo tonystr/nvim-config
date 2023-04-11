@@ -48,8 +48,18 @@ m.setup_handlers {
 			end,
 			settings = {
 				Lua = {
+					runtime = {
+						version = 'LuaJIT',
+					},
 					diagnostics = {
-						globals = { "vim" }
+						globals = {
+							'vim',
+							'describe',
+							'it',
+						}
+					},
+					telemetry = {
+						enable = false,
 					}
 				}
 			},
