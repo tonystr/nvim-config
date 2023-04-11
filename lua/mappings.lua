@@ -13,16 +13,23 @@ maps.n['<C-z>'] = '<Nop>'
 maps.n['<C-s>'] = '<cmd>w<CR>'
 maps.i['<C-s>'] = '<Esc><cmd>w<CR>'
 maps.i['<C-Backspace>'] = '<C-w>'
+maps.c['<C-Backspace>'] = '<C-w>'
 maps.i['<S-Enter>'] = '<Enter><Up>'
 maps.n['<C-c>'] = '<Esc>'
-maps.n['<Enter>'] = 'gf'
 -- maps.n['/'] = '<Esc>/\\v'
 maps.n['<C-/>'] = '<Esc>/'
 maps.n['<leader>fm'] = '<cmd>Prettier<CR>'
 maps.t['<Esc>'] = '<cmd>ToggleTerm<CR>'
+maps.n['{'] = { '<cmd>keepjump normal! {<CR>', noremap = true }
+maps.n['}'] = { '<cmd>keepjump normal! }<CR>', noremap = true }
 
 maps.n['zR'] = function() require'ufo'.openAllFolds() end
 maps.n['zM'] = function() require'ufo'.closeAllFolds() end
+
+-- treesj splitjoin
+maps.n['<Enter>'] = function() require'treesj'.toggle() end
+maps.n['gS'] = function() require'treesj'.split() end
+maps.n['gJ'] = function() require'treesj'.join() end
 
 -- Execute macro over visual range  TODO: lua implementation
 vim.cmd[[
@@ -131,6 +138,15 @@ maps['']['""P'] = '""P'
 vim.keymap.set('n', 'y', '', {
 	callback = function()
 		return vim.v.register == '"' and '"+y' or 'y'
+	end,
+	expr = true,
+})
+
+
+-- Yank to system clipboard
+vim.keymap.set('n', 'Y', '', {
+	callback = function()
+		return vim.v.register == '"' and '"+y$' or 'y$'
 	end,
 	expr = true,
 })

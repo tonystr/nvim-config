@@ -34,7 +34,13 @@ require'lazy'.setup({
 	},
 	-- 'ThePrimeagen/refactoring.nvim'
 	{ 'leafOfTree/vim-vue-plugin', ft = 'vue' },
-	{ 'AndrewRadev/splitjoin.vim', event = 'BufWinEnter' }, -- keys = { { 'gS', mode = { 'n', 'v' } }, { 'gJ', mode = { 'n', 'v' } } } },
+	-- { 'AndrewRadev/splitjoin.vim', event = 'BufWinEnter' }, -- keys = { { 'gS', mode = { 'n', 'v' } }, { 'gJ', mode = { 'n', 'v' } } } },
+	{
+		'Wansmer/treesj',
+		-- keys = { '<Enter>', 'gS', 'gJ' },
+		dependencies = { 'nvim-treesitter/nvim-treesitter' },
+		config = function () require'treesj'.setup() end,
+	},
 	{ 'prettier/vim-prettier', cmd = 'Prettier', ft = jsfts },
 	{ 'mattn/emmet-vim', keys = {
 		{ '<Plug>(emmet-expand-abbr)' },
@@ -51,6 +57,7 @@ require'lazy'.setup({
 	end },
 	{ 'williamboman/mason-lspconfig.nvim' },
 	{ 'neovim/nvim-lspconfig' },
+	{ 'folke/trouble.nvim' },
 
 	{ 'L3MON4D3/LuaSnip', lazy = true },
 	{ 'saadparwaiz1/cmp_luasnip', lazy = true },
@@ -132,10 +139,18 @@ require'lazy'.setup({
 
 	{ 'romgrk/barbar.nvim', dependencies = 'nvim-web-devicons', event='BufWinEnter', config = function()
 		require'bufferline'.setup{
-			auto_hide = true,
-			icon_cusom_colors = true,
-			icon_separator_active = '',
-			icon_separator_inactive = '',
+			-- auto_hide = true,
+			icons = {
+				icon_cusom_colors = true,
+				separator = { left = '', right = '' },
+				inactive = {
+					separator = { left = '', right = '' },
+				},
+				sidebar_filetypes = {
+					NvimTree = true,
+					['neo-tree'] = { event = 'BufWipeout' }
+				}
+			}
 		}
 	end},
 

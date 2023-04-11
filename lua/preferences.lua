@@ -64,7 +64,7 @@ if vim.g.neovide then
     vim.g.neovide_confirm_quit = false
 	vim.g.neovide_floating_opacity = 1.0
     vim.g.neovide_hide_mouse_when_typing = true
-    -- vim.g.neovide_cursor_animate_command_line = false
+    vim.g.neovide_cursor_animate_command_line = false
 else
     vim.api.nvim_set_hl(0, 'Normal', { ctermbg='none', bg='none' })
 end
