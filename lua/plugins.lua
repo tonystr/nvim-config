@@ -70,7 +70,6 @@ require'lazy'.setup({
 		dependencies = { 'nvim-treesitter/nvim-treesitter' },
 		config = function () require'treesj'.setup() end,
 	},
-	{ 'prettier/vim-prettier', cmd = 'Prettier', ft = jsfts },
 	{ 'mattn/emmet-vim', keys = {
 		{ '<Plug>(emmet-expand-abbr)' },
 		{ '<Plug>(emmet-expand-abbr)', mode = 'i' },
@@ -87,6 +86,15 @@ require'lazy'.setup({
 	{ 'williamboman/mason-lspconfig.nvim' },
 	{ 'neovim/nvim-lspconfig' },
 	{ 'folke/trouble.nvim' },
+
+	{ 'jose-elias-alvarez/null-ls.nvim', config = function()
+		local null = require'null-ls'
+		null.setup{
+			sources = {
+				null.builtins.formatting.prettier,
+			},
+		}
+	end },
 
 	{ 'L3MON4D3/LuaSnip', lazy = true },
 	{ 'saadparwaiz1/cmp_luasnip', lazy = true },
@@ -140,6 +148,7 @@ require'lazy'.setup({
 
 	-- Git
 	{ 'tpope/vim-fugitive' },
+	-- { 'akinsho/git-conflict.nvim', version = "*", config = true },
 	{ 'lewis6991/gitsigns.nvim', event = 'BufRead', config = function()
 		require'gitsigns'.setup{
 			signs = {

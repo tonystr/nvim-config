@@ -18,7 +18,7 @@ maps.i['<S-Enter>'] = '<Enter><Up>'
 maps.n['<C-c>'] = '<Esc>'
 -- maps.n['/'] = '<Esc>/\\v'
 maps.n['<C-/>'] = '<Esc>/'
-maps.n['<leader>fm'] = '<cmd>Prettier<CR>'
+maps.n['<leader>fm'] = vim.lsp.buf.format
 maps.t['<Esc>'] = '<cmd>ToggleTerm<CR>'
 maps.n['{'] = { '<cmd>keepjump normal! {<CR>', noremap = true }
 maps.n['}'] = { '<cmd>keepjump normal! }<CR>', noremap = true }
@@ -126,6 +126,9 @@ maps.n['<leader>bb'] = '<Cmd>BufferOrderByBufferNumber<CR>'
 maps.n['<leader>bd'] = '<Cmd>BufferOrderByDirectory<CR>'
 maps.n['<leader>bl'] = '<Cmd>BufferOrderByLanguage<CR>'
 maps.n['<leader>bw'] = '<Cmd>BufferOrderByWindowNumber<CR>'
+
+vim.keymap.set({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+vim.keymap.set({'o', 'x'}, 'ah', ':<C-U>Gitsigns select_hunk<CR>')
 
 -- Objectively correct clipboard mappings (thx: https://ezhik.me/blog/vim-clipboard/)
 maps.n['<C-v>'] = '"+p'
