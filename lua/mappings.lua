@@ -22,6 +22,7 @@ maps.n['<leader>fm'] = vim.lsp.buf.format
 maps.t['<Esc>'] = '<cmd>ToggleTerm<CR>'
 maps.n['{'] = { '<cmd>keepjump normal! {<CR>', noremap = true }
 maps.n['}'] = { '<cmd>keepjump normal! }<CR>', noremap = true }
+maps.n['<leader>br'] = '<cmd>echo "test"<CR>'
 
 maps.n['zR'] = function() require'ufo'.openAllFolds() end
 maps.n['zM'] = function() require'ufo'.closeAllFolds() end
@@ -122,11 +123,12 @@ maps.n['<A-p>'] = '<Cmd>BufferPin<CR>'
 -- Close buffer
 maps.n['<A-w>'] = '<Cmd>BufferClose<CR>'
 -- Sort automatically by...
-maps.n['<leader>bb'] = '<Cmd>BufferOrderByBufferNumber<CR>'
-maps.n['<leader>bd'] = '<Cmd>BufferOrderByDirectory<CR>'
-maps.n['<leader>bl'] = '<Cmd>BufferOrderByLanguage<CR>'
-maps.n['<leader>bw'] = '<Cmd>BufferOrderByWindowNumber<CR>'
+-- maps.n['<leader>bb'] = '<Cmd>BufferOrderByBufferNumber<CR>'
+-- maps.n['<leader>bd'] = '<Cmd>BufferOrderByDirectory<CR>'
+-- maps.n['<leader>bl'] = '<Cmd>BufferOrderByLanguage<CR>'
+-- maps.n['<leader>bw'] = '<Cmd>BufferOrderByWindowNumber<CR>'
 
+-- Git hunks
 vim.keymap.set({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
 vim.keymap.set({'o', 'x'}, 'ah', ':<C-U>Gitsigns select_hunk<CR>')
 

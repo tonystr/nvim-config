@@ -150,11 +150,22 @@ require'lazy'.setup({
 	{ 'tpope/vim-fugitive' },
 	-- { 'akinsho/git-conflict.nvim', version = "*", config = true },
 	{ 'lewis6991/gitsigns.nvim', event = 'BufRead', config = function()
-		require'gitsigns'.setup{
+		local gitsigns = require'gitsigns'
+		gitsigns.setup{
+			diff_opts = {
+				vertical = false
+			},
 			signs = {
 				untracked = { text = '│' }
 			}
 		}
+		vim.keymap.set('n', '<leader>bl', function() gitsigns.blame_line{ full = true } end)
+		vim.keymap.set('n', ']c', gitsigns.next_hunk)
+		vim.keymap.set('n', '[c', gitsigns.prev_hunk)
+		vim.keymap.set('n', '<leader>bh', gitsigns.preview_hunk)
+		vim.keymap.set('n', '<leader>bd', gitsigns.diffthis)
+		vim.keymap.set('n', '<leader>bD', function() gitsigns.diffthis('~') end)
+		vim.keymap.set('n', '<leader>td', gitsigns.toggle_deleted)
 	end},
 	{ 'f-person/git-blame.nvim' },
 	{
@@ -186,6 +197,7 @@ require'lazy'.setup({
 	{ 'romgrk/barbar.nvim', dependencies = 'nvim-web-devicons', event='BufWinEnter', config = function()
 		require'bufferline'.setup{
 			-- auto_hide = true,
+			animation = false,
 			icons = {
 				button = ' ',
 				icon_cusom_colors = true,
