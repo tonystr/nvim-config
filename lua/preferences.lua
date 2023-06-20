@@ -1,3 +1,18 @@
+-- Neovide settings ===>  !== ====== ---------
+if vim.g.neovide then
+    vim.o.guifont='CaskaydiaCove Nerd Font:h11:#e-subpixelantialias'
+    vim.api.nvim_set_hl(0, 'Normal', { bg = '#1f1f28' })
+    vim.g.neovide_refresh_rate = 60
+    vim.g.neovide_refresh_rate_idle = 60
+    vim.g.neovide_remember_window_size = true
+    vim.g.neovide_confirm_quit = false
+	vim.g.neovide_floating_opacity = 1.0
+    vim.g.neovide_hide_mouse_when_typing = true
+    vim.g.neovide_cursor_animate_command_line = false
+else
+    vim.api.nvim_set_hl(0, 'Normal', { ctermbg='none', bg='none' })
+end
+
 -- globals
 vim.g.mapleader = ' '
 vim.g.python3_host_prog = '~/AppData/Local/Programs/Python/Python37-32/python.EXE'
@@ -10,6 +25,9 @@ vim.g.vimwiki_list = {{ path = '~/OneDrive/vimwiki/', syntax = 'markdown', ext =
 
 vim.g.splitjoin_html_attributes_bracket_on_new_line = 1
 vim.g.delimitMate_expand_cr = 1
+vim.g.shada = 'NONE'
+vim.o.grepprg = 'rg --vimgrep --no-heading --smart-case'
+-- vim.o.grepformat = vim.o.grepformat .. '%f:%l:%c:%m'
 
 -- Editor preferences
 vim.o.termguicolors = true
@@ -53,18 +71,3 @@ vim.api.nvim_create_autocmd('FileType', {
     pattern = '*',
     command = 'ColorizerAttachToBuffer',
 })
-
--- Neovide settings
-if vim.g.neovide then
-    vim.o.guifont='Cascadia Code:h11.5:#e-subpixelantialias'
-    vim.api.nvim_set_hl(0, 'Normal', { bg = '#1f1f28' })
-    vim.g.neovide_refresh_rate = 60
-    vim.g.neovide_refresh_rate_idle = 60
-    vim.g.neovide_remember_window_size = true
-    vim.g.neovide_confirm_quit = false
-	vim.g.neovide_floating_opacity = 1.0
-    vim.g.neovide_hide_mouse_when_typing = true
-    vim.g.neovide_cursor_animate_command_line = false
-else
-    vim.api.nvim_set_hl(0, 'Normal', { ctermbg='none', bg='none' })
-end

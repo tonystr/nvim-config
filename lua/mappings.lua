@@ -26,6 +26,9 @@ maps.n['}'] = { '<cmd>keepjump normal! }<CR>', noremap = true }
 maps.n['zR'] = function() require'ufo'.openAllFolds() end
 maps.n['zM'] = function() require'ufo'.closeAllFolds() end
 
+maps.n['+'] = '<C-w>+'
+maps.n['-'] = '<C-w>-'
+
 -- treesj splitjoin
 maps.n['<Enter>'] = function() require'treesj'.toggle() end
 maps.n['gS'] = function() require'treesj'.split() end
@@ -43,7 +46,7 @@ endfunction
 
 -- Telescope mappings
 -- Find files using Telescope command-line sugar.
-maps.n['<leader>ff'] = '<cmd>Telescope find_files<cr>'
+maps.n['<leader>ff'] = '<cmd>Telescope resume<cr>'
 maps.n['<leader>fj'] = '<cmd>Telescope jumplist<cr>'
 maps.n['<C-p>'] = '<cmd>Telescope find_files<cr>'
 maps.n['<leader>fo'] = '<cmd>Telescope oldfiles<cr>'
@@ -59,9 +62,9 @@ maps.n['gR'] = function() vim.lsp.buf.references() end
 -- Git commands
 maps.n['<leader>gs'] = '<cmd>Telescope git_status<cr>'
 maps.n['<leader>gc'] = '<cmd>Telescope git_commits<cr>'
-maps.n['<leader>gbc'] = '<cmd>Telescope git_bcommits<cr>'
-maps.n['<leader>gbr'] = '<cmd>Telescope git_branches<cr>'
-maps.n['<leader>gbl'] = '<cmd>GitBlameToggle<cr>'
+maps.n['<leader>gC'] = '<cmd>Telescope git_bcommits<cr>' -- current buffer commits
+maps.n['<leader>gb'] = '<cmd>Telescope git_branches<cr>'
+maps.n['<leader>gB'] = '<cmd>GitBlameToggle<cr>'
 
 -- LSP key mappings
 maps.n['gd'] = function() vim.lsp.buf.definition() end

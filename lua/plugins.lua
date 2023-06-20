@@ -19,7 +19,36 @@ require'lazy'.setup({
 	{ 'sheerun/vim-polyglot' },
 	{ 'tpope/vim-surround', keys = { 'ys', 'ds', 'cs', { 'S', mode = 'v' } } },
 	{ 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
-	{ 'tpope/vim-commentary', keys = { { 'gc', mode = { 'n', 'v' } }, 'gcc' } },
+	{
+		'nvim-treesitter/playground',
+		dependencies = { 'nvim-treesitter/nvim-treesitter' },
+		config = function ()
+			require'nvim-treesitter.configs'.setup {
+				playground = {
+					enable = true,
+					disable = {},
+					updatetime = 25,
+					persist_queries = false,
+					keybindings = {
+						toggle_query_editor = 'o',
+						toggle_hl_groups = 'i',
+						toggle_injected_languages = 't',
+						toggle_anonymous_nodes = 'a',
+						toggle_language_display = 'I',
+						focus_language = 'f',
+						unfocus_language = 'F',
+						update = 'R',
+						goto_node = '<cr>',
+						show_help = '?',
+					},
+				},
+			}
+		end
+	},
+	-- { 'tpope/vim-commentary', keys = { { 'gc', mode = { 'n', 'v' } }, 'gcc' } },
+	{ 'numToStr/Comment.nvim', config = function ()
+		require'Comment'.setup()
+	end },
 	-- { 'vim-scripts/FastFold' } -- NOTE: Not using folds at this time
 	{ 'tpope/vim-repeat', event = 'BufRead' },
 	{ 'github/copilot.vim', event = 'BufWinEnter' },
@@ -112,7 +141,11 @@ require'lazy'.setup({
 	-- Git
 	{ 'tpope/vim-fugitive' },
 	{ 'lewis6991/gitsigns.nvim', event = 'BufRead', config = function()
-		require'gitsigns'.setup()
+		require'gitsigns'.setup{
+			signs = {
+				untracked = { text = '│' }
+			}
+		}
 	end},
 	{ 'f-person/git-blame.nvim' },
 	{
@@ -132,19 +165,25 @@ require'lazy'.setup({
 
 	-- UI
 	{ 'barrett-ruth/import-cost.nvim', build = 'sh install.sh npm', config = true },
-	{ 'kyazdani42/nvim-web-devicons', lazy = true },
+	{ 'nvim-tree/nvim-web-devicons' },
 	{ 'folke/zen-mode.nvim', cmd = { 'ZenMode' }, config = function()
 		require'zen-mode'.setup();
+	end },
+
+	{ 'stevearc/oil.nvim', config = function ()
+		require'oil'.setup()
 	end },
 
 	{ 'romgrk/barbar.nvim', dependencies = 'nvim-web-devicons', event='BufWinEnter', config = function()
 		require'bufferline'.setup{
 			-- auto_hide = true,
 			icons = {
+				button = ' ',
 				icon_cusom_colors = true,
 				separator = { left = '', right = '' },
 				inactive = {
 					separator = { left = '', right = '' },
+					button = ' ',
 				},
 				sidebar_filetypes = {
 					NvimTree = true,
@@ -188,7 +227,7 @@ require'lazy'.setup({
 	end},
 	{
 		'nvim-neo-tree/neo-tree.nvim',
-		dependencies = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim", },
+		dependencies = { "nvim-lua/plenary.nvim", "nvim-web-devicons", "MunifTanjim/nui.nvim", },
 		branch = "v2.x",
 		keys = {
 			{ '<leader>e', '<cmd>NeoTreeFocusToggle<cr>' },
@@ -201,7 +240,7 @@ require'lazy'.setup({
 		end,
 	},
 	{ 'nvim-lualine/lualine.nvim', event = 'BufWinEnter', config = function()
-		vim.o.shortmess = vim.o.shortmess .. 'S';
+		-- vim.o.shortmess = vim.o.shortmess .. 'S';
 		local git_blame = require('gitblame')
 
 		require'lualine'.setup {
@@ -212,7 +251,6 @@ require'lazy'.setup({
 				},
 				lualine_c = {},
 				lualine_x = {
-					'searchcount',
 					{ git_blame.get_current_blame_text, cond = git_blame.is_blame_text_available }
 				},
 				lualine_y = {
@@ -270,7 +308,19 @@ require'lazy'.setup({
 	},
 
 	-- Theme
-	'rebelot/kanagawa.nvim'
+	{ 'rebelot/kanagawa.nvim', config = function ()
+		require'kanagawa'.setup{
+			colors = {
+				theme = {
+					all = {
+						ui = {
+							bg_gutter = 'none'
+						}
+					}
+				}
+			}
+		}
+	end }
 })
 
 luasnip = require 'luasnip'

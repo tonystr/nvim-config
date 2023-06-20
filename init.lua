@@ -2,6 +2,7 @@
 vim.cmd([[
 let $MYVIMRC='~\AppData\Local\nvim\init.lua'
 let $INIT='~\AppData\Local\nvim\init.lua'
+let $COLORS='~\AppData\Local\nvim\lua\colors.lua'
 let $MAPPINGS='~\AppData\Local\nvim\lua\mappings.lua'
 let $PREFERENCES='~\AppData\Local\nvim\lua\preferences.lua'
 let $LUACONF='~\AppData\Local\nvim\lua\config.lua'

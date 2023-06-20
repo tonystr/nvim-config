@@ -1,5 +1,7 @@
 set wrap
 set linebreak
 let b:copilot_enabled = v:false
-nmap j gj
-nmap k gk
+nnoremap j gj
+nnoremap k gk
+nnoremap gk k
+nnoremap gj j
