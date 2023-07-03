@@ -132,6 +132,14 @@ maps.n['<A-w>'] = '<Cmd>BufferClose<CR>'
 vim.keymap.set({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
 vim.keymap.set({'o', 'x'}, 'ah', ':<C-U>Gitsigns select_hunk<CR>')
 
+vim.keymap.set('', '<leader>dt', function()
+    local config = vim.diagnostic.config()
+    vim.diagnostic.config({
+        virtual_text = not config.virtual_text,
+        virtual_lines = not config.virtual_lines,
+    })
+end, { desc = 'Toggle Line Diagnostics' })
+
 -- Objectively correct clipboard mappings (thx: https://ezhik.me/blog/vim-clipboard/)
 maps.n['<C-v>'] = '"+p'
 maps.v['<C-v>'] = '"+p'

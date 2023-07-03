@@ -19,32 +19,7 @@ require'lazy'.setup({
 	{ 'sheerun/vim-polyglot' },
 	{ 'tpope/vim-surround', keys = { 'ys', 'ds', 'cs', { 'S', mode = 'v' } } },
 	{ 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
-	{
-		'nvim-treesitter/playground',
-		dependencies = { 'nvim-treesitter/nvim-treesitter' },
-		config = function ()
-			require'nvim-treesitter.configs'.setup {
-				playground = {
-					enable = true,
-					disable = {},
-					updatetime = 25,
-					persist_queries = false,
-					keybindings = {
-						toggle_query_editor = 'o',
-						toggle_hl_groups = 'i',
-						toggle_injected_languages = 't',
-						toggle_anonymous_nodes = 'a',
-						toggle_language_display = 'I',
-						focus_language = 'f',
-						unfocus_language = 'F',
-						update = 'R',
-						goto_node = '<cr>',
-						show_help = '?',
-					},
-				},
-			}
-		end
-	},
+
 	-- { 'tpope/vim-commentary', keys = { { 'gc', mode = { 'n', 'v' } }, 'gcc' } },
 	{ 'numToStr/Comment.nvim', config = function ()
 		require'Comment'.setup()
@@ -62,7 +37,7 @@ require'lazy'.setup({
 	end
 	},
 	-- 'ThePrimeagen/refactoring.nvim'
-	{ 'leafOfTree/vim-vue-plugin', ft = 'vue' },
+	-- { 'leafOfTree/vim-vue-plugin', ft = 'vue' },
 	-- { 'AndrewRadev/splitjoin.vim', event = 'BufWinEnter' }, -- keys = { { 'gS', mode = { 'n', 'v' } }, { 'gJ', mode = { 'n', 'v' } } } },
 	{
 		'Wansmer/treesj',

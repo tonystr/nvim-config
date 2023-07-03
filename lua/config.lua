@@ -36,14 +36,14 @@ capabilities.textDocument.foldingRange = {
 	dynamicRegistration = false,
 	lineFoldingOnly = true,
 }
+capabilities.textDocument.completion.completionItem.snippetSupport = true
 local illuminate = require'illuminate'
 m.setup_handlers {
 	function (server)
 		require'lspconfig'[server].setup{
 			capabilities = capabilities,
-			on_attach = function(client, bufnr)
+			on_attach = function(client)
 				illuminate.on_attach(client)
-				-- require 'lsp-format-modifications'.attach(client, bufnr)
 			end,
 			settings = {
 				Lua = {
@@ -105,20 +105,32 @@ vim.g.user_emmet_settings = {
 	}
 }
 
+-- Enter expansion
 
-vim.g.vim_vue_plugin_config = {
-	syntax = {
-		template = { 'html' },
-		script = { 'javascript', 'typescript' },
-		style = { 'scss' },
-	},
-	full_syntax = {},
-	initial_indent = {},
-	attribute = 0,
-	keyword = 0,
-	foldexpr = 0,
-	debug = 0,
-}
+function Enter()
+	-- if vim.fn.pumvisible() then
+	-- 	return '<CR>???';
+	-- end
+
+	local col = vim.fn.col('.')
+	local line = vim.fn.getline('.')
+	local char = line:sub(col - 1, col - 1)
+	if char == '{' then
+		local nextchar = line:sub(col, col)
+		if nextchar == '}' then
+			return '<CR><C-o>O';
+		end
+		return '<CR>}<C-o>O';
+	end
+
+	return '<CR>';
+end
+
+vim.keymap.set('i', '<CR>', '', {
+    callback = Enter,
+    expr = true,
+})
+
 
 -- Gitblame configuration
 vim.g.gitblame_enabled = 0
