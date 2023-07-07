@@ -117,13 +117,18 @@ function Enter()
 	local char = line:sub(col - 1, col - 1)
 	if char == '{' then
 		local nextchar = line:sub(col, col)
-		if nextchar == '}' then
-			return '<CR><C-o>O';
+		local afternextchar = line:sub(col + 1, col + 1)
+		-- Abort if mid-line
+		if afternextchar ~= '' then
+			return '<CR>'
 		end
-		return '<CR>}<C-o>O';
+		if nextchar == '}' then
+			return '<CR><C-o>O'
+		end
+		return '<CR>}<C-o>O'
 	end
 
-	return '<CR>';
+	return '<CR>'
 end
 
 vim.keymap.set('i', '<CR>', '', {

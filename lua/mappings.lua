@@ -1,4 +1,4 @@
-local maps = { i = {}, n = {}, v = {}, t = {}, x = {}, c = {}, [''] = {} }
+local maps = { i = {}, n = {}, v = {}, t = {}, x = {}, c = {}, o = {}, [''] = {} }
 
 -- Key mappings
 maps['']['<space>'] = '<nop>'
@@ -23,12 +23,20 @@ maps.t['<Esc>'] = '<cmd>ToggleTerm<CR>'
 maps.n['{'] = { '<cmd>keepjump normal! {<CR>', noremap = true }
 maps.n['}'] = { '<cmd>keepjump normal! }<CR>', noremap = true }
 maps.n['<leader>br'] = '<cmd>echo "test"<CR>'
+maps.o['{'] = 'V{'
+maps.o['}'] = 'V}'
 
 maps.n['zR'] = function() require'ufo'.openAllFolds() end
 maps.n['zM'] = function() require'ufo'.closeAllFolds() end
 
 maps.n['+'] = '<C-w>+'
 maps.n['-'] = '<C-w>-'
+
+-- Vue navigation
+
+maps.n['<leader>H'] = '<cmd>silent! g/^<script/<CR>jzt<cmd>nohlsearch<CR>';
+maps.n['<leader>M'] = '<cmd>silent! g/^<template/<CR>jzt<cmd>nohlsearch<CR>';
+maps.n['<leader>L'] = '<cmd>silent! g/^<style/<CR>jzt<cmd>nohlsearch<CR>';
 
 -- treesj splitjoin
 maps.n['<Enter>'] = function() require'treesj'.toggle() end
@@ -57,6 +65,7 @@ maps.n['<leader>fh'] = '<cmd>Telescope help_tags<cr>'
 maps.n['<leader>fr'] = '<cmd>Telescope registers<cr>'
 maps.n['<leader>fs'] = '<cmd>Telescope spell_suggest<cr>'
 maps.n['<leader>fd'] = '<cmd>Telescope diagnostics<cr>'
+maps.n['<leader>ft'] = '<cmd>TodoTelescope<cr>'
 maps.n['<leader>so'] = function() require("telescope.builtin").lsp_document_symbols() end
 maps.n['gr'] = '<cmd>Telescope lsp_references<cr>'
 maps.n['gR'] = function() vim.lsp.buf.references() end
@@ -132,14 +141,6 @@ maps.n['<A-w>'] = '<Cmd>BufferClose<CR>'
 vim.keymap.set({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
 vim.keymap.set({'o', 'x'}, 'ah', ':<C-U>Gitsigns select_hunk<CR>')
 
-vim.keymap.set('', '<leader>dt', function()
-    local config = vim.diagnostic.config()
-    vim.diagnostic.config({
-        virtual_text = not config.virtual_text,
-        virtual_lines = not config.virtual_lines,
-    })
-end, { desc = 'Toggle Line Diagnostics' })
-
 -- Objectively correct clipboard mappings (thx: https://ezhik.me/blog/vim-clipboard/)
 maps.n['<C-v>'] = '"+p'
 maps.v['<C-v>'] = '"+p'
@@ -182,6 +183,8 @@ vim.keymap.set('v', 'y', '', {
     expr = true,
 })
 
+maps.n['<leader>p'] = '<cmd>pu<CR>==^'
+maps.n['<leader>P'] = '<cmd>-1pu<CR>==^'
 
 -- Render maps table into vim keyboard mappings
 for mode, mappings in pairs(maps) do

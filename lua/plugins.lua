@@ -17,8 +17,17 @@ require'lazy'.setup({
 
 	-- Misc
 	{ 'sheerun/vim-polyglot' },
-	{ 'tpope/vim-surround', keys = { 'ys', 'ds', 'cs', { 'S', mode = 'v' } } },
+	-- { 'tpope/vim-surround', keys = { 'ys', 'ds', 'cs', { 'S', mode = 'v' } } },
+	{
+		'kylechui/nvim-surround',
+		version = "*", -- Use for stability; omit to use `main` branch for the latest features
+		event = "VeryLazy",
+		config = function() require("nvim-surround").setup() end
+	},
 	{ 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
+	{ 'nvim-treesitter/playground', config = function ()
+		require "nvim-treesitter.configs".setup{}
+	end },
 
 	-- { 'tpope/vim-commentary', keys = { { 'gc', mode = { 'n', 'v' } }, 'gcc' } },
 	{ 'numToStr/Comment.nvim', config = function ()
@@ -159,7 +168,6 @@ require'lazy'.setup({
 	},
 
 	-- UI
-	{ 'barrett-ruth/import-cost.nvim', build = 'sh install.sh npm', config = true },
 	{ 'nvim-tree/nvim-web-devicons' },
 	{ 'folke/zen-mode.nvim', cmd = { 'ZenMode' }, config = function()
 		require'zen-mode'.setup();
@@ -199,6 +207,9 @@ require'lazy'.setup({
 				file_ignore_patterns = { 'collab-onboard/.*' },
 			},
 		}
+		vim.cmd[[
+			autocmd User TelescopePreviewerLoaded setlocal number
+		]]
 	end },
 	{ 'stevearc/dressing.nvim', event = 'VeryLazy' },
 
@@ -267,41 +278,41 @@ require'lazy'.setup({
 	{ 'folke/which-key.nvim', cmd = 'WhichKey' },
 
 	-- better text-objects
-	{
-		"echasnovski/mini.ai",
-		-- keys = {
-		--   { "a", mode = { "x", "o" } },
-		--   { "i", mode = { "x", "o" } },
-		-- },
-		event = "VeryLazy",
-		dependencies = {
-			{
-				"nvim-treesitter/nvim-treesitter-textobjects",
-				init = function()
-					-- no need to load the plugin, since we only need its queries
-					require("lazy.core.loader").disable_rtp_plugin("nvim-treesitter-textobjects")
-				end,
-			},
-		},
-		opts = function()
-			local ai = require("mini.ai")
-			return {
-				n_lines = 500,
-				custom_textobjects = {
-					o = ai.gen_spec.treesitter({
-						a = { "@block.outer", "@conditional.outer", "@loop.outer" },
-						i = { "@block.inner", "@conditional.inner", "@loop.inner" },
-					}, {}),
-					f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
-					c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
-				},
-			}
-		end,
-		config = function(_, opts)
-			local ai = require("mini.ai")
-			ai.setup(opts)
-		end,
-	},
+	-- {
+	-- 	"echasnovski/mini.ai",
+	-- 	-- keys = {
+	-- 	--   { "a", mode = { "x", "o" } },
+	-- 	--   { "i", mode = { "x", "o" } },
+	-- 	-- },
+	-- 	event = "VeryLazy",
+	-- 	dependencies = {
+	-- 		{
+	-- 			"nvim-treesitter/nvim-treesitter-textobjects",
+	-- 			init = function()
+	-- 				-- no need to load the plugin, since we only need its queries
+	-- 				require("lazy.core.loader").disable_rtp_plugin("nvim-treesitter-textobjects")
+	-- 			end,
+	-- 		},
+	-- 	},
+	-- 	opts = function()
+	-- 		local ai = require("mini.ai")
+	-- 		return {
+	-- 			n_lines = 500,
+	-- 			custom_textobjects = {
+	-- 				o = ai.gen_spec.treesitter({
+	-- 					a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+	-- 					i = { "@block.inner", "@conditional.inner", "@loop.inner" },
+	-- 				}, {}),
+	-- 				f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
+	-- 				c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
+	-- 			},
+	-- 		}
+	-- 	end,
+	-- 	config = function(_, opts)
+	-- 		local ai = require("mini.ai")
+	-- 		ai.setup(opts)
+	-- 	end,
+	-- },
 
 	-- Theme
 	{ 'rebelot/kanagawa.nvim', config = function ()
