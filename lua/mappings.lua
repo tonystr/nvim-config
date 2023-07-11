@@ -104,8 +104,8 @@ maps.v['>'] = '>gv'
 
 -- Barbar keybindings
 -- Move to previous/next
-maps.n['<A-,>'] = '<Cmd>BufferPrevious<CR>'
-maps.n['<A-.>'] = '<Cmd>BufferNext<CR>'
+maps.n['<A-,>'] = '<Cmd>bp<CR>'
+maps.n['<A-.>'] = '<Cmd>bn<CR>'
 maps.n['<A-Left>'] = '<Cmd>BufferPrevious<CR>'
 maps.n['<A-Right>'] = '<Cmd>BufferNext<CR>'
 -- Move between windows
@@ -128,9 +128,9 @@ maps.n['<A-8>'] = '<Cmd>BufferGoto 8<CR>'
 maps.n['<A-9>'] = '<Cmd>BufferGoto 9<CR>'
 maps.n['<A-0>'] = '<Cmd>BufferLast<CR>'
 -- Pin/unpin buffer
-maps.n['<A-p>'] = '<Cmd>BufferPin<CR>'
+-- maps.n['<A-p>'] = '<Cmd>BufferPin<CR>'
 -- Close buffer
-maps.n['<A-w>'] = '<Cmd>BufferClose<CR>'
+maps.n['<A-w>'] = '<Cmd>bd<CR>'
 -- Sort automatically by...
 -- maps.n['<leader>bb'] = '<Cmd>BufferOrderByBufferNumber<CR>'
 -- maps.n['<leader>bd'] = '<Cmd>BufferOrderByDirectory<CR>'

@@ -13,6 +13,10 @@ else
     vim.api.nvim_set_hl(0, 'Normal', { ctermbg='none', bg='none' })
 end
 
+vim.g.flog_permanent_default_opts = {
+    date = 'relative',
+}
+
 -- globals
 vim.g.mapleader = ' '
 vim.g.python3_host_prog = '~/AppData/Local/Programs/Python/Python37-32/python.EXE'
@@ -66,8 +70,4 @@ vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 vim.api.nvim_create_autocmd('FileType', {
     pattern = '*',
     command = 'setlocal formatoptions-=c formatoptions-=r formatoptions-=o',
-})
-vim.api.nvim_create_autocmd('FileType', {
-    pattern = '*',
-    command = 'ColorizerAttachToBuffer',
 })

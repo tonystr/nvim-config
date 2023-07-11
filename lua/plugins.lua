@@ -14,9 +14,23 @@ vim.opt.runtimepath:prepend(lazypath)
 local jsfts = { 'js', 'ts', 'jsx', 'tsx', 'vue' };
 
 require'lazy'.setup({
+	-- Theme
+	{ 'rebelot/kanagawa.nvim', config = function ()
+		require'kanagawa'.setup{
+			colors = {
+				theme = {
+					all = {
+						ui = {
+							bg_gutter = 'none'
+						}
+					}
+				}
+			}
+		}
+	end, priority = 1000 },
 
 	-- Misc
-	{ 'sheerun/vim-polyglot' },
+	-- { 'sheerun/vim-polyglot' },
 	-- { 'tpope/vim-surround', keys = { 'ys', 'ds', 'cs', { 'S', mode = 'v' } } },
 	{
 		'kylechui/nvim-surround',
@@ -25,31 +39,27 @@ require'lazy'.setup({
 		config = function() require("nvim-surround").setup() end
 	},
 	{ 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
-	{ 'nvim-treesitter/playground', config = function ()
+	{ 'nvim-treesitter/playground', event = 'VeryLazy', config = function ()
 		require "nvim-treesitter.configs".setup{}
 	end },
 
-	-- { 'tpope/vim-commentary', keys = { { 'gc', mode = { 'n', 'v' } }, 'gcc' } },
-	{ 'numToStr/Comment.nvim', config = function ()
+	{ 'numToStr/Comment.nvim', event = 'VeryLazy', config = function ()
 		require'Comment'.setup()
 	end },
-	-- { 'vim-scripts/FastFold' } -- NOTE: Not using folds at this time
 	{ 'tpope/vim-repeat', event = 'BufRead' },
 	{ 'github/copilot.vim', event = 'BufWinEnter' },
 	{ 'junegunn/vim-easy-align', keys = {
 		{ 'ga', '<Plug>(EasyAlign)', mode = { 'n', 'v' } },
 	}},
-	{ 'lukas-reineke/indent-blankline.nvim', config = function ()
+	{ 'lukas-reineke/indent-blankline.nvim', ft = 'BufWinEnter', config = function ()
 		require'indent_blankline'.setup {
 			show_current_context = true,
 		}
 	end
 	},
-	-- 'ThePrimeagen/refactoring.nvim'
-	-- { 'leafOfTree/vim-vue-plugin', ft = 'vue' },
-	-- { 'AndrewRadev/splitjoin.vim', event = 'BufWinEnter' }, -- keys = { { 'gS', mode = { 'n', 'v' } }, { 'gJ', mode = { 'n', 'v' } } } },
 	{
 		'Wansmer/treesj',
+		event = 'VeryLazy',
 		-- keys = { '<Enter>', 'gS', 'gJ' },
 		dependencies = { 'nvim-treesitter/nvim-treesitter' },
 		config = function () require'treesj'.setup() end,
@@ -60,8 +70,7 @@ require'lazy'.setup({
 		{ '<Plug>(emmet-expand-yank)' },
 		{ '<Plug>(emmet-expand-yank)', mode = 'i' },
 	}},
-	'vimwiki/vimwiki',
-	'tommcdo/vim-exchange',
+	{ 'vimwiki/vimwiki', event = 'VeryLazy' },
 
 	-- Lsp
 	{ 'williamboman/mason.nvim', config = function()
@@ -69,9 +78,9 @@ require'lazy'.setup({
 	end },
 	{ 'williamboman/mason-lspconfig.nvim' },
 	{ 'neovim/nvim-lspconfig' },
-	{ 'folke/trouble.nvim' },
+	{ 'folke/trouble.nvim', event = 'VeryLazy' },
 
-	{ 'jose-elias-alvarez/null-ls.nvim', config = function()
+	{ 'jose-elias-alvarez/null-ls.nvim', event = 'VeryLazy', config = function()
 		local null = require'null-ls'
 		null.setup{
 			sources = {
@@ -80,10 +89,14 @@ require'lazy'.setup({
 		}
 	end },
 
-	{ 'L3MON4D3/LuaSnip', lazy = true },
+	{
+		'L3MON4D3/LuaSnip',
+		lazy = true,
+		config = function () require'luasnip' end
+	},
 	{ 'saadparwaiz1/cmp_luasnip', lazy = true },
 	{ 'onsails/lspkind.nvim', lazy = true },
-	{ 'RRethy/vim-illuminate', lazy = true },
+	{ 'RRethy/vim-illuminate', event = 'VeryLazy' },
 	-- { 'joechrisellis/lsp-format-modifications.nvim', lazy = true },
 	{ 'hrsh7th/nvim-cmp',
 		event = 'InsertEnter',
@@ -166,6 +179,7 @@ require'lazy'.setup({
 		end,
 		cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewToggleFiles', 'DiffviewFileHistory', 'DiffviewFocusFiles', 'DiffviewLog', 'DiffviewRefresh', },
 	},
+	{ 'rbong/vim-flog', event = 'VeryLazy' },
 
 	-- UI
 	{ 'nvim-tree/nvim-web-devicons' },
@@ -175,11 +189,11 @@ require'lazy'.setup({
 
 	{ 'stevearc/oil.nvim', config = function ()
 		require'oil'.setup()
-	end },
+	end, event = 'VeryLazy' },
 
 	{ 'romgrk/barbar.nvim', dependencies = 'nvim-web-devicons', event='BufWinEnter', config = function()
 		require'bufferline'.setup{
-			-- auto_hide = true,
+			auto_hide = true,
 			animation = false,
 			icons = {
 				button = ' ',
@@ -213,9 +227,8 @@ require'lazy'.setup({
 	end },
 	{ 'stevearc/dressing.nvim', event = 'VeryLazy' },
 
-	{ 'kevinhwang91/nvim-ufo', dependencies = 'kevinhwang91/promise-async' },
+	{ 'kevinhwang91/nvim-ufo', event = 'VeryLazy', dependencies = 'kevinhwang91/promise-async' },
 
-	-- TODO: Lazyload this
 	{ 'startup-nvim/startup.nvim',
 		config = function()
 			require'startup'.setup({ theme = 'my_theme' })
@@ -231,6 +244,10 @@ require'lazy'.setup({
 				tailwind = 'both',
 			},
 		}
+		vim.api.nvim_create_autocmd('FileType', {
+			pattern = '*',
+			command = 'ColorizerAttachToBuffer',
+		})
 	end},
 	{
 		'nvim-neo-tree/neo-tree.nvim',
@@ -246,91 +263,42 @@ require'lazy'.setup({
 			}
 		end,
 	},
-	{ 'nvim-lualine/lualine.nvim', event = 'BufWinEnter', config = function()
-		-- vim.o.shortmess = vim.o.shortmess .. 'S';
-		local git_blame = require('gitblame')
+	{
+		'nvim-lualine/lualine.nvim',
+		event = 'BufWinEnter',
+		dependencies = { 'f-person/git-blame.nvim' },
+		config = function()
+			-- vim.o.shortmess = vim.o.shortmess .. 'S';
+			local git_blame = require('gitblame')
 
-		require'lualine'.setup {
-			sections = {
-				lualine_b = {
-					'filename',
-					'diagnostics',
+			require'lualine'.setup {
+				sections = {
+					lualine_b = {
+						'filename',
+						'diagnostics',
+					},
+					lualine_c = {},
+					lualine_x = {
+						{ git_blame.get_current_blame_text, cond = git_blame.is_blame_text_available }
+					},
+					lualine_y = {
+						'branch',
+						{ 'diff', symbols = { added = ' ', modified = '柳', removed = ' ' } }
+					},
+					lualine_z = {},
 				},
-				lualine_c = {},
-				lualine_x = {
-					{ git_blame.get_current_blame_text, cond = git_blame.is_blame_text_available }
+				options = {
+					section_separators = { left = '', right = '' },
+					component_separators = { left = '', right = '' },
 				},
-				lualine_y = {
-					'branch',
-					{ 'diff', symbols = { added = ' ', modified = '柳', removed = ' ' } }
-				},
-				lualine_z = {},
-			},
-			options = {
-				section_separators = { left = '', right = '' },
-				component_separators = { left = '', right = '' },
-			},
-		}
-
-		vim.api.nvim_set_hl(0, 'lualine_c_normal', { fg='#666677' })
-		vim.api.nvim_set_hl(0, 'lualine_c_inactive', { fg='#666677' })
-	end},
-	{ 'folke/which-key.nvim', cmd = 'WhichKey' },
-
-	-- better text-objects
-	-- {
-	-- 	"echasnovski/mini.ai",
-	-- 	-- keys = {
-	-- 	--   { "a", mode = { "x", "o" } },
-	-- 	--   { "i", mode = { "x", "o" } },
-	-- 	-- },
-	-- 	event = "VeryLazy",
-	-- 	dependencies = {
-	-- 		{
-	-- 			"nvim-treesitter/nvim-treesitter-textobjects",
-	-- 			init = function()
-	-- 				-- no need to load the plugin, since we only need its queries
-	-- 				require("lazy.core.loader").disable_rtp_plugin("nvim-treesitter-textobjects")
-	-- 			end,
-	-- 		},
-	-- 	},
-	-- 	opts = function()
-	-- 		local ai = require("mini.ai")
-	-- 		return {
-	-- 			n_lines = 500,
-	-- 			custom_textobjects = {
-	-- 				o = ai.gen_spec.treesitter({
-	-- 					a = { "@block.outer", "@conditional.outer", "@loop.outer" },
-	-- 					i = { "@block.inner", "@conditional.inner", "@loop.inner" },
-	-- 				}, {}),
-	-- 				f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
-	-- 				c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
-	-- 			},
-	-- 		}
-	-- 	end,
-	-- 	config = function(_, opts)
-	-- 		local ai = require("mini.ai")
-	-- 		ai.setup(opts)
-	-- 	end,
-	-- },
-
-	-- Theme
-	{ 'rebelot/kanagawa.nvim', config = function ()
-		require'kanagawa'.setup{
-			colors = {
-				theme = {
-					all = {
-						ui = {
-							bg_gutter = 'none'
-						}
-					}
-				}
 			}
-		}
-	end }
-})
 
-luasnip = require 'luasnip'
+			vim.api.nvim_set_hl(0, 'lualine_c_normal', { fg='#666677' })
+			vim.api.nvim_set_hl(0, 'lualine_c_inactive', { fg='#666677' })
+		end
+	},
+	{ 'folke/which-key.nvim', cmd = 'WhichKey' },
+})
 
 -- Below you'll find the land of the lost
 

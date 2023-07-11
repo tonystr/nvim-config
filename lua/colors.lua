@@ -50,3 +50,22 @@ hi(0, 'DiagnosticError', { bg='#382b3e', fg='#e82424' })
 hi(0, 'DiagnosticWarn',  { bg='#373641', fg='#ffcb6b' })
 hi(0, 'DiagnosticInfo',  { bg='#2c2c3e', fg='#658594' })
 hi(0, 'DiagnosticHint',  { bg='#2a323a', fg='#6a9589' })
+
+-- Flog
+hi(0, 'FlogBranch0',  { fg='#e82424' })
+hi(0, 'FlogBranch1',  { fg='#658594' })
+hi(0, 'FlogBranch2',  { fg='#ffcb6b' })
+hi(0, 'FlogBranch3',  { fg='#8899ff' })
+hi(0, 'FlogBranch4',  { fg='#957fb8' })
+hi(0, 'FlogBranch5',  { fg='#c8c093' })
+
+
+
+
+
+
+
+
+
+
+
