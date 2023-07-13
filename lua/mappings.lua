@@ -25,12 +25,10 @@ maps.n['}'] = { '<cmd>keepjump normal! }<CR>', noremap = true }
 maps.n['<leader>br'] = '<cmd>echo "test"<CR>'
 maps.o['{'] = 'V{'
 maps.o['}'] = 'V}'
+maps.n['<leader>G'] = '<cmd>Git<CR>';
 
 maps.n['zR'] = function() require'ufo'.openAllFolds() end
 maps.n['zM'] = function() require'ufo'.closeAllFolds() end
-
-maps.n['+'] = '<C-w>+'
-maps.n['-'] = '<C-w>-'
 
 -- Vue navigation
 
@@ -52,6 +50,13 @@ function! ExecuteMacroOverVisualRange()
   execute ":'<,'>normal @".nr2char(getchar())
 endfunction
 ]]
+
+local change_scale_factor = function(delta)
+  vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
+end
+
+vim.keymap.set('n', '+', function() change_scale_factor(1.10) end)
+vim.keymap.set('n', '-', function() change_scale_factor(1 / 1.10) end)
 
 -- Telescope mappings
 -- Find files using Telescope command-line sugar.
