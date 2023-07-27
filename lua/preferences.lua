@@ -2,8 +2,8 @@
 if vim.g.neovide then
     vim.o.guifont='CaskaydiaCove Nerd Font:h11:#e-subpixelantialias'
 	vim.api.nvim_set_hl(0, 'Normal', { bg = '#1f1f28' })
-    vim.g.neovide_refresh_rate = 60
-    vim.g.neovide_refresh_rate_idle = 60
+    vim.g.neovide_refresh_rate = 90
+    vim.g.neovide_refresh_rate_idle = 90
     vim.g.neovide_remember_window_size = true
     vim.g.neovide_confirm_quit = false
 	vim.g.neovide_floating_opacity = 1.0

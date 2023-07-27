@@ -10,9 +10,6 @@ hi(0, 'Comment', { fg='#666677', italic=true })
 hi(0, 'Whitespace', { fg='#4a4a58' })
 hi(0, 'VertSplit', { ctermbg='none', bg='none', fg='#4a4a58' })
 hi(0, 'Folded', { bg='none' })
-hi(0, 'BufferCurrentMod', { fg='#cfcfd0', bg='#2a2a37'  })
-hi(0, 'BufferInactiveMod', { fg='#888888', bg='#16161d' })
-hi(0, 'BufferVisibleMod', { fg='#888888', bg='#2a2a37' })
 hi(0, 'DiagnosticWarn', { fg='#ffcb6b' })
 hi(0, 'TelescopeSelection', { bg='none', fg='#ffffff' })
 hi(0, 'MoreMsg', { bg='none', fg='#ffd282' })
@@ -59,13 +56,8 @@ hi(0, 'FlogBranch3',  { fg='#8899ff' })
 hi(0, 'FlogBranch4',  { fg='#957fb8' })
 hi(0, 'FlogBranch5',  { fg='#c8c093' })
 
-
-
-
-
-
-
-
-
-
-
+-- Barbar
+hi(0, 'BufferCurrentMod', { fg='#cfcfd0', bg='#2a2a37'  })
+hi(0, 'BufferInactiveMod', { fg='#888888', bg='#16161d' })
+hi(0, 'BufferVisibleMod', { fg='#888888', bg='#2a2a37' })
+hi(0, 'BufferTabpageFill', { bg='#16161d' })

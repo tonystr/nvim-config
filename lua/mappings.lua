@@ -26,6 +26,8 @@ maps.n['<leader>br'] = '<cmd>echo "test"<CR>'
 maps.o['{'] = 'V{'
 maps.o['}'] = 'V}'
 maps.n['<leader>G'] = '<cmd>Git<CR>';
+-- Repeat over multiple lines
+maps.v['.'] = { ':norm .<CR>', noremap = true }
 
 maps.n['zR'] = function() require'ufo'.openAllFolds() end
 maps.n['zM'] = function() require'ufo'.closeAllFolds() end
@@ -95,6 +97,7 @@ maps.n['K'] = function() vim.lsp.buf.hover() end
 maps.n['gl'] = function() print('hello world') end
 maps.n['<C-k>'] = function() vim.lsp.buf.signature_help() end
 maps.n['<leader>af'] = function() vim.lsp.buf.code_action() end
+maps.v['<leader>af'] = function() vim.lsp.buf.code_action() end
 maps.n['<leader>rn'] = function() vim.lsp.buf.rename() end
 
 -- Emmet bindings
@@ -109,8 +112,8 @@ maps.v['>'] = '>gv'
 
 -- Barbar keybindings
 -- Move to previous/next
-maps.n['<A-,>'] = '<Cmd>bp<CR>'
-maps.n['<A-.>'] = '<Cmd>bn<CR>'
+maps.n['<A-,>'] = '<Cmd>BufferPrevious<CR>'
+maps.n['<A-.>'] = '<Cmd>BufferNext<CR>'
 maps.n['<A-Left>'] = '<Cmd>BufferPrevious<CR>'
 maps.n['<A-Right>'] = '<Cmd>BufferNext<CR>'
 -- Move between windows
@@ -135,7 +138,7 @@ maps.n['<A-0>'] = '<Cmd>BufferLast<CR>'
 -- Pin/unpin buffer
 -- maps.n['<A-p>'] = '<Cmd>BufferPin<CR>'
 -- Close buffer
-maps.n['<A-w>'] = '<Cmd>bd<CR>'
+maps.n['<A-w>'] = '<Cmd>BufferDelete<CR>'
 -- Sort automatically by...
 -- maps.n['<leader>bb'] = '<Cmd>BufferOrderByBufferNumber<CR>'
 -- maps.n['<leader>bd'] = '<Cmd>BufferOrderByDirectory<CR>'
@@ -151,10 +154,10 @@ maps.n['<C-v>'] = '"+p'
 maps.v['<C-v>'] = '"+p'
 maps.i['<C-v>'] = '<C-r>+'
 maps.c['<C-v>'] = '<C-r>+'
-maps['']['""y'] = '""y'
-maps['']['""yy'] = '""yy'
-maps['']['""p'] = '""p'
-maps['']['""P'] = '""P'
+-- maps['']['""y'] = '""y'
+-- maps['']['""yy'] = '""yy'
+-- maps['']['""p'] = '""p'
+-- maps['']['""P'] = '""P'
 
 -- Yank to system clipboard
 vim.keymap.set('n', 'y', '', {

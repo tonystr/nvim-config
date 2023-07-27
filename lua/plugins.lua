@@ -9,115 +9,79 @@ if not vim.loop.fs_stat(lazypath) then
 		lazypath,
 	})
 end
-vim.opt.runtimepath:prepend(lazypath)
 
-local jsfts = { 'js', 'ts', 'jsx', 'tsx', 'vue' };
+vim.opt.runtimepath:prepend(lazypath)
 
 require'lazy'.setup({
 	-- Theme
-	{ 'rebelot/kanagawa.nvim', config = function ()
-		require'kanagawa'.setup{
-			colors = {
-				theme = {
-					all = {
-						ui = {
-							bg_gutter = 'none'
-						}
-					}
-				}
-			}
-		}
-	end, priority = 1000 },
+	{ 'rebelot/kanagawa.nvim', opts = {
+		colors = { theme = { all = { ui = { bg_gutter = 'none' } } } }
+	}, priority = 1000 },
 
 	-- Misc
-	-- { 'sheerun/vim-polyglot' },
-	-- { 'tpope/vim-surround', keys = { 'ys', 'ds', 'cs', { 'S', mode = 'v' } } },
-	{
-		'kylechui/nvim-surround',
-		version = "*", -- Use for stability; omit to use `main` branch for the latest features
-		event = "VeryLazy",
-		config = function() require("nvim-surround").setup() end
-	},
+	{ 'kylechui/nvim-surround',          event = 'VeryLazy', version = '*', config = true },
 	{ 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
-	{ 'nvim-treesitter/playground', event = 'VeryLazy', config = function ()
-		require "nvim-treesitter.configs".setup{}
+	{ 'nvim-treesitter/playground',      event = 'VeryLazy', config = function()
+		require'nvim-treesitter.configs'.setup {
+			playground = { enable = true },
+		}
 	end },
-
-	{ 'numToStr/Comment.nvim', event = 'VeryLazy', config = function ()
-		require'Comment'.setup()
-	end },
-	{ 'tpope/vim-repeat', event = 'BufRead' },
-	{ 'github/copilot.vim', event = 'BufWinEnter' },
+	{ 'numToStr/Comment.nvim',           event = 'VeryLazy', config = true },
+	{ 'tpope/vim-repeat',                event = 'BufRead' },
+	{ 'github/copilot.vim',              event = 'BufWinEnter' },
 	{ 'junegunn/vim-easy-align', keys = {
 		{ 'ga', '<Plug>(EasyAlign)', mode = { 'n', 'v' } },
 	}},
-	{ 'lukas-reineke/indent-blankline.nvim', ft = 'BufWinEnter', config = function ()
-		require'indent_blankline'.setup {
-			show_current_context = true,
-		}
-	end
-	},
+	{ 'lukas-reineke/indent-blankline.nvim', event = 'BufWinEnter', opts = {
+		show_current_context = true,
+	} },
 	{
 		'Wansmer/treesj',
 		event = 'VeryLazy',
-		-- keys = { '<Enter>', 'gS', 'gJ' },
 		dependencies = { 'nvim-treesitter/nvim-treesitter' },
-		config = function () require'treesj'.setup() end,
+		config = true,
 	},
 	{ 'mattn/emmet-vim', keys = {
-		{ '<Plug>(emmet-expand-abbr)' },
-		{ '<Plug>(emmet-expand-abbr)', mode = 'i' },
-		{ '<Plug>(emmet-expand-yank)' },
-		{ '<Plug>(emmet-expand-yank)', mode = 'i' },
+		{ '<Plug>(emmet-expand-abbr)', mode = { 'i', 'n' } },
+		{ '<Plug>(emmet-expand-yank)', mode = { 'i', 'n' } },
 	}},
 	{ 'vimwiki/vimwiki', event = 'VeryLazy' },
 
 	-- Lsp
-	{ 'williamboman/mason.nvim', config = function()
-		require'mason'.setup()
-	end },
+	{ 'williamboman/mason.nvim', config = true },
 	{ 'williamboman/mason-lspconfig.nvim' },
 	{ 'neovim/nvim-lspconfig' },
 	{ 'folke/trouble.nvim', event = 'VeryLazy' },
 
 	{ 'jose-elias-alvarez/null-ls.nvim', event = 'VeryLazy', config = function()
 		local null = require'null-ls'
-		null.setup{
-			sources = {
-				null.builtins.formatting.prettierd,
-			},
+		null.setup {
+			sources = { null.builtins.formatting.prettierd },
 		}
 	end },
 
-	{
-		'L3MON4D3/LuaSnip',
-		lazy = true,
-		config = function () require'luasnip' end
-	},
-	{ 'saadparwaiz1/cmp_luasnip', lazy = true },
 	{ 'onsails/lspkind.nvim', lazy = true },
 	{ 'RRethy/vim-illuminate', event = 'VeryLazy' },
 	-- { 'joechrisellis/lsp-format-modifications.nvim', lazy = true },
 	{ 'hrsh7th/nvim-cmp',
 		event = 'InsertEnter',
 		dependencies = {
-			{ 'hrsh7th/cmp-nvim-lsp'  },
-			{ 'hrsh7th/cmp-buffer'    },
-			{ 'hrsh7th/cmp-path'      },
-			{ 'hrsh7th/cmp-cmdline'   },
-			{ 'RRethy/vim-illuminate' },
+			{ 'hrsh7th/cmp-nvim-lsp'    },
+			{ 'hrsh7th/cmp-buffer'      },
+			{ 'hrsh7th/cmp-path'        },
+			{ 'hrsh7th/cmp-cmdline'     },
+			{ 'hrsh7th/cmp-vsnip'       },
+			{ 'hrsh7th/vim-vsnip'       },
+			{ 'hrsh7th/vim-vsnip-integ' },
 			{ 'roobert/tailwindcss-colorizer-cmp.nvim' },
 		},
 		config = function()
-			local lspkind = require'lspkind'
 			local cmp = require'cmp'
-			require'tailwindcss-colorizer-cmp'.setup{
-				color_square_width = 1,
-			}
-			cmp.setup{
+			require'tailwindcss-colorizer-cmp'.setup { color_square_width = 1 }
+			cmp.setup {
 				formatting = {
 					format = function (entry, item)
-						lspkind.cmp_format({
+						require'lspkind'.cmp_format({
 							mode = 'symbol', -- show only symbol annotations
 							maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
 						})(entry, item)
@@ -132,11 +96,14 @@ require'lazy'.setup({
 				},
 				snippet = {
 					expand = function(args)
-						require'luasnip'.lsp_expand(args.body)
+						vim.fn['vsnip#anonymous'](args.body)
 					end,
 				},
 				sources = cmp.config.sources(
-					{ { name = 'nvim_lsp' } },
+					{
+						{ name = 'nvim_lsp' },
+						{ name = 'vsnip' },
+					},
 					{ { name = 'buffer' } }
 				)
 			}
@@ -145,7 +112,7 @@ require'lazy'.setup({
 
 	-- Git
 	{ 'tpope/vim-fugitive' },
-	-- { 'akinsho/git-conflict.nvim', version = "*", config = true },
+	{ 'akinsho/git-conflict.nvim', version = "v1.0.0", opts = { disable_diagnostics = true } },
 	{ 'lewis6991/gitsigns.nvim', event = 'BufRead', config = function()
 		local gitsigns = require'gitsigns'
 		gitsigns.setup{
@@ -167,101 +134,66 @@ require'lazy'.setup({
 	{ 'f-person/git-blame.nvim' },
 	{
 		'sindrets/diffview.nvim',
-		config = function()
-			require('diffview').setup({
-				enhanced_diff_hl = true,
-				view = {
-					merge_tool = {
-						layout = 'diff3_mixed',
-					},
+		opts = {
+			enhanced_diff_hl = true,
+			view = {
+				merge_tool = {
+					layout = 'diff3_mixed',
 				},
-			})
-		end,
+			},
+		},
 		cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewToggleFiles', 'DiffviewFileHistory', 'DiffviewFocusFiles', 'DiffviewLog', 'DiffviewRefresh', },
 	},
 	{ 'rbong/vim-flog', event = 'VeryLazy' },
 
 	-- UI
 	{ 'nvim-tree/nvim-web-devicons' },
-	{ 'folke/zen-mode.nvim', cmd = { 'ZenMode' }, config = function()
-		require'zen-mode'.setup();
-	end },
-
-	{ 'stevearc/oil.nvim', config = function ()
-		require'oil'.setup()
-	end, event = 'VeryLazy' },
-
-	{ 'romgrk/barbar.nvim', dependencies = 'nvim-web-devicons', event='BufWinEnter', config = function()
-		require'bufferline'.setup{
-			auto_hide = true,
-			animation = false,
-			icons = {
-				button = ' ',
-				icon_cusom_colors = true,
+	{ 'folke/zen-mode.nvim', cmd = { 'ZenMode' }, config = true },
+	{ 'stevearc/oil.nvim', config = true, event = 'VeryLazy' },
+	{ 'romgrk/barbar.nvim', dependencies = 'nvim-web-devicons', event='BufWinEnter', opts = {
+		exclude_ft = { 'fugitive' },
+		auto_hide = true,
+		animation = false,
+		icons = {
+			button = ' ',
+			icon_cusom_colors = true,
+			separator = { left = '', right = '' },
+			inactive = {
 				separator = { left = '', right = '' },
-				inactive = {
-					separator = { left = '', right = '' },
-					button = ' ',
-				},
-				sidebar_filetypes = {
-					NvimTree = true,
-					['neo-tree'] = { event = 'BufWipeout' }
-				}
+				button = ' ',
+			},
+			sidebar_filetypes = {
+				NvimTree = true,
+				['neo-tree'] = { event = 'BufWipeout' }
 			}
 		}
-	end},
+	} },
 
-	{ 'nvim-telescope/telescope.nvim', cmd = 'Telescope', version = '0.1.0', dependencies = 'nvim-lua/plenary.nvim', config = function ()
-		require'telescope'.setup {
-			defaults = {
-				layout_strategy = 'vertical',
-				layout_config = {
-					vertical = { width = 0.8 }
-				},
-				file_ignore_patterns = { 'collab-onboard/.*' },
+	{ 'nvim-telescope/telescope.nvim', cmd = 'Telescope', version = '0.1.0', dependencies = 'nvim-lua/plenary.nvim', opts = {
+		defaults = {
+			layout_strategy = 'vertical',
+			layout_config = {
+				vertical = { width = 0.8 }
 			},
-		}
-		vim.cmd[[
-			autocmd User TelescopePreviewerLoaded setlocal number
-		]]
-	end },
+			file_ignore_patterns = { 'collab-onboard/.*' },
+		},
+	} },
 	{ 'stevearc/dressing.nvim', event = 'VeryLazy' },
-
 	{ 'kevinhwang91/nvim-ufo', event = 'VeryLazy', dependencies = 'kevinhwang91/promise-async' },
-
-	{ 'startup-nvim/startup.nvim',
-		config = function()
-			require'startup'.setup({ theme = 'my_theme' })
-		end
-	},
-	{ 'folke/todo-comments.nvim', event = 'BufRead', config = function()
-		require'todo-comments'.setup()
-	end},
-
-	{ 'NvChad/nvim-colorizer.lua', config = function()
-		require'colorizer'.setup {
-			user_default_options = {
-				tailwind = 'both',
-			},
-		}
-		vim.api.nvim_create_autocmd('FileType', {
-			pattern = '*',
-			command = 'ColorizerAttachToBuffer',
-		})
-	end},
+	{ 'startup-nvim/startup.nvim', opts = { theme = 'dragon' } },
+	{ 'folke/todo-comments.nvim', event = 'BufRead', config = true },
+	{ 'NvChad/nvim-colorizer.lua', opts = { user_default_options = { tailwind = 'both' } } },
 	{
 		'nvim-neo-tree/neo-tree.nvim',
 		dependencies = { "nvim-lua/plenary.nvim", "nvim-web-devicons", "MunifTanjim/nui.nvim", },
-		branch = "v2.x",
+		branch = "v3.x",
 		keys = {
-			{ '<leader>e', '<cmd>NeoTreeFocusToggle<cr>' },
-			{ '<leader>E', '<cmd>NeoTreeFocus<cr>' }
+			{ '<leader>e', '<cmd>Neotree toggle<cr>' },
+			{ '<leader>E', '<cmd>Neotree focus<cr>' }
 		},
-		config = function()
-			require'neo-tree'.setup{
-				disable_netrw = true,
-			}
-		end,
+		opts = {
+			disable_netrw = true,
+		}
 	},
 	{
 		'nvim-lualine/lualine.nvim',
@@ -302,7 +234,6 @@ require'lazy'.setup({
 
 -- Below you'll find the land of the lost
 
--- require'indent_blankline'.setup { show_current_context = true },
 -- neogen: keybinding to create documentation comments
 -- hlargs.nvim: highlight arguments differently from variables
 -- 'nvim-neorg/neorg' -- Learn this if you want to use it
