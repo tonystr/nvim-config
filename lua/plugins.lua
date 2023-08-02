@@ -14,55 +14,212 @@ vim.opt.runtimepath:prepend(lazypath)
 
 require'lazy'.setup({
 	-- Theme
-	{ 'rebelot/kanagawa.nvim', opts = {
-		colors = { theme = { all = { ui = { bg_gutter = 'none' } } } }
-	}, priority = 1000 },
+	{
+		'rebelot/kanagawa.nvim',
+		opts = {
+			colors = { theme = { all = { ui = { bg_gutter = 'none' } } } },
+			overrides = function(colors)
+				local theme = colors.theme
+				return {
+					Pmenu = { fg = theme.ui.shade0, bg = theme.ui.bg_p1 },
+					PmenuSel = { fg = 'none', bg = theme.ui.bg_p2 },
+					PmenuSbar = { bg = theme.ui.bg_p1  },
+					PmenuThumb = { bg = theme.ui.bg_p2 },
+					CursorLine = { bg = 'none' },
+					CursorLineNR = { fg = theme.ui.fg_dim },
+				}
+			end,
+		},
+		config = function (_, opts)
+			local kanagawa = require'kanagawa'
+			kanagawa.setup(opts)
+			kanagawa.load'wave'
+		end,
+		priority = 1000,
+	},
 
 	-- Misc
-	{ 'kylechui/nvim-surround',          event = 'VeryLazy', version = '*', config = true },
-	{ 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
-	{ 'nvim-treesitter/playground',      event = 'VeryLazy', config = function()
+	{ 'kylechui/nvim-surround', keys = { 'ys', 'ds', 'cs' }, version = '*', config = true },
+	{
+		'nvim-treesitter/nvim-treesitter',
+		event = { 'BufReadPost', 'BufNewFile' },
+		build = ':TSUpdate',
+		config = function ()
+			local tsi = require'nvim-treesitter.install'
+			tsi.compilers = { "zig", "clang", "gcc" }
+			tsi.prefer_git = false
+
+			require'nvim-treesitter.configs'.setup {
+				ensure_installed = {},
+				sync_install = false,
+				auto_install = true,
+				ignore_install = { "markdown" }, -- F U Markdown developer!! it doesn't work
+				highlight = {
+					enable = true,
+					disable = { "markdown" },
+					additional_vim_regex_highlighting = false,
+				},
+				indent = {
+					enable = true,
+				},
+				incremental_selection = {
+					enable = true,
+					keymaps = {
+						init_selection = '<C-n>',
+						node_incremental = '<C-n>',
+						scope_incremental = '<C-m>',
+						node_decremental = '<C-r>',
+					},
+				},
+			}
+		end
+	},
+	{ 'nvim-treesitter/playground', cmd = { 'TSNodeUnderCursor', 'TSHighlightCapturesUnderCursor', 'TSPlaygroundToggle' }, config = function()
 		require'nvim-treesitter.configs'.setup {
 			playground = { enable = true },
 		}
 	end },
-	{ 'numToStr/Comment.nvim',           event = 'VeryLazy', config = true },
-	{ 'tpope/vim-repeat',                event = 'BufRead' },
-	{ 'github/copilot.vim',              event = 'BufWinEnter' },
+	{ 'numToStr/Comment.nvim', keys = { 'gc', 'gq' }, config = true },
+	{ 'tpope/vim-repeat', keys = { '.' } },
+	{ 'github/copilot.vim', event = { 'BufReadPost', 'BufNewFile' } },
 	{ 'junegunn/vim-easy-align', keys = {
 		{ 'ga', '<Plug>(EasyAlign)', mode = { 'n', 'v' } },
 	}},
-	{ 'lukas-reineke/indent-blankline.nvim', event = 'BufWinEnter', opts = {
+	{ 'lukas-reineke/indent-blankline.nvim', event = { 'BufReadPost', 'BufNewFile' }, opts = {
 		show_current_context = true,
 	} },
 	{
 		'Wansmer/treesj',
-		event = 'VeryLazy',
+		keys = { '<Enter>', 'gS', 'gJ' },
 		dependencies = { 'nvim-treesitter/nvim-treesitter' },
-		config = true,
+		opts = { max_join_length = 666 },
+		config = function (_, opts)
+			require'treesj'.setup(opts)
+			vim.keymap.set('n', '<Enter>', '<cmd>lua require"treesj".toggle()<CR>')
+			vim.keymap.set('n', 'gS', '<cmd>lua require"treesj".split()<CR>')
+			vim.keymap.set('n', 'gJ', '<cmd>lua require"treesj".join()<CR>')
+		end,
 	},
 	{ 'mattn/emmet-vim', keys = {
 		{ '<Plug>(emmet-expand-abbr)', mode = { 'i', 'n' } },
 		{ '<Plug>(emmet-expand-yank)', mode = { 'i', 'n' } },
 	}},
-	{ 'vimwiki/vimwiki', event = 'VeryLazy' },
+	{ 'vimwiki/vimwiki', keys = { '<leader>w' } },
 
 	-- Lsp
-	{ 'williamboman/mason.nvim', config = true },
+	{ 'williamboman/mason.nvim', config = true, cmd = { 'Mason', 'LspInfo', 'MasonLog' } },
 	{ 'williamboman/mason-lspconfig.nvim' },
-	{ 'neovim/nvim-lspconfig' },
-	{ 'folke/trouble.nvim', event = 'VeryLazy' },
+	-- { 'b0o/schemastore.nvim', lazy = true },
+	{
+		'neovim/nvim-lspconfig',
+		event = { "BufReadPre", "BufNewFile" },
+		opts = {
+			servers = {
+				lua_ls = {
+					settings = {
+						Lua = {
+							runtime = {
+								version = 'LuaJIT',
+							},
+							diagnostics = {
+								globals = {
+									'vim',
+									'describe',
+									'it',
+								}
+							},
+							telemetry = {
+								enable = false,
+							}
+						}
+					}
+				},
+				tsserver = {
+					init_options = {
+						hostInfo = 'neovim',
+						typescript = {
+							tsdk = require'env'.tsdk
+						}
+					}
+				}
+			},
+			setup = {
+			-- 	tsserver = function(_, opts)
+			-- 		require'typescript'.setup{ server = opts }
+			-- 		return true
+			-- 	end,
+			}
+		},
+		config = function (_, opts)
+			local mlsp = require'mason-lspconfig'
 
-	{ 'jose-elias-alvarez/null-ls.nvim', event = 'VeryLazy', config = function()
+			-- opts.servers.jsonls = {
+			-- 	settings = {
+			-- 		json = {
+			-- 			schemas = require'schemastore'.json.schemas(),
+			-- 			validate = { enable = true },
+			-- 		},
+			-- 	},
+			-- }
+			--
+			local servers = opts.servers
+			local capabilities = vim.tbl_deep_extend(
+				'force',
+				{
+					textDocument = {
+						foldingRange = {
+							dynamicRegistration = false,
+							lineFoldingOnly = true,
+						}
+					}
+				},
+				vim.lsp.protocol.make_client_capabilities(),
+				-- has_cmp and cmp_nvim_lsp.default_capabilities() or {},
+				opts.capabilities or {}
+			)
+
+			local function setup(server)
+				local server_opts = vim.tbl_deep_extend("force", {
+					capabilities = vim.deepcopy(capabilities),
+				}, servers[server] or {})
+
+				if opts.setup[server] then
+					if opts.setup[server](server, server_opts) then
+						return
+					end
+				elseif opts.setup["*"] then
+					if opts.setup["*"](server, server_opts) then
+						return
+					end
+				end
+				require("lspconfig")[server].setup(server_opts)
+			end
+
+			mlsp.setup({
+				ensure_installed = { 'tsserver', 'volar' },
+				handlers = { setup },
+			})
+		end
+	},
+	{ -- NOTE: I don't really use this? I just use Telescope diagnostics
+		'folke/trouble.nvim',
+		cmd = { 'Trouble', 'TroubleToggle' },
+		opts = { use_diagnostic_signs = true },
+	},
+	{ 'jose-elias-alvarez/null-ls.nvim', keys = { '<leader>fm' }, config = function()
 		local null = require'null-ls'
 		null.setup {
 			sources = { null.builtins.formatting.prettierd },
 		}
 	end },
-
 	{ 'onsails/lspkind.nvim', lazy = true },
-	{ 'RRethy/vim-illuminate', event = 'VeryLazy' },
-	-- { 'joechrisellis/lsp-format-modifications.nvim', lazy = true },
+	{ 'RRethy/vim-illuminate', event = { 'BufReadPost', 'BufNewFile' }, config = function ()
+		require'illuminate'.configure {
+			modes_allowlist = { 'n' },
+			filetypes_denylist = { 'help', 'qf', 'fugitive', 'vimwiki' },
+			min_count_to_highlight = 2,
+		}
+	end },
 	{ 'hrsh7th/nvim-cmp',
 		event = 'InsertEnter',
 		dependencies = {
@@ -90,6 +247,9 @@ require'lazy'.setup({
 				},
 				window = {
 					scrollbar = false,
+					documentation = cmp.config.window.bordered {
+						winhighlight = 'Normal:Normal,FloatBorder:TelescopeBorder,CursorLine:Visual,Search:None'
+					}
 				},
 				mapping = cmp.mapping.preset.insert {
 					['<CR>'] = cmp.mapping.confirm { select = true },
@@ -109,19 +269,16 @@ require'lazy'.setup({
 			}
 		end
 	},
+	-- { 'jose-elias-alvarez/typescript.nvim', lazy = true },
 
 	-- Git
-	{ 'tpope/vim-fugitive' },
-	{ 'akinsho/git-conflict.nvim', version = "v1.0.0", opts = { disable_diagnostics = true } },
-	{ 'lewis6991/gitsigns.nvim', event = 'BufRead', config = function()
+	{ 'tpope/vim-fugitive', cmd = { 'G', 'Gwrite', 'Git', 'Gdiffsplit', 'Gvdiffsplit' } },
+	-- { 'akinsho/git-conflict.nvim', version = "v1.1.2", opts = { disable_diagnostics = true } },
+	{ 'lewis6991/gitsigns.nvim', event = { 'BufReadPost', 'BufNewFile' }, config = function()
 		local gitsigns = require'gitsigns'
 		gitsigns.setup{
-			diff_opts = {
-				vertical = false
-			},
-			signs = {
-				untracked = { text = '│' }
-			}
+			diff_opts = { vertical = false },
+			signs = { untracked = { text = '│' } }
 		}
 		vim.keymap.set('n', '<leader>bl', function() gitsigns.blame_line{ full = true } end)
 		vim.keymap.set('n', ']c', gitsigns.next_hunk)
@@ -144,45 +301,138 @@ require'lazy'.setup({
 		},
 		cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewToggleFiles', 'DiffviewFileHistory', 'DiffviewFocusFiles', 'DiffviewLog', 'DiffviewRefresh', },
 	},
-	{ 'rbong/vim-flog', event = 'VeryLazy' },
+	{ 'rbong/vim-flog', dependencies = { 'fugitive' }, cmd = { 'Flog', 'Flogsplit', 'Floggit' } },
 
 	-- UI
-	{ 'nvim-tree/nvim-web-devicons' },
+	{ 'nvim-tree/nvim-web-devicons', lazy = true },
 	{ 'folke/zen-mode.nvim', cmd = { 'ZenMode' }, config = true },
-	{ 'stevearc/oil.nvim', config = true, event = 'VeryLazy' },
-	{ 'romgrk/barbar.nvim', dependencies = 'nvim-web-devicons', event='BufWinEnter', opts = {
-		exclude_ft = { 'fugitive' },
-		auto_hide = true,
-		animation = false,
-		icons = {
-			button = ' ',
-			icon_cusom_colors = true,
-			separator = { left = '', right = '' },
-			inactive = {
-				separator = { left = '', right = '' },
+	{ 'stevearc/oil.nvim', config = true, cmd = 'Oil' },
+	{
+		'romgrk/barbar.nvim',
+		dependencies = { 'nvim-web-devicons' },
+		-- event = { 'BufWinEnter', 'BufNewFile' },
+		opts = {
+			exclude_ft = { 'fugitive', 'neo-tree', 'startup', '' },
+			auto_hide = true,
+			animation = false,
+			icons = {
 				button = ' ',
-			},
-			sidebar_filetypes = {
-				NvimTree = true,
-				['neo-tree'] = { event = 'BufWipeout' }
+				icon_cusom_colors = true,
+				separator = { left = '', right = '' },
+				inactive = {
+					separator = { left = '', right = '' },
+					button = ' ',
+				},
+				sidebar_filetypes = {
+					NvimTree = true,
+					['neo-tree'] = { event = 'BufWipeout' }
+				}
 			}
-		}
-	} },
-
-	{ 'nvim-telescope/telescope.nvim', cmd = 'Telescope', version = '0.1.0', dependencies = 'nvim-lua/plenary.nvim', opts = {
-		defaults = {
-			layout_strategy = 'vertical',
-			layout_config = {
-				vertical = { width = 0.8 }
-			},
-			file_ignore_patterns = { 'collab-onboard/.*' },
 		},
-	} },
+	},
+
+	{
+		'nvim-telescope/telescope.nvim',
+		cmd = 'Telescope',
+		version = '0.1.0',
+		dependencies = { 'nvim-lua/plenary.nvim' },
+		opts = {
+			defaults = {
+				layout_strategy = 'vertical',
+				layout_config = {
+					vertical = { width = 0.8 }
+				},
+				file_ignore_patterns = { 'collab-onboard/.*' },
+				mappings = {
+					i = {
+						-- ["<C-CR>"] = 'select_default',
+						["<C-Down>"] = 'cycle_history_next',
+						["<C-Up>"] = 'cycle_history_prev',
+					},
+				},
+			},
+			extensions = {
+				undo = {
+					use_delta = false,
+				}
+			},
+		},
+	},
+	{ 'debugloop/telescope-undo.nvim', keys = { '<leader>fu' }, config = function ()
+		require'telescope'.load_extension'undo'
+	end },
+	{ 'cljoly/telescope-repo.nvim', keys = { { '<leader>gr', '<cmd>Telescope repo list<cr>' } }, config = function ()
+		require'telescope'.load_extension'repo'
+	end },
+	-- { 'nvim-telescope/telescope-symbols.nvim', event = 'VeryLazy' },
 	{ 'stevearc/dressing.nvim', event = 'VeryLazy' },
-	{ 'kevinhwang91/nvim-ufo', event = 'VeryLazy', dependencies = 'kevinhwang91/promise-async' },
-	{ 'startup-nvim/startup.nvim', opts = { theme = 'dragon' } },
-	{ 'folke/todo-comments.nvim', event = 'BufRead', config = true },
-	{ 'NvChad/nvim-colorizer.lua', opts = { user_default_options = { tailwind = 'both' } } },
+	{
+		'kevinhwang91/nvim-ufo',
+		event = 'VeryLazy',
+		dependencies = 'kevinhwang91/promise-async',
+		config = function ()
+			local ufo = require'ufo'
+			local handler = function(virtText, lnum, endLnum, width, truncate)
+				local newVirtText = {}
+				local suffix = ('  %d '):format(endLnum - lnum)
+				local sufWidth = vim.fn.strdisplaywidth(suffix)
+				local targetWidth = width - sufWidth
+				local curWidth = 0
+				for _, chunk in ipairs(virtText) do
+					local chunkText = chunk[1]
+					local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+					if targetWidth > curWidth + chunkWidth then
+						table.insert(newVirtText, chunk)
+					else
+						chunkText = truncate(chunkText, targetWidth - curWidth)
+						local hlGroup = chunk[2]
+						table.insert(newVirtText, {chunkText, hlGroup})
+						chunkWidth = vim.fn.strdisplaywidth(chunkText)
+						-- str width returned from truncate() may less than 2nd argument, need padding
+						if curWidth + chunkWidth < targetWidth then
+							suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
+						end
+						break
+					end
+					curWidth = curWidth + chunkWidth
+				end
+				table.insert(newVirtText, {suffix, 'MoreMsg'})
+				return newVirtText
+			end
+			ufo.setup{
+				fold_virt_text_handler = handler,
+				close_fold_kinds = {'imports', 'comment'},
+
+			}
+			vim.keymap.set('n', 'zR', ufo.openAllFolds)
+			vim.keymap.set('n', 'zM', ufo.closeAllFolds)
+			vim.keymap.set('n', 'zr', ufo.openFoldsExceptKinds)
+			vim.keymap.set('n', 'zm', ufo.closeFoldsWith)
+			vim.keymap.set('n', 'zK', function()
+				local winid = require('ufo').peekFoldedLinesUnderCursor()
+				if not winid then
+					-- choose one of coc.nvim and nvim lsp
+					vim.fn.CocActionAsync('definitionHover') -- coc.nvim
+					vim.lsp.buf.hover()
+				end
+			end)
+		end
+	},
+	{ 'startup-nvim/startup.nvim', cmd = 'Startup', opts = { theme = 'dragon' } },
+	{ 'folke/todo-comments.nvim', event = { 'BufReadPost', 'BufNewFile' }, config = true },
+	{
+		'NvChad/nvim-colorizer.lua',
+		event = { 'BufReadPost', 'BufNewFile' },
+		config = function ()
+			require'colorizer'.setup {
+				user_default_options = { tailwind = 'both' },
+			}
+			vim.api.nvim_create_autocmd('FileType', {
+				pattern = '*',
+				command = 'ColorizerAttachToBuffer',
+			})
+		end,
+	},
 	{
 		'nvim-neo-tree/neo-tree.nvim',
 		dependencies = { "nvim-lua/plenary.nvim", "nvim-web-devicons", "MunifTanjim/nui.nvim", },
@@ -191,17 +441,15 @@ require'lazy'.setup({
 			{ '<leader>e', '<cmd>Neotree toggle<cr>' },
 			{ '<leader>E', '<cmd>Neotree focus<cr>' }
 		},
-		opts = {
-			disable_netrw = true,
-		}
+		opts = { disable_netrw = true }
 	},
 	{
 		'nvim-lualine/lualine.nvim',
-		event = 'BufWinEnter',
+		event = { 'BufReadPost', 'BufNewFile' },
 		dependencies = { 'f-person/git-blame.nvim' },
 		config = function()
 			-- vim.o.shortmess = vim.o.shortmess .. 'S';
-			local git_blame = require('gitblame')
+			local git_blame = require'gitblame'
 
 			require'lualine'.setup {
 				sections = {
@@ -211,7 +459,10 @@ require'lazy'.setup({
 					},
 					lualine_c = {},
 					lualine_x = {
-						{ git_blame.get_current_blame_text, cond = git_blame.is_blame_text_available }
+						{
+							git_blame.get_current_blame_text,
+							cond = git_blame.is_blame_text_available,
+						}
 					},
 					lualine_y = {
 						'branch',
@@ -229,7 +480,12 @@ require'lazy'.setup({
 			vim.api.nvim_set_hl(0, 'lualine_c_inactive', { fg='#666677' })
 		end
 	},
-	{ 'folke/which-key.nvim', cmd = 'WhichKey' },
+	-- NOTE: use :Telescope keymaps instead
+	-- { 'folke/which-key.nvim', cmd = 'WhichKey' },
+}, {
+	install = {
+		colorscheme = { 'kanagawa' }
+	}
 })
 
 -- Below you'll find the land of the lost

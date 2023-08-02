@@ -26,6 +26,8 @@ maps.n['<leader>br'] = '<cmd>echo "test"<CR>'
 maps.o['{'] = 'V{'
 maps.o['}'] = 'V}'
 maps.n['<leader>G'] = '<cmd>Git<CR>';
+-- maps.n['n'] = 'nzzzv'
+-- maps.n['N'] = 'Nzzzv'
 -- Repeat over multiple lines
 maps.v['.'] = { ':norm .<CR>', noremap = true }
 
@@ -72,6 +74,8 @@ maps.n['<leader>fh'] = '<cmd>Telescope help_tags<cr>'
 maps.n['<leader>fr'] = '<cmd>Telescope registers<cr>'
 maps.n['<leader>fs'] = '<cmd>Telescope spell_suggest<cr>'
 maps.n['<leader>fd'] = '<cmd>Telescope diagnostics<cr>'
+maps.n['<leader>fu'] = '<cmd>Telescope undo<cr>'
+maps.n['<leader>gr'] = '<cmd>Telescope repo list<cr>'
 maps.n['<leader>ft'] = '<cmd>TodoTelescope<cr>'
 maps.n['<leader>so'] = function() require("telescope.builtin").lsp_document_symbols() end
 maps.n['gr'] = '<cmd>Telescope lsp_references<cr>'

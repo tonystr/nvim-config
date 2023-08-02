@@ -1,45 +1,9 @@
 local env = require('env')
 
-vim.api.nvim_create_autocmd('FileType', {
-	pattern = '*',
-	command = 'ColorizerAttachToBuffer',
-})
-
--- Treesitter coniguration
-
-local tsi = require'nvim-treesitter.install'
-tsi.compilers = { "zig", "clang", "gcc" }
-tsi.prefer_git = false
-
-require'nvim-treesitter.configs'.setup {
-	ensure_installed = {},
-	sync_install = false,
-	auto_install = true,
-	ignore_install = { "markdown" }, -- F U Markdown developer!! it doesn't work
-	highlight = {
-		enable = true,
-		disable = { "markdown" },
-		additional_vim_regex_highlighting = false,
-	},
-	indent = {
-		enable = true,
-	},
-	incremental_selection = {
-		enable = true,
-		keymaps = {
-			init_selection = '<C-n>',
-			node_incremental = '<C-n>',
-			scope_incremental = '<C-m>',
-			node_decremental = '<C-r>',
-		},
-	},
-}
-
 -- LSP configuration
 
-local m = require'mason-lspconfig'
-
-m.setup {
+--[[ local mason = require'mason-lspconfig'
+mason.setup {
 	ensure_installed = { 'tsserver', 'volar' },
 }
 
@@ -51,20 +15,19 @@ capabilities.textDocument.foldingRange = {
 	lineFoldingOnly = true,
 }
 capabilities.textDocument.completion.completionItem.snippetSupport = true
-local illuminate = require'illuminate'
-illuminate.configure {
-	modes_allowlist = { 'n' },
-	filetypes_denylist = { 'help', 'qf', 'fugitive', 'vimwiki' },
-	min_count_to_highlight = 2,
-}
-m.setup_handlers {
+-- local illuminate = require'illuminate'
+mason.setup_handlers {
 	function (server)
-		require'lspconfig'[server].setup{
+		require'lspconfig'[server].setup {
 			capabilities = capabilities,
-			on_attach = function(client)
-				illuminate.on_attach(client)
-			end,
+			-- on_attach = function(client)
+			-- 	illuminate.on_attach(client)
+			-- end,
 			settings = {
+				json = {
+					schemas = require'schemastore'.json.schemas(),
+					validate = { enable = true },
+				},
 				Lua = {
 					runtime = {
 						version = 'LuaJIT',
@@ -82,6 +45,7 @@ m.setup_handlers {
 				}
 			},
 			init_options = {
+				hostInfo = 'neovim',
 				typescript = {
 					tsdk = env.tsdk
 				}
@@ -89,8 +53,7 @@ m.setup_handlers {
 		}
 	end
 }
-require'ufo'.setup()
-
+]]
 -- require'lspconfig'.volar.setup{
 --   init_options = {
 --     typescript = {
@@ -250,6 +213,11 @@ autocmd BufNewFile ~/OneDrive/vimwiki/startups/[a-zA-Z0-9\-_]*.md :silent 0!echo
 autocmd BufNewFile ~/OneDrive/vimwiki/startups/[a-zA-Z0-9\-_]*.md :silent r ~/OneDrive/vimwiki/startups/template.md
 
 autocmd User TelescopePreviewerLoaded setlocal number
+
+autocmd BufEnter * lua if vim.bo.filetype == '' then vim.cmd'Startup | norm j' end
+
+autocmd InsertEnter * :set nohlsearch
+autocmd InsertLeave * :set hlsearch
 
 function! SynStack()
   if !exists("*synstack")

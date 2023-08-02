@@ -3,7 +3,7 @@ local hi = vim.api.nvim_set_hl
 -- Tony's special highlighting based on kanagawa
 vim.cmd.colorscheme('kanagawa')
 -- hi(0, 'LineNr', { bg='none', fg='#54546D' })
-hi(0, 'CursorLine', {})
+-- hi(0, 'CursorLine', {})
 hi(0, 'CursorLineNR', { ctermfg='yellow', fg='#C8C093' })
 hi(0, 'EndOfBuffer', { ctermfg='black', fg='#1f1f28' })
 hi(0, 'Comment', { fg='#666677', italic=true })
@@ -15,18 +15,21 @@ hi(0, 'TelescopeSelection', { bg='none', fg='#ffffff' })
 hi(0, 'MoreMsg', { bg='none', fg='#ffd282' })
 hi(0, 'IndentBlanklineContextChar', { fg='#4a4a58' })
 hi(0, 'IndentBlanklineChar', { fg='#2f2f3f' })
-hi(0, 'Pmenu', { bg='#2a2a37' })
-hi(0, 'PmenuSel', { bg='#c0a36e', fg='#000000' })
-hi(0, 'PmenuThumb', { bg='#3c3c4a' })
+-- hi(0, 'Pmenu', { bg='#2a2a37' })
+-- hi(0, 'PmenuSel', { bg='#c0a36e', fg='#000000' })
+-- hi(0, 'PmenuThumb', { bg='#3c3c4a' })
 hi(0, 'lualine_c_normal', { fg='#666677' })
 hi(0, 'lualine_c_inactive', { fg='#666677' })
 hi(0, 'GitSignsUntracked', { fg='#8899ff' })
+hi(0, 'StatusLine', { fg='#666677' })
 
 -- Visual & search
-hi(0, "Visual", { bg = "#363646" })
-hi(0, "Search", { bg = "#363646" })
+hi(0, 'Visual', { bg = '#363646' })
+hi(0, 'Search', { bg = '#363646' })
 hi(0, 'IncSearch', { bg='#54546d', fg='#C8C093', underline=false })
 hi(0, 'CurSearch', { bg='#54546d', fg='#C8C093', underline=false })
+
+hi(0, 'UfoCursorFoldedline', { bg='#363646' })
 
 -- Illuminated word highlight
 hi(0, 'LspReferenceRead',     { bg='#363646', underline=false })
