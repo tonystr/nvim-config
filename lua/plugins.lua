@@ -39,6 +39,16 @@ require'lazy'.setup({
 	},
 
 	-- Misc
+	{
+		'MaximilianLloyd/tw-values.nvim',
+		keys = {
+			{ '<leader>sv', "<cmd>TWValues<cr>", desc = "Show tailwind CSS values" },
+		},
+		opts = {
+			border = 'rounded', -- Valid window border style,
+			show_unknown_classes = true -- Shows the unknown classes popup
+		}
+	},
 	{ 'kylechui/nvim-surround', keys = { 'ys', 'ds', 'cs' }, version = '*', config = true },
 	{
 		'nvim-treesitter/nvim-treesitter',
@@ -74,6 +84,11 @@ require'lazy'.setup({
 			}
 		end
 	},
+	{
+		'nvim-treesitter/nvim-treesitter-context',
+		cmd = { 'TSContextEnable', 'TSContextToggle', 'TSContextDisable' },
+		config = true,
+	},
 	{ 'nvim-treesitter/playground', cmd = { 'TSNodeUnderCursor', 'TSHighlightCapturesUnderCursor', 'TSPlaygroundToggle' }, config = function()
 		require'nvim-treesitter.configs'.setup {
 			playground = { enable = true },
@@ -81,7 +96,7 @@ require'lazy'.setup({
 	end },
 	{ 'numToStr/Comment.nvim', keys = { 'gc', 'gq' }, config = true },
 	{ 'tpope/vim-repeat', keys = { '.' } },
-	{ 'github/copilot.vim', event = { 'BufReadPost', 'BufNewFile' } },
+	{ 'github/copilot.vim', event = 'InsertEnter' },
 	{ 'junegunn/vim-easy-align', keys = {
 		{ 'ga', '<Plug>(EasyAlign)', mode = { 'n', 'v' } },
 	}},
@@ -174,6 +189,7 @@ require'lazy'.setup({
 					}
 				},
 				vim.lsp.protocol.make_client_capabilities(),
+				require'cmp_nvim_lsp'.default_capabilities(),
 				-- has_cmp and cmp_nvim_lsp.default_capabilities() or {},
 				opts.capabilities or {}
 			)
@@ -220,29 +236,38 @@ require'lazy'.setup({
 			min_count_to_highlight = 2,
 		}
 	end },
+	{ 'rafamadriz/friendly-snippets', lazy = true },
+	{
+		'L3MON4D3/LuaSnip',
+		version = '2.*',
+		build = 'make install_jsregexp',
+		dependencies = { 'saadparwaiz1/cmp_luasnip' },
+		lazy = true,
+	},
 	{ 'hrsh7th/nvim-cmp',
 		event = 'InsertEnter',
 		dependencies = {
-			{ 'hrsh7th/cmp-nvim-lsp'    },
-			{ 'hrsh7th/cmp-buffer'      },
-			{ 'hrsh7th/cmp-path'        },
-			{ 'hrsh7th/cmp-cmdline'     },
-			{ 'hrsh7th/cmp-vsnip'       },
-			{ 'hrsh7th/vim-vsnip'       },
-			{ 'hrsh7th/vim-vsnip-integ' },
-			{ 'roobert/tailwindcss-colorizer-cmp.nvim' },
+			{ 'hrsh7th/cmp-nvim-lsp' },
+			{ 'hrsh7th/cmp-buffer'   },
+			-- { 'hrsh7th/cmp-path'     },
+			-- { 'hrsh7th/cmp-cmdline'  },
+			{ 'L3MON4D3/LuaSnip'     },
+			-- { 'roobert/tailwindcss-colorizer-cmp.nvim' },
 		},
 		config = function()
 			local cmp = require'cmp'
-			require'tailwindcss-colorizer-cmp'.setup { color_square_width = 1 }
+			-- require'tailwindcss-colorizer-cmp'.setup { color_square_width = 1 }
+			require('luasnip.loaders.from_vscode').lazy_load();
+
 			cmp.setup {
+
 				formatting = {
 					format = function (entry, item)
-						require'lspkind'.cmp_format({
+						return require'lspkind'.cmp_format({
 							mode = 'symbol', -- show only symbol annotations
 							maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
 						})(entry, item)
-						return require'tailwindcss-colorizer-cmp'.formatter(entry, item)
+						-- return require'tailwindcss-colorizer-cmp'.formatter(entry, item)
 					end
 				},
 				window = {
@@ -256,13 +281,14 @@ require'lazy'.setup({
 				},
 				snippet = {
 					expand = function(args)
-						vim.fn['vsnip#anonymous'](args.body)
+						require'luasnip'.lsp_expand(args.body)
+
 					end,
 				},
 				sources = cmp.config.sources(
 					{
 						{ name = 'nvim_lsp' },
-						{ name = 'vsnip' },
+						{ name = 'luasnip' },
 					},
 					{ { name = 'buffer' } }
 				)
@@ -342,7 +368,7 @@ require'lazy'.setup({
 				layout_config = {
 					vertical = { width = 0.8 }
 				},
-				file_ignore_patterns = { 'collab-onboard/.*' },
+				file_ignore_patterns = { 'collab.embed[/\\]' },
 				mappings = {
 					i = {
 						-- ["<C-CR>"] = 'select_default',
@@ -358,17 +384,17 @@ require'lazy'.setup({
 			},
 		},
 	},
-	{ 'debugloop/telescope-undo.nvim', keys = { '<leader>fu' }, config = function ()
+	{ 'debugloop/telescope-undo.nvim', keys = { { '<leader>fu', '<cmd>Telescope undo<CR>' } }, config = function ()
 		require'telescope'.load_extension'undo'
 	end },
-	{ 'cljoly/telescope-repo.nvim', keys = { { '<leader>gr', '<cmd>Telescope repo list<cr>' } }, config = function ()
+	{ 'cljoly/telescope-repo.nvim', keys = { { '<leader>gr', '<cmd>Telescope repo list<CR>' } }, config = function ()
 		require'telescope'.load_extension'repo'
 	end },
 	-- { 'nvim-telescope/telescope-symbols.nvim', event = 'VeryLazy' },
 	{ 'stevearc/dressing.nvim', event = 'VeryLazy' },
 	{
 		'kevinhwang91/nvim-ufo',
-		event = 'VeryLazy',
+		event = { 'BufReadPost', 'BufNewFile' },
 		dependencies = 'kevinhwang91/promise-async',
 		config = function ()
 			local ufo = require'ufo'
@@ -451,13 +477,31 @@ require'lazy'.setup({
 			-- vim.o.shortmess = vim.o.shortmess .. 'S';
 			local git_blame = require'gitblame'
 
+			local wcFiles = { 'markdown', 'vimwiki', 'txt' }
+
+			function contains(table, number)
+				for key, value in pairs(table) do if value == number then return true end end
+				return false
+			end
+
+			vim.g.showwords = 1
+
+			local function getWords()
+				if (vim.g.showwords == 1 and contains(wcFiles, vim.bo.filetype)) then
+					return tostring(vim.fn.wordcount().words)
+				end
+				return ''
+			end
+
 			require'lualine'.setup {
 				sections = {
 					lualine_b = {
 						'filename',
 						'diagnostics',
 					},
-					lualine_c = {},
+					lualine_c = {
+						{ getWords }
+					},
 					lualine_x = {
 						{
 							git_blame.get_current_blame_text,

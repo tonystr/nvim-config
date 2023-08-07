@@ -23,6 +23,10 @@ hi(0, 'lualine_c_inactive', { fg='#666677' })
 hi(0, 'GitSignsUntracked', { fg='#8899ff' })
 hi(0, 'StatusLine', { fg='#666677' })
 
+hi(0, 'NormalFloat', { bg='none' })
+hi(0, 'FloatBorder', { bg='none', fg='#666677' })
+hi(0, 'FloatTitle', { bg='none', fg='#868697' })
+
 -- Visual & search
 hi(0, 'Visual', { bg = '#363646' })
 hi(0, 'Search', { bg = '#363646' })
@@ -58,6 +62,9 @@ hi(0, 'FlogBranch2',  { fg='#ffcb6b' })
 hi(0, 'FlogBranch3',  { fg='#8899ff' })
 hi(0, 'FlogBranch4',  { fg='#957fb8' })
 hi(0, 'FlogBranch5',  { fg='#c8c093' })
+
+hi(0, 'DiffAdd',  { bg='#103420' })
+hi(0, 'DiffText', { bg='#363646' })
 
 -- Barbar
 hi(0, 'BufferCurrentMod', { fg='#cfcfd0', bg='#2a2a37'  })

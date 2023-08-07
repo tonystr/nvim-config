@@ -19,6 +19,24 @@ vim.g.flog_permanent_default_opts = {
     date = 'relative',
 }
 
+local _border = "rounded"
+
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+	vim.lsp.handlers.hover, {
+		border = _border
+	}
+)
+
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+	vim.lsp.handlers.signature_help, {
+		border = _border
+	}
+)
+
+vim.diagnostic.config{
+	float={border=_border}
+}
+
 -- globals
 vim.g.mapleader = ' '
 vim.g.python3_host_prog = '~/AppData/Local/Programs/Python/Python37-32/python.EXE'
@@ -27,7 +45,10 @@ vim.g.lsp_diagnostics_echo_cursor = 1
 -- vim.g.indent_blankline_show_first_indent_level = false
 vim.g.indent_blankline_show_trailing_blankline_indent = false
 vim.g.polyglot_disabled = { 'vue' }
-vim.g.vimwiki_list = {{ path = '~/OneDrive/vimwiki/', syntax = 'markdown', ext = '.md' }}
+vim.g.vimwiki_list = {
+	{ path = '~/OneDrive/vimwiki/', syntax = 'markdown', ext = '.md' },
+	{ path = '~/OneDrive/work/', syntax = 'markdown', ext = '.md' },
+}
 
 vim.g.splitjoin_html_attributes_bracket_on_new_line = 1
 vim.g.delimitMate_expand_cr = 1

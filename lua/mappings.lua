@@ -18,7 +18,8 @@ maps.i['<S-Enter>'] = '<Enter><Up>'
 maps.n['<C-c>'] = '<Esc>'
 -- maps.n['/'] = '<Esc>/\\v'
 maps.n['<C-/>'] = '<Esc>/'
-maps.n['<leader>fm'] = vim.lsp.buf.format
+maps.n['<leader>fm'] = ':%!prettierd %<CR>' -- vim.lsp.buf.format
+maps.n['<leader>S'] = ':%so<CR>' -- vim.lsp.buf.format
 maps.t['<Esc>'] = '<cmd>ToggleTerm<CR>'
 maps.n['{'] = { '<cmd>keepjump normal! {<CR>', noremap = true }
 maps.n['}'] = { '<cmd>keepjump normal! }<CR>', noremap = true }
@@ -63,7 +64,6 @@ vim.keymap.set('n', '+', function() change_scale_factor(1.10) end)
 vim.keymap.set('n', '-', function() change_scale_factor(1 / 1.10) end)
 
 -- Telescope mappings
--- Find files using Telescope command-line sugar.
 maps.n['<leader>ff'] = '<cmd>Telescope resume<cr>'
 maps.n['<leader>fj'] = '<cmd>Telescope jumplist<cr>'
 maps.n['<C-p>'] = '<cmd>Telescope find_files<cr>'
