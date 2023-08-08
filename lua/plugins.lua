@@ -49,7 +49,7 @@ require'lazy'.setup({
 			show_unknown_classes = true -- Shows the unknown classes popup
 		}
 	},
-	{ 'kylechui/nvim-surround', keys = { 'ys', 'ds', 'cs' }, version = '*', config = true },
+	{ 'kylechui/nvim-surround', keys = { 'ys', 'ds', 'cs', { 'S', mode = 'x' } }, version = '*', config = true },
 	{
 		'nvim-treesitter/nvim-treesitter',
 		event = { 'BufReadPost', 'BufNewFile' },
@@ -96,7 +96,8 @@ require'lazy'.setup({
 	end },
 	{ 'numToStr/Comment.nvim', keys = { 'gc', 'gq' }, config = true },
 	{ 'tpope/vim-repeat', keys = { '.' } },
-	{ 'github/copilot.vim', event = 'InsertEnter' },
+	-- Lazy loading this on insert enter caused tab error (required telescope mappings)
+	{ 'github/copilot.vim' },
 	{ 'junegunn/vim-easy-align', keys = {
 		{ 'ga', '<Plug>(EasyAlign)', mode = { 'n', 'v' } },
 	}},
@@ -368,7 +369,7 @@ require'lazy'.setup({
 				layout_config = {
 					vertical = { width = 0.8 }
 				},
-				file_ignore_patterns = { 'collab.embed[/\\]' },
+				file_ignore_patterns = { '^collab.embed[/\\]' },
 				mappings = {
 					i = {
 						-- ["<C-CR>"] = 'select_default',

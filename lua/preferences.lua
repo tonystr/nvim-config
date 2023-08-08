@@ -1,6 +1,7 @@
 -- Neovide settings ===>  !== ====== ---------
 if vim.g.neovide then
-    vim.o.guifont='CaskaydiaCove Nerd Font:h11:#e-subpixelantialias'
+    vim.o.guifont='CaskaydiaCove Nerd Font:h11.4:#e-subpixelantialias'
+	-- vim.o.guifont='RecMonoLinear Nerd Font:h11.6:#e-subpixelantialias'
 	vim.api.nvim_set_hl(0, 'Normal', { bg = '#1f1f28' })
     vim.g.neovide_refresh_rate = 90
     vim.g.neovide_refresh_rate_idle = 90
