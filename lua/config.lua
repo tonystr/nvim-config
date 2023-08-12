@@ -212,6 +212,10 @@ autocmd BufNewFile ~/OneDrive/vimwiki/diary/[0-9\-]*.md :silent r ~/OneDrive/vim
 autocmd BufNewFile ~/OneDrive/vimwiki/startups/[a-zA-Z0-9\-_]*.md :silent 0!echo \# %:t:r
 autocmd BufNewFile ~/OneDrive/vimwiki/startups/[a-zA-Z0-9\-_]*.md :silent r ~/OneDrive/vimwiki/startups/template.md
 
+" vimwiki work template
+autocmd BufNewFile ~/OneDrive/work/diary/[0-9\-]*.md :silent 0!echo \# %:t:r
+autocmd BufNewFile ~/OneDrive/work/diary/[0-9\-]*.md :silent r ~/OneDrive/work/diary/template.md
+
 autocmd User TelescopePreviewerLoaded setlocal number
 
 autocmd BufEnter * lua if vim.bo.filetype == '' then vim.cmd'Startup | norm j' end
@@ -225,6 +229,18 @@ function! SynStack()
 	  endif
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
+
+fu! SetBang(v) range
+	if a:v == 1
+		normal gv
+	endif
+	let l:t = &shellredir
+	let &shellredir = ">%s\ 2>/dev/tty"
+	let @" = join(systemlist(input("\"!"))," ")[0:-2]
+	let &shellredir = l:t
+endf
+nnoremap "! :cal SetBang(0)<cr>
+xnoremap "! :cal SetBang(1)<cr>
 
 ]])
 

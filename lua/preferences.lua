@@ -1,4 +1,4 @@
--- Neovide settings ===>  !== ====== ---------
+-- Neovide settings ===> !== ====== ---------
 if vim.g.neovide then
     vim.o.guifont='CaskaydiaCove Nerd Font:h11.4:#e-subpixelantialias'
 	-- vim.o.guifont='RecMonoLinear Nerd Font:h11.6:#e-subpixelantialias'
