@@ -40,9 +40,10 @@ require'lazy'.setup({
 
 	-- Misc
 	{
-		'MaximilianLloyd/tw-values.nvim',
+		dir = 'C:/Users/tonys/Documents/git/tw-values.nvim',
 		keys = {
 			{ '<leader>sv', "<cmd>TWValues<cr>", desc = "Show tailwind CSS values" },
+			{ '<leader>sc', "<cmd>TWCopy<cr>", desc = "Copy tailwind CSS values" },
 		},
 		opts = {
 			border = 'rounded', -- Valid window border style,
@@ -108,7 +109,38 @@ require'lazy'.setup({
 		'Wansmer/treesj',
 		keys = { '<Enter>', 'gS', 'gJ' },
 		dependencies = { 'nvim-treesitter/nvim-treesitter' },
-		opts = { max_join_length = 666 },
+		opts = {
+			max_join_length = 666,
+			langs = {
+				vue = {
+					['quoted_attribute_value'] = {
+						both = {
+							enable = function(tsn)
+								return tsn:parent():type() == 'attribute'
+							end,
+						},
+						split = {
+							format_tree = function(tsj)
+								local str = tsj:child('attribute_value')
+								local words = vim.split(str:text(), ' ')
+								tsj:remove_child('attribute_value')
+								for i, word in ipairs(words) do
+									tsj:create_child({ text = word }, i + 1)
+								end
+							end,
+						},
+						join = {
+							format_tree = function(tsj)
+								local str = tsj:child('attribute_value')
+								local node_text = str:text()
+								tsj:remove_child('attribute_value')
+								tsj:create_child({ text = node_text }, 2)
+							end,
+						},
+					},
+				}
+			}
+		},
 		config = function (_, opts)
 			require'treesj'.setup(opts)
 			vim.keymap.set('n', '<Enter>', '<cmd>lua require"treesj".toggle()<CR>')
