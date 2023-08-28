@@ -216,6 +216,10 @@ autocmd BufNewFile ~/OneDrive/vimwiki/startups/[a-zA-Z0-9\-_]*.md :silent r ~/On
 autocmd BufNewFile ~/OneDrive/work/diary/[0-9\-]*.md :silent 0!echo \# %:t:r
 autocmd BufNewFile ~/OneDrive/work/diary/[0-9\-]*.md :silent r ~/OneDrive/work/diary/template.md
 
+" vimwiki entrepreneurship template
+autocmd BufNewFile ~/OneDrive/entrepreneurship/diary/[0-9\-]*.md :silent 0!echo \# %:t:r
+autocmd BufNewFile ~/OneDrive/entrepreneurship/diary/[0-9\-]*.md :silent r ~/OneDrive/entrepreneurship/diary/template.md
+
 autocmd User TelescopePreviewerLoaded setlocal number
 
 autocmd BufEnter * lua if vim.bo.filetype == '' then vim.cmd'Startup | norm j' end

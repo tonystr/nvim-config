@@ -47,8 +47,9 @@ vim.g.lsp_diagnostics_echo_cursor = 1
 vim.g.indent_blankline_show_trailing_blankline_indent = false
 vim.g.polyglot_disabled = { 'vue' }
 vim.g.vimwiki_list = {
-	{ path = '~/OneDrive/vimwiki/', syntax = 'markdown', ext = '.md' },
-	{ path = '~/OneDrive/work/', syntax = 'markdown', ext = '.md' },
+	{ path = '~/OneDrive/vimwiki/',          syntax = 'markdown', ext = '.md' },
+	{ path = '~/OneDrive/work/',             syntax = 'markdown', ext = '.md' },
+	{ path = '~/OneDrive/entrepreneurship/', syntax = 'markdown', ext = '.md' },
 }
 
 vim.g.splitjoin_html_attributes_bracket_on_new_line = 1
