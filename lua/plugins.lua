@@ -404,7 +404,9 @@ require'lazy'.setup({
 				file_ignore_patterns = { '^collab.embed[/\\]' },
 				mappings = {
 					i = {
-						-- ["<C-CR>"] = 'select_default',
+						["<Esc>"] = 'close',
+						["<C-v>"] = false,
+						["<C-Enter>"] = 'select_default',
 						["<C-Down>"] = 'cycle_history_next',
 						["<C-Up>"] = 'cycle_history_prev',
 					},
