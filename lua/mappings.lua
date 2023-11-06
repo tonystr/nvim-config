@@ -28,6 +28,10 @@ maps.n['<leader>br'] = '<cmd>echo "test"<CR>'
 maps.o['{'] = 'V{'
 maps.o['}'] = 'V}'
 maps.n['<leader>G'] = '<cmd>Git<CR>';
+
+maps.n['gA'] = 'g$bEa';
+maps.n['gI'] = 'g^i';
+
 -- maps.n['n'] = 'nzzzv'
 -- maps.n['N'] = 'Nzzzv'
 -- Repeat over multiple lines
@@ -196,8 +200,8 @@ vim.keymap.set('v', 'y', '', {
     expr = true,
 })
 
-maps.n['<leader>p'] = '<cmd>pu<CR>==^'
-maps.n['<leader>P'] = '<cmd>-1pu<CR>==^'
+maps.n['<leader>p'] = '<cmd>pu<CR>=\'[\']^'
+maps.n['<leader>P'] = '<cmd>-1pu<CR>=\'[^'
 
 -- Render maps table into vim keyboard mappings
 for mode, mappings in pairs(maps) do

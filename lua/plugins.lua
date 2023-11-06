@@ -12,6 +12,8 @@ end
 
 vim.opt.runtimepath:prepend(lazypath)
 
+local leet_arg = 'leetcode.nvim';
+
 require'lazy'.setup({
 	-- Theme
 	{
@@ -102,9 +104,12 @@ require'lazy'.setup({
 	{ 'junegunn/vim-easy-align', keys = {
 		{ 'ga', '<Plug>(EasyAlign)', mode = { 'n', 'v' } },
 	}},
-	{ 'lukas-reineke/indent-blankline.nvim', event = { 'BufReadPost', 'BufNewFile' }, opts = {
-		show_current_context = true,
-	} },
+	{
+		'lukas-reineke/indent-blankline.nvim',
+		version = '2.20.7',
+		event = { 'BufReadPost', 'BufNewFile' },
+		opts = { show_current_context = true },
+	},
 	{
 		'Wansmer/treesj',
 		keys = { '<Enter>', 'gS', 'gJ' },
@@ -153,8 +158,25 @@ require'lazy'.setup({
 		{ '<Plug>(emmet-expand-yank)', mode = { 'i', 'n' } },
 	}},
 	{ 'vimwiki/vimwiki', keys = { '<leader>w' } },
+	{
+		'kawre/leetcode.nvim',
+		build = ':TSUpdate html',
+		dependencies = {
+			'nvim-treesitter/nvim-treesitter',
+			'nvim-telescope/telescope.nvim',
+			'nvim-lua/plenary.nvim', -- required by telescope
+			'MunifTanjim/nui.nvim',
+			-- 'rcarriga/nvim-notify',
+			'nvim-web-devicons',
+		},
+		lazy = leet_arg ~= vim.fn.argv()[1],
+		opts = {
+			arg = leet_arg,
+		},
+	},
 
 	-- Lsp
+
 	{ 'williamboman/mason.nvim', config = true, cmd = { 'Mason', 'LspInfo', 'MasonLog' } },
 	{ 'williamboman/mason-lspconfig.nvim' },
 	-- { 'b0o/schemastore.nvim', lazy = true },
@@ -531,17 +553,21 @@ require'lazy'.setup({
 			require'lualine'.setup {
 				sections = {
 					lualine_b = {
-						'filename',
-						'diagnostics',
+						{
+							'filename',
+							file_status = false,
+							newfile_status = true,
+						}
 					},
 					lualine_c = {
-						{ getWords }
-					},
-					lualine_x = {
+						{ getWords },
 						{
 							git_blame.get_current_blame_text,
 							cond = git_blame.is_blame_text_available,
 						}
+					},
+					lualine_x = {
+						'diagnostics',
 					},
 					lualine_y = {
 						'branch',
