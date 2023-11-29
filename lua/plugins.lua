@@ -48,11 +48,16 @@ require'lazy'.setup({
 			{ '<leader>sc', "<cmd>TWCopy<cr>", desc = "Copy tailwind CSS values" },
 		},
 		opts = {
-			border = 'rounded', -- Valid window border style,
-			show_unknown_classes = true -- Shows the unknown classes popup
+			border = 'rounded',
+			show_unknown_classes = true
 		}
 	},
-	{ 'kylechui/nvim-surround', keys = { 'ys', 'ds', 'cs', { 'S', mode = 'x' } }, version = '*', config = true },
+	{
+		'kylechui/nvim-surround',
+		keys = { 'ys', 'ds', 'cs', { 'S', mode = 'x' } },
+		version = '*',
+		config = true,
+	},
 	{
 		'nvim-treesitter/nvim-treesitter',
 		event = { 'BufReadPost', 'BufNewFile' },
@@ -382,7 +387,7 @@ require'lazy'.setup({
 		},
 		cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewToggleFiles', 'DiffviewFileHistory', 'DiffviewFocusFiles', 'DiffviewLog', 'DiffviewRefresh', },
 	},
-	{ 'rbong/vim-flog', dependencies = { 'fugitive' }, cmd = { 'Flog', 'Flogsplit', 'Floggit' } },
+	{ 'rbong/vim-flog', dependencies = { 'vim-fugitive' }, cmd = { 'Flog', 'Flogsplit', 'Floggit' } },
 
 	-- UI
 	{ 'nvim-tree/nvim-web-devicons', lazy = true },
@@ -415,7 +420,7 @@ require'lazy'.setup({
 	{
 		'nvim-telescope/telescope.nvim',
 		cmd = 'Telescope',
-		version = '0.1.0',
+		version = '0.1.4',
 		dependencies = { 'nvim-lua/plenary.nvim' },
 		opts = {
 			defaults = {
@@ -423,7 +428,10 @@ require'lazy'.setup({
 				layout_config = {
 					vertical = { width = 0.8 }
 				},
-				file_ignore_patterns = { '^collab.embed[/\\]' },
+				file_ignore_patterns = {
+					'^collab.embed[/\\]',
+					'%.lnk$'
+				},
 				mappings = {
 					i = {
 						["<Esc>"] = 'close',
@@ -536,15 +544,15 @@ require'lazy'.setup({
 
 			local wcFiles = { 'markdown', 'vimwiki', 'txt' }
 
-			function contains(table, number)
-				for key, value in pairs(table) do if value == number then return true end end
+			function Contains(table, number)
+				for _, value in pairs(table) do if value == number then return true end end
 				return false
 			end
 
 			vim.g.showwords = 1
 
 			local function getWords()
-				if (vim.g.showwords == 1 and contains(wcFiles, vim.bo.filetype)) then
+				if (vim.g.showwords == 1 and Contains(wcFiles, vim.bo.filetype)) then
 					return tostring(vim.fn.wordcount().words)
 				end
 				return ''

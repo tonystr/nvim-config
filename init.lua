@@ -10,6 +10,7 @@ let $ENV='~\AppData\Local\nvim\lua\env.lua'
 let $PLUGINS='~\AppData\Local\nvim\lua\plugins.lua'
 let $STARTUPTHEME='~\AppData\Local\nvim\lua\startup\themes\my_theme.lua'
 let $VIMWIKICONFIG='~\AppData\Local\nvim\ftplugin\vimwiki.vim'
+let $PWD='~\Documents\git\'
 ]])
 
 require'preferences'

@@ -1,5 +1,7 @@
 local env = require('env')
 
+-- vim.g.formatprg = 'prettier --parser typescript --stdin-path %';
+
 -- LSP configuration
 
 --[[ local mason = require'mason-lspconfig'
@@ -168,7 +170,7 @@ vim.g.gitblame_message_when_no_repo = ' No git repository found'
 vim.g.gitblame_date_format = '%r'
 
 -- Rooting
-local root_names = { '.git', 'package.json', 'node_modules', 'yarn.lock' }
+local root_names = { '.git', 'package.json', 'node_modules', 'yarn.lock', '.rootfile' }
 local root_cache = {}
 
 local set_root = function()

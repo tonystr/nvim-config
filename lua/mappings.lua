@@ -3,7 +3,8 @@ local maps = { i = {}, n = {}, v = {}, t = {}, x = {}, c = {}, o = {}, [''] = {}
 -- Key mappings
 maps['']['<space>'] = '<nop>'
 maps.n['<leader>of'] = '<cmd>call File_manager()<CR>'
-maps.n['<leader>ot'] = '<cmd>silent !wt -d .<CR>'
+maps.n['<leader>ot'] = '<cmd>silent !wt -d %:h<CR>'
+maps.n['<leader>oT'] = '<cmd>silent !wt -d .<CR>'
 maps.n['<C-t>'] = '<cmd>tabnew<CR>'
 maps.n['gt'] = '<cmd>tabn<CR>'
 maps.n['gT'] = '<cmd>tabp<CR>'
@@ -32,6 +33,20 @@ maps.n['<leader>G'] = '<cmd>Git<CR>';
 maps.n['gA'] = 'g$bEa';
 maps.n['gI'] = 'g^i';
 
+maps.n['g?'] = '<cmd>let @/ = "\\\\<n\\\\>"<CR>N';
+maps.n['g/'] = '<cmd>let @/ = "\\\\<n\\\\>"<CR>n';
+
+-- Quickfix list
+maps.n[']q'] = '<cmd>cnext<CR>';
+maps.n['[q'] = '<cmd>cprev<CR>';
+maps.n[']Q'] = '<cmd>cfirst<CR>';
+maps.n['[Q'] = '<cmd>clast<CR>';
+
+maps.n[']l'] = '<cmd>lnext<CR>';
+maps.n['[l'] = '<cmd>lprev<CR>';
+maps.n[']L'] = '<cmd>lfirst<CR>';
+maps.n['[L'] = '<cmd>llast<CR>';
+
 -- maps.n['n'] = 'nzzzv'
 -- maps.n['N'] = 'Nzzzv'
 -- Repeat over multiple lines
@@ -48,8 +63,8 @@ maps.n['<leader>L'] = '<cmd>silent! g/^<style/<CR>jzt<cmd>nohlsearch<CR>';
 
 -- treesj splitjoin
 maps.n['<Enter>'] = function() require'treesj'.toggle() end
-maps.n['gS'] = function() require'treesj'.split() end
-maps.n['gJ'] = function() require'treesj'.join() end
+-- maps.n['gS'] = function() require'treesj'.split() end
+-- maps.n['gJ'] = function() require'treesj'.join() end
 
 -- Execute macro over visual range  TODO: lua implementation
 vim.cmd[[
@@ -93,6 +108,7 @@ maps.n['<leader>gb'] = '<cmd>Telescope git_branches<cr>'
 maps.n['<leader>gB'] = '<cmd>GitBlameToggle<cr>'
 
 -- LSP key mappings
+maps.n['<leader>lr'] = '<cmd>LspRestart<cr>'
 maps.n['gd'] = function() vim.lsp.buf.definition() end
 maps.n['gD'] = function() vim.lsp.buf.declaration() end
 maps.n['gi'] = function() vim.lsp.buf.implementation() end
@@ -148,6 +164,10 @@ maps.n['<A-0>'] = '<Cmd>BufferLast<CR>'
 -- maps.n['<A-p>'] = '<Cmd>BufferPin<CR>'
 -- Close buffer
 maps.n['<A-w>'] = '<Cmd>BufferDelete<CR>'
+maps.n['<A-W>'] = '<Cmd>BufferWipeout<CR>'
+maps.n['<A-o>'] = '<Cmd>BufferCloseAllButCurrent<CR>'
+maps.n['<A-e>'] = '<Cmd>BufferDelete #<CR>'
+maps.n['<A-r>'] = '<Cmd>BufferRestore<CR>'
 -- Sort automatically by...
 -- maps.n['<leader>bb'] = '<Cmd>BufferOrderByBufferNumber<CR>'
 -- maps.n['<leader>bd'] = '<Cmd>BufferOrderByDirectory<CR>'
