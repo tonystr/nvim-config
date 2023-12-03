@@ -30,6 +30,9 @@ maps.o['{'] = 'V{'
 maps.o['}'] = 'V}'
 maps.n['<leader>G'] = '<cmd>Git<CR>';
 
+maps.v['I'] = '<C-q>I';
+maps.v['A'] = '<C-q>A';
+
 maps.n['gA'] = 'g$bEa';
 maps.n['gI'] = 'g^i';
 
@@ -165,7 +168,7 @@ maps.n['<A-0>'] = '<Cmd>BufferLast<CR>'
 -- Close buffer
 maps.n['<A-w>'] = '<Cmd>BufferDelete<CR>'
 maps.n['<A-W>'] = '<Cmd>BufferWipeout<CR>'
-maps.n['<A-o>'] = '<Cmd>BufferCloseAllButCurrent<CR>'
+maps.n['<A-o>'] = '<C-w>o<Cmd>BufferCloseAllButCurrent<CR>'
 maps.n['<A-e>'] = '<Cmd>BufferDelete #<CR>'
 maps.n['<A-r>'] = '<Cmd>BufferRestore<CR>'
 -- Sort automatically by...

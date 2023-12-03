@@ -1,68 +1,8 @@
 local env = require('env')
 
+-- vim.opt.statuscolumn = "%s %{foldlevel(v:lnum) <= foldlevel(v:lnum-1) ? ' ' : (foldclosed(v:lnum) == -1 ? '' : '')} %{v:relnum ? v:relnum : v:lnum} "
+
 -- vim.g.formatprg = 'prettier --parser typescript --stdin-path %';
-
--- LSP configuration
-
---[[ local mason = require'mason-lspconfig'
-mason.setup {
-	ensure_installed = { 'tsserver', 'volar' },
-}
-
-local capabilities = require'cmp_nvim_lsp'.default_capabilities(
-	vim.lsp.protocol.make_client_capabilities()
-)
-capabilities.textDocument.foldingRange = {
-	dynamicRegistration = false,
-	lineFoldingOnly = true,
-}
-capabilities.textDocument.completion.completionItem.snippetSupport = true
--- local illuminate = require'illuminate'
-mason.setup_handlers {
-	function (server)
-		require'lspconfig'[server].setup {
-			capabilities = capabilities,
-			-- on_attach = function(client)
-			-- 	illuminate.on_attach(client)
-			-- end,
-			settings = {
-				json = {
-					schemas = require'schemastore'.json.schemas(),
-					validate = { enable = true },
-				},
-				Lua = {
-					runtime = {
-						version = 'LuaJIT',
-					},
-					diagnostics = {
-						globals = {
-							'vim',
-							'describe',
-							'it',
-						}
-					},
-					telemetry = {
-						enable = false,
-					}
-				}
-			},
-			init_options = {
-				hostInfo = 'neovim',
-				typescript = {
-					tsdk = env.tsdk
-				}
-			}
-		}
-	end
-}
-]]
--- require'lspconfig'.volar.setup{
---   init_options = {
---     typescript = {
---       tsdk = env.tsdk
---     }
---   }
--- }
 
 local signs = { Error = "", Warn = "", Hint = "", Info = "" }
 for type, icon in pairs(signs) do
@@ -102,6 +42,7 @@ function Enter()
 	if char == '{' then
 		local nextchar = line:sub(col, col)
 		local afternextchar = line:sub(col + 1, col + 1)
+
 		-- Abort if mid-line
 		if afternextchar ~= '' then
 			return '<CR>'
@@ -110,6 +51,14 @@ function Enter()
 			return '<CR><C-o>O'
 		end
 		return '<CR>}<C-o>O'
+	end
+
+	if char == '>' then
+		local nextchars = line:sub(col, col + 1)
+
+		if nextchars == '</' then
+			return '<CR><C-o>O'
+		end
 	end
 
 	return '<CR>'

@@ -42,6 +42,41 @@ require'lazy'.setup({
 
 	-- Misc
 	{
+		'monaqa/dial.nvim',
+		keys = { '<C-a>', 'g<C-a>', '<C-x>', 'g<C-x>', },
+		config = function ()
+			local config = require'dial.config'
+			local augend = require'dial.augend'
+
+			config.augends:register_group {
+				default = {
+					augend.integer.alias.decimal,
+					augend.integer.alias.hex,
+					augend.integer.alias.octal,
+					augend.integer.alias.binary,
+					augend.date.alias['%Y/%m/%d'],
+					augend.date.alias['%Y-%m-%d'],
+					augend.date.alias['%H:%M'],
+					augend.constant.alias.bool,
+					augend.semver.alias.semver,
+				}
+			}
+
+			local dmap = require'dial.map'
+			local manip = dmap.manipulate
+
+			vim.keymap.set("n", "<C-a>",  function() manip("increment", "normal") end)
+			vim.keymap.set("n", "<C-x>",  function() manip("decrement", "normal") end)
+			vim.keymap.set("n", "g<C-a>", function() manip("increment", "gnormal") end)
+			vim.keymap.set("n", "g<C-x>", function() manip("decrement", "gnormal") end)
+			vim.keymap.set("v", "<C-a>",  function() manip("increment", "visual") end)
+			vim.keymap.set("v", "<C-x>",  function() manip("decrement", "visual") end)
+			vim.keymap.set("v", "g<C-a>", function() manip("increment", "gvisual") end)
+			vim.keymap.set("v", "g<C-x>", function() manip("decrement", "gvisual") end)
+		end
+	},
+	{ 'christoomey/vim-sort-motion', keys = { 'gs' } },
+	{
 		dir = 'C:/Users/tonys/Documents/git/tw-values.nvim',
 		keys = {
 			{ '<leader>sv', "<cmd>TWValues<cr>", desc = "Show tailwind CSS values" },
@@ -276,6 +311,12 @@ require'lazy'.setup({
 				handlers = { setup },
 			})
 		end
+	},
+	{
+		'ray-x/lsp_signature.nvim',
+		event = 'VeryLazy',
+		opts = {},
+		config = true
 	},
 	{ -- NOTE: I don't really use this? I just use Telescope diagnostics
 		'folke/trouble.nvim',
