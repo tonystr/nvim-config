@@ -160,6 +160,7 @@ endfunc
 " vimwiki diary template
 autocmd BufNewFile ~/OneDrive/vimwiki/diary/[0-9\-]*.md :silent 0!echo \# %:t:r
 autocmd BufNewFile ~/OneDrive/vimwiki/diary/[0-9\-]*.md :silent r ~/OneDrive/vimwiki/diary/template.md
+autocmd BufNewFile ~/OneDrive/vimwiki/diary/[0-9\-]*.md :norm jwv$
 autocmd BufNewFile ~/OneDrive/vimwiki/startups/[a-zA-Z0-9\-_]*.md :silent 0!echo \# %:t:r
 autocmd BufNewFile ~/OneDrive/vimwiki/startups/[a-zA-Z0-9\-_]*.md :silent r ~/OneDrive/vimwiki/startups/template.md
 
@@ -197,5 +198,11 @@ endf
 nnoremap "! :cal SetBang(0)<cr>
 xnoremap "! :cal SetBang(1)<cr>
 
+au BufRead,BufNewFile *.png set filetype=png
+au BufRead,BufNewFile *.jpg set filetype=jpg
+au BufRead,BufNewFile *.jpeg set filetype=jpeg
+au BufRead,BufNewFile *.gif set filetype=gif
+au BufRead,BufNewFile *.bmp set filetype=bmp
+au BufRead,BufNewFile *.ico set filetype=ico
 ]])
 

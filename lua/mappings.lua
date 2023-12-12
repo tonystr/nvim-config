@@ -11,8 +11,11 @@ maps.n['gT'] = '<cmd>tabp<CR>'
 maps.n['<C-l>'] = '<cmd>nohlsearch<CR>'
 maps.n['<Esc>'] = '<cmd>nohlsearch<CR>'
 maps.n['<C-z>'] = '<Nop>'
+
+
 maps.n['<C-s>'] = '<cmd>w<CR>'
 maps.i['<C-s>'] = '<Esc><cmd>w<CR>'
+
 vim.keymap.set({ 'i', 'c' }, '<C-Backspace>', '<C-w>')
 -- maps.i['<C-Backspace>'] = '<C-w>'
 -- maps.c['<C-Backspace>'] = '<C-w>'
@@ -22,7 +25,7 @@ maps.n['<C-c>'] = '<Esc>'
 maps.n['<C-/>'] = '<Esc>/'
 maps.n['<leader>fm'] = '<cmd>%!prettierd %<CR>' -- vim.lsp.buf.format
 maps.n['<leader>S'] = ':%so<CR>' -- vim.lsp.buf.format
-maps.t['<Esc>'] = '<cmd>ToggleTerm<CR>'
+maps.t['<Esc>'] = '<C-\\><C-n>'
 maps.n['{'] = { '<cmd>keepjump normal! {<CR>', noremap = true }
 maps.n['}'] = { '<cmd>keepjump normal! }<CR>', noremap = true }
 maps.n['<leader>br'] = '<cmd>echo "test"<CR>'
@@ -74,13 +77,13 @@ vim.cmd[[
 xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
 
 function! ExecuteMacroOverVisualRange()
-  echo "@".getcmdline()
-  execute ":'<,'>normal @".nr2char(getchar())
+echo "@".getcmdline()
+execute ":'<,'>normal @".nr2char(getchar())
 endfunction
 ]]
 
 local change_scale_factor = function(delta)
-  vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
+	vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
 end
 
 vim.keymap.set('n', '<C-=>', function() change_scale_factor(1.10) end)
@@ -181,9 +184,9 @@ maps.n['<A-r>'] = '<Cmd>BufferRestore<CR>'
 vim.keymap.set({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
 vim.keymap.set({'o', 'x'}, 'ah', ':<C-U>Gitsigns select_hunk<CR>')
 
--- Objectively correct clipboard mappings (thx: https://ezhik.me/blog/vim-clipboard/)
-maps.n['<C-v>'] = '"+p'
-maps.v['<C-v>'] = '"+p'
+maps.n['<C-v>'] = '"+<cmd>pu<CR>=\'[\']^'
+maps.n['<leader><C-v>'] = '"+<cmd>-1pu<CR>=\'[\']^'
+maps.v['<C-v>'] = '"+p=\'[\']^'
 maps.i['<C-v>'] = '<C-r>+'
 maps.c['<C-v>'] = '<C-r>+'
 -- maps['']['""y'] = '""y'

@@ -42,6 +42,23 @@ require'lazy'.setup({
 
 	-- Misc
 	{
+		'Wansmer/sibling-swap.nvim',
+		requires = { 'nvim-treesitter' },
+		keys = { '<C-,>', '<C-.>', '<leader>,', '<leader>.' },
+		config = true,
+	},
+	{
+		'm4xshen/hardtime.nvim',
+		event = { 'CursorMoved', 'InsertEnter', 'ModeChanged' },
+		dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
+		config = true,
+	},
+	{
+		'gukz/ftFT.nvim',
+		keys = { 'f', 't', 'F', 'T' },
+		config = true,
+	},
+	{
 		'monaqa/dial.nvim',
 		keys = { '<C-a>', 'g<C-a>', '<C-x>', 'g<C-x>', },
 		config = function ()
@@ -63,16 +80,22 @@ require'lazy'.setup({
 			}
 
 			local dmap = require'dial.map'
-			local manip = dmap.manipulate
 
-			vim.keymap.set("n", "<C-a>",  function() manip("increment", "normal") end)
-			vim.keymap.set("n", "<C-x>",  function() manip("decrement", "normal") end)
-			vim.keymap.set("n", "g<C-a>", function() manip("increment", "gnormal") end)
-			vim.keymap.set("n", "g<C-x>", function() manip("decrement", "gnormal") end)
-			vim.keymap.set("v", "<C-a>",  function() manip("increment", "visual") end)
-			vim.keymap.set("v", "<C-x>",  function() manip("decrement", "visual") end)
-			vim.keymap.set("v", "g<C-a>", function() manip("increment", "gvisual") end)
-			vim.keymap.set("v", "g<C-x>", function() manip("decrement", "gvisual") end)
+			local function dialMap(action, mode)
+				return function()
+					dmap.manipulate(action, mode)
+					vim.cmd'write'
+				end
+			end
+
+			vim.keymap.set("n", "<C-a>",  dialMap("increment", "normal"))
+			vim.keymap.set("n", "<C-x>",  dialMap("decrement", "normal"))
+			vim.keymap.set("n", "g<C-a>", dialMap("increment", "gnormal"))
+			vim.keymap.set("n", "g<C-x>", dialMap("decrement", "gnormal"))
+			vim.keymap.set("v", "<C-a>",  dialMap("increment", "visual"))
+			vim.keymap.set("v", "<C-x>",  dialMap("decrement", "visual"))
+			vim.keymap.set("v", "g<C-a>", dialMap("increment", "gvisual"))
+			vim.keymap.set("v", "g<C-x>", dialMap("decrement", "gvisual"))
 		end
 	},
 	{ 'christoomey/vim-sort-motion', keys = { 'gs' } },
@@ -137,10 +160,26 @@ require'lazy'.setup({
 			playground = { enable = true },
 		}
 	end },
-	{ 'numToStr/Comment.nvim', keys = { 'gc', 'gq' }, config = true },
+	{
+		'numToStr/Comment.nvim',
+		keys = { 'gc', 'gb' },
+		dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring' },
+		config = function()
+			require'Comment'.setup {
+				pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
+			}
+		end,
+	},
+	{
+		'JoosepAlviste/nvim-ts-context-commentstring',
+		lazy = true,
+		opts = {
+			enable_autocmd = false,
+		}
+	},
 	{ 'tpope/vim-repeat', keys = { '.' } },
 	-- Lazy loading this on insert enter caused tab error (required telescope mappings)
-	{ 'github/copilot.vim' },
+	{ 'github/copilot.vim', event = 'InsertEnter' },
 	{ 'junegunn/vim-easy-align', keys = {
 		{ 'ga', '<Plug>(EasyAlign)', mode = { 'n', 'v' } },
 	}},
@@ -358,12 +397,11 @@ require'lazy'.setup({
 		config = function()
 			local cmp = require'cmp'
 			-- require'tailwindcss-colorizer-cmp'.setup { color_square_width = 1 }
-			require('luasnip.loaders.from_vscode').lazy_load();
 
 			cmp.setup {
-
 				formatting = {
 					format = function (entry, item)
+						require'luasnip.loaders.from_vscode'.lazy_load();
 						return require'lspkind'.cmp_format({
 							mode = 'symbol', -- show only symbol annotations
 							maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
@@ -383,7 +421,6 @@ require'lazy'.setup({
 				snippet = {
 					expand = function(args)
 						require'luasnip'.lsp_expand(args.body)
-
 					end,
 				},
 				sources = cmp.config.sources(
@@ -414,8 +451,11 @@ require'lazy'.setup({
 		vim.keymap.set('n', '<leader>bd', gitsigns.diffthis)
 		vim.keymap.set('n', '<leader>bD', function() gitsigns.diffthis('~') end)
 		vim.keymap.set('n', '<leader>td', gitsigns.toggle_deleted)
-	end},
-	{ 'f-person/git-blame.nvim' },
+		vim.keymap.set('n', '<leader>th', gitsigns.preview_hunk_inline)
+		vim.keymap.set('n', '<leader>hr', gitsigns.reset_hunk)
+		vim.keymap.set('v', '<leader>hr', function() gitsigns.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+	end },
+	{ 'f-person/git-blame.nvim', lazy = true },
 	{
 		'sindrets/diffview.nvim',
 		opts = {
@@ -431,6 +471,18 @@ require'lazy'.setup({
 	{ 'rbong/vim-flog', dependencies = { 'vim-fugitive' }, cmd = { 'Flog', 'Flogsplit', 'Floggit' } },
 
 	-- UI
+	{ 'm00qek/baleia.nvim', tag = 'v1.3.0', lazy = true },
+	{
+		'samodostal/image.nvim',
+		ft = { 'png', 'jpg', 'jpeg', 'gif', 'bmp', 'ico' },
+		dependencies = { 'nvim-lua/plenary.nvim', 'm00qek/baleia.nvim' },
+		opts = {
+			render = {
+				foreground_color = true,
+				background_color = true,
+			}
+		},
+	},
 	{ 'nvim-tree/nvim-web-devicons', lazy = true },
 	{ 'folke/zen-mode.nvim', cmd = { 'ZenMode' }, config = true },
 	{ 'stevearc/oil.nvim', config = true, cmd = 'Oil' },
@@ -497,10 +549,11 @@ require'lazy'.setup({
 		require'telescope'.load_extension'repo'
 	end },
 	-- { 'nvim-telescope/telescope-symbols.nvim', event = 'VeryLazy' },
-	{ 'stevearc/dressing.nvim', event = 'VeryLazy' },
+	{ 'stevearc/dressing.nvim', lazy = true },
 	{
 		'kevinhwang91/nvim-ufo',
-		event = { 'BufReadPost', 'BufNewFile' },
+		keys = { 'zR', 'zM', 'zr', 'zm', 'zK' },
+		ft = { 'vue', 'javascript', 'typescript', 'typescriptreact', 'javascriptreact', 'svelte' },
 		dependencies = 'kevinhwang91/promise-async',
 		config = function ()
 			local ufo = require'ufo'
@@ -541,10 +594,8 @@ require'lazy'.setup({
 			vim.keymap.set('n', 'zr', ufo.openFoldsExceptKinds)
 			vim.keymap.set('n', 'zm', ufo.closeFoldsWith)
 			vim.keymap.set('n', 'zK', function()
-				local winid = require('ufo').peekFoldedLinesUnderCursor()
+				local winid = require'ufo'.peekFoldedLinesUnderCursor()
 				if not winid then
-					-- choose one of coc.nvim and nvim lsp
-					vim.fn.CocActionAsync('definitionHover') -- coc.nvim
 					vim.lsp.buf.hover()
 				end
 			end)
@@ -577,7 +628,7 @@ require'lazy'.setup({
 	},
 	{
 		'nvim-lualine/lualine.nvim',
-		event = { 'BufReadPost', 'BufNewFile' },
+		event = 'VeryLazy',
 		dependencies = { 'f-person/git-blame.nvim' },
 		config = function()
 			-- vim.o.shortmess = vim.o.shortmess .. 'S';
@@ -600,6 +651,7 @@ require'lazy'.setup({
 			end
 
 			require'lualine'.setup {
+				ignore_focus = { 'NvimTree', 'startup', 'neo-tree' },
 				sections = {
 					lualine_b = {
 						{
