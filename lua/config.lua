@@ -204,5 +204,9 @@ au BufRead,BufNewFile *.jpeg set filetype=jpeg
 au BufRead,BufNewFile *.gif set filetype=gif
 au BufRead,BufNewFile *.bmp set filetype=bmp
 au BufRead,BufNewFile *.ico set filetype=ico
+
+" function! TryEnterCode()
+" endfunc
+" au BufRead,BufNewFile * call TryEnterCode()
 ]])
 

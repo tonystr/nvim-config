@@ -174,6 +174,7 @@ maps.n['<A-W>'] = '<Cmd>BufferWipeout<CR>'
 maps.n['<A-o>'] = '<C-w>o<Cmd>BufferCloseAllButCurrent<CR>'
 maps.n['<A-e>'] = '<Cmd>BufferDelete #<CR>'
 maps.n['<A-r>'] = '<Cmd>BufferRestore<CR>'
+maps.n['<A-s>'] = '<C-w>s'
 -- Sort automatically by...
 -- maps.n['<leader>bb'] = '<Cmd>BufferOrderByBufferNumber<CR>'
 -- maps.n['<leader>bd'] = '<Cmd>BufferOrderByDirectory<CR>'
@@ -184,7 +185,7 @@ maps.n['<A-r>'] = '<Cmd>BufferRestore<CR>'
 vim.keymap.set({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
 vim.keymap.set({'o', 'x'}, 'ah', ':<C-U>Gitsigns select_hunk<CR>')
 
-maps.n['<C-v>'] = '"+<cmd>pu<CR>=\'[\']^'
+maps.n['<C-v>'] = '<cmd>pu +<CR>=\'[\']^'
 maps.n['<leader><C-v>'] = '"+<cmd>-1pu<CR>=\'[\']^'
 maps.v['<C-v>'] = '"+p=\'[\']^'
 maps.i['<C-v>'] = '<C-r>+'

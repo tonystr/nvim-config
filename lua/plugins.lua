@@ -47,17 +47,11 @@ require'lazy'.setup({
 		keys = { '<C-,>', '<C-.>', '<leader>,', '<leader>.' },
 		config = true,
 	},
-	{
-		'm4xshen/hardtime.nvim',
-		event = { 'CursorMoved', 'InsertEnter', 'ModeChanged' },
-		dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
-		config = true,
-	},
-	{
-		'gukz/ftFT.nvim',
-		keys = { 'f', 't', 'F', 'T' },
-		config = true,
-	},
+	-- { -- NOTE: cool concept, but felt a bit invasive. Also triggered on zt
+	-- 	'gukz/ftFT.nvim',
+	-- 	keys = { 'f', 't', 'F', 'T' },
+	-- 	config = true,
+	-- },
 	{
 		'monaqa/dial.nvim',
 		keys = { '<C-a>', 'g<C-a>', '<C-x>', 'g<C-x>', },
@@ -178,8 +172,15 @@ require'lazy'.setup({
 		}
 	},
 	{ 'tpope/vim-repeat', keys = { '.' } },
-	-- Lazy loading this on insert enter caused tab error (required telescope mappings)
-	{ 'github/copilot.vim', event = 'InsertEnter' },
+	{
+		'zbirenbaum/copilot.lua',
+		event = 'InsertEnter',
+		opts = {
+			suggestion = {
+				auto_trigger = true,
+			},
+		}
+	},
 	{ 'junegunn/vim-easy-align', keys = {
 		{ 'ga', '<Plug>(EasyAlign)', mode = { 'n', 'v' } },
 	}},
@@ -385,7 +386,7 @@ require'lazy'.setup({
 		lazy = true,
 	},
 	{ 'hrsh7th/nvim-cmp',
-		event = 'InsertEnter',
+		event = 'VeryLazy',
 		dependencies = {
 			{ 'hrsh7th/cmp-nvim-lsp' },
 			{ 'hrsh7th/cmp-buffer'   },
@@ -522,6 +523,7 @@ require'lazy'.setup({
 					vertical = { width = 0.8 }
 				},
 				file_ignore_patterns = {
+					'^node.modules[/\\]',
 					'^collab.embed[/\\]',
 					'%.lnk$'
 				},
@@ -549,7 +551,7 @@ require'lazy'.setup({
 		require'telescope'.load_extension'repo'
 	end },
 	-- { 'nvim-telescope/telescope-symbols.nvim', event = 'VeryLazy' },
-	{ 'stevearc/dressing.nvim', lazy = true },
+	{ 'stevearc/dressing.nvim', event = 'VeryLazy' },
 	{
 		'kevinhwang91/nvim-ufo',
 		keys = { 'zR', 'zM', 'zr', 'zm', 'zK' },
@@ -604,17 +606,13 @@ require'lazy'.setup({
 	{ 'startup-nvim/startup.nvim', cmd = 'Startup', opts = { theme = 'dragon' } },
 	{ 'folke/todo-comments.nvim', event = { 'BufReadPost', 'BufNewFile' }, config = true },
 	{
-		'NvChad/nvim-colorizer.lua',
-		event = { 'BufReadPost', 'BufNewFile' },
-		config = function ()
-			require'colorizer'.setup {
-				user_default_options = { tailwind = 'both' },
-			}
-			vim.api.nvim_create_autocmd('FileType', {
-				pattern = '*',
-				command = 'ColorizerAttachToBuffer',
-			})
-		end,
+		'norcalli/nvim-colorizer.lua',
+		event = 'VeryLazy',
+		opts = {
+			['*'] = { names = false },
+			css = { css = true, css_fn = true },
+			scss = { css = true, css_fn = true },
+		}
 	},
 	{
 		'nvim-neo-tree/neo-tree.nvim',
