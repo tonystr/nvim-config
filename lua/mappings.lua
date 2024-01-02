@@ -186,7 +186,7 @@ vim.keymap.set({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
 vim.keymap.set({'o', 'x'}, 'ah', ':<C-U>Gitsigns select_hunk<CR>')
 
 maps.n['<C-v>'] = '<cmd>pu +<CR>=\'[\']^'
-maps.n['<leader><C-v>'] = '"+<cmd>-1pu<CR>=\'[\']^'
+maps.n['<leader><C-v>'] = '<cmd>-1pu +<CR>=\'[\']^'
 maps.v['<C-v>'] = '"+p=\'[\']^'
 maps.i['<C-v>'] = '<C-r>+'
 maps.c['<C-v>'] = '<C-r>+'

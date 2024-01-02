@@ -15,6 +15,9 @@ let $PWD='~\Documents\git\'
 
 require'preferences'
 
+-- vim.cmd[[
+-- source ~\AppData\Local\nvim\mappings.vim
+-- ]]
 require'mappings'
 
 require'plugins'

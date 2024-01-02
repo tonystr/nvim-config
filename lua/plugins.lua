@@ -268,6 +268,9 @@ require'lazy'.setup({
 				lua_ls = {
 					settings = {
 						Lua = {
+							completion = {
+								callSnippet = 'Replace'
+							},
 							runtime = {
 								version = 'LuaJIT',
 							},
@@ -352,6 +355,7 @@ require'lazy'.setup({
 			})
 		end
 	},
+	-- { 'folke/neodev.nvim', config = true },
 	{
 		'ray-x/lsp_signature.nvim',
 		event = 'VeryLazy',
@@ -361,7 +365,7 @@ require'lazy'.setup({
 	{ -- NOTE: I don't really use this? I just use Telescope diagnostics
 		'folke/trouble.nvim',
 		cmd = { 'Trouble', 'TroubleToggle' },
-		opts = { use_diagnostic_signs = true },
+		opts = { use_diagnostic_signs = true }
 	},
 	{ 'jose-elias-alvarez/null-ls.nvim', keys = { '<leader>fm' }, config = function()
 		local null = require'null-ls'
@@ -472,6 +476,7 @@ require'lazy'.setup({
 	{ 'rbong/vim-flog', dependencies = { 'vim-fugitive' }, cmd = { 'Flog', 'Flogsplit', 'Floggit' } },
 
 	-- UI
+	{ 'j-hui/fidget.nvim', config = true },
 	{ 'm00qek/baleia.nvim', tag = 'v1.3.0', lazy = true },
 	{
 		'samodostal/image.nvim',
