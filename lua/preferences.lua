@@ -1,15 +1,15 @@
 -- Neovide settings ===> !== ====== ---------
 if vim.g.neovide then
-    vim.o.guifont='CaskaydiaCove Nerd Font:h11.4:#e-subpixelantialias'
+	vim.o.guifont='CaskaydiaCove Nerd Font:h11.4:#e-subpixelantialias'
 	-- vim.o.guifont='RecMonoLinear Nerd Font:h11.6:#e-subpixelantialias'
 	vim.api.nvim_set_hl(0, 'Normal', { bg = '#1f1f28' })
-    vim.g.neovide_refresh_rate = 90
-    vim.g.neovide_refresh_rate_idle = 90
-    vim.g.neovide_remember_window_size = true
-    vim.g.neovide_confirm_quit = false
+	vim.g.neovide_refresh_rate = 90
+	vim.g.neovide_refresh_rate_idle = 90
+	vim.g.neovide_remember_window_size = true
+	vim.g.neovide_confirm_quit = false
 	vim.g.neovide_floating_opacity = 1.0
-    vim.g.neovide_hide_mouse_when_typing = true
-    vim.g.neovide_cursor_animate_command_line = false
+	vim.g.neovide_hide_mouse_when_typing = true
+	vim.g.neovide_cursor_animate_command_line = false
 	vim.g.neovide_floating_shadow = false
 	vim.g.neovide_scroll_animation_length = 0.14
 	vim.g.neovide_scroll_animation_far_lines = 48
@@ -17,7 +17,7 @@ if vim.g.neovide then
 
 	vim.g.neovide_scale_factor = 1.0
 else
-    vim.api.nvim_set_hl(0, 'Normal', { ctermbg='none', bg='none' })
+	vim.api.nvim_set_hl(0, 'Normal', { ctermbg='none', bg='none' })
 end
 
 vim.g.flog_permanent_default_opts = {

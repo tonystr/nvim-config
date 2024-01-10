@@ -29,16 +29,30 @@ require'lazy'.setup({
 					PmenuThumb = { bg = theme.ui.bg_p2 },
 					CursorLine = { bg = 'none' },
 					CursorLineNR = { fg = theme.ui.fg_dim },
+					['@string.regex'] = { fg = colors.palette.springBlue },
+					['@property.class.scss'] = { fg = colors.palette.waveAqua2 },
+					['@property.class.css'] = { fg = colors.palette.waveAqua2 },
+					['@type.scss'] = { fg = colors.palette.springBlue },
+					['@type.css'] = { fg = colors.palette.springBlue },
+					['@string.scss'] = { fg = colors.palette.springBlue },
+					['@string.css'] = { fg = colors.palette.springBlue },
+					['@string.unit.scss'] = { fg = colors.palette.autumnYellow },
+					['@string.unit.css'] = { fg = colors.palette.autumnYellow },
+					-- ['@property.scss'] = { fg = colors.palette.springBlue },
+					-- ['@property.css'] = { fg = colors.palette.springBlue },
+					-- ['@string.plain.scss'] = { fg = theme.ui.fg },
+					-- ['@string.plain.css'] = { fg = theme.ui.fg },
 				}
 			end,
 		},
-		config = function (_, opts)
-			local kanagawa = require'kanagawa'
-			kanagawa.setup(opts)
-			kanagawa.load'wave'
-		end,
 		priority = 1000,
 	},
+	-- { 'catppuccin/nvim', name = 'catppuccin', lazy = false },
+	-- {
+	-- 	"folke/tokyonight.nvim",
+	-- 	lazy = true,
+	-- 	opts = {},
+	-- },
 
 	-- Misc
 	{
@@ -106,7 +120,7 @@ require'lazy'.setup({
 	},
 	{
 		'kylechui/nvim-surround',
-		keys = { 'ys', 'ds', 'cs', { 'S', mode = 'x' } },
+		keys = { 'ys', 'ds', 'cs', { '<C-g>s', mode = 'x' }, { 'S', mode = 'x' } },
 		version = '*',
 		config = true,
 	},
@@ -126,7 +140,13 @@ require'lazy'.setup({
 				ignore_install = { "markdown" }, -- F U Markdown developer!! it doesn't work
 				highlight = {
 					enable = true,
-					disable = { "markdown" },
+					disable = function(lang, buf)
+						local max_filesize = 100 * 1024 -- 100 KB
+						local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+						if ok and stats and stats.size > max_filesize then
+							return true
+						end
+					end,
 					additional_vim_regex_highlighting = false,
 				},
 				indent = {
@@ -236,6 +256,7 @@ require'lazy'.setup({
 	{ 'mattn/emmet-vim', keys = {
 		{ '<Plug>(emmet-expand-abbr)', mode = { 'i', 'n' } },
 		{ '<Plug>(emmet-expand-yank)', mode = { 'i', 'n' } },
+		{ '<C-y>', mode = { 'i', 'n' } },
 	}},
 	{ 'vimwiki/vimwiki', keys = { '<leader>w' } },
 	{
@@ -256,10 +277,22 @@ require'lazy'.setup({
 	},
 
 	-- Lsp
-
-	{ 'williamboman/mason.nvim', config = true, cmd = { 'Mason', 'LspInfo', 'MasonLog' } },
+	{
+		'williamboman/mason.nvim',
+		config = true,
+		cmd = { 'Mason', 'LspInfo', 'MasonLog' },
+	},
+	{
+		'VidocqH/lsp-lens.nvim',
+		opts = {
+			sections = {
+				definition = false,
+				implements = false,
+				git_authors = true,
+			},
+		},
+	},
 	{ 'williamboman/mason-lspconfig.nvim' },
-	-- { 'b0o/schemastore.nvim', lazy = true },
 	{
 		'neovim/nvim-lspconfig',
 		event = { "BufReadPre", "BufNewFile" },
@@ -296,25 +329,11 @@ require'lazy'.setup({
 					}
 				}
 			},
-			setup = {
-			-- 	tsserver = function(_, opts)
-			-- 		require'typescript'.setup{ server = opts }
-			-- 		return true
-			-- 	end,
-			}
+			setup = {},
 		},
 		config = function (_, opts)
 			local mlsp = require'mason-lspconfig'
 
-			-- opts.servers.jsonls = {
-			-- 	settings = {
-			-- 		json = {
-			-- 			schemas = require'schemastore'.json.schemas(),
-			-- 			validate = { enable = true },
-			-- 		},
-			-- 	},
-			-- }
-			--
 			local servers = opts.servers
 			local capabilities = vim.tbl_deep_extend(
 				'force',
@@ -476,7 +495,7 @@ require'lazy'.setup({
 	{ 'rbong/vim-flog', dependencies = { 'vim-fugitive' }, cmd = { 'Flog', 'Flogsplit', 'Floggit' } },
 
 	-- UI
-	{ 'j-hui/fidget.nvim', config = true },
+	-- { 'j-hui/fidget.nvim', config = true },
 	{ 'm00qek/baleia.nvim', tag = 'v1.3.0', lazy = true },
 	{
 		'samodostal/image.nvim',
@@ -523,6 +542,9 @@ require'lazy'.setup({
 		dependencies = { 'nvim-lua/plenary.nvim' },
 		opts = {
 			defaults = {
+				preview = {
+					timeout = 300,
+				},
 				layout_strategy = 'vertical',
 				layout_config = {
 					vertical = { width = 0.8 }
@@ -627,7 +649,7 @@ require'lazy'.setup({
 			{ '<leader>e', '<cmd>Neotree toggle<cr>' },
 			{ '<leader>E', '<cmd>Neotree focus<cr>' }
 		},
-		opts = { disable_netrw = true }
+		opts = { disable_netrw = false }
 	},
 	{
 		'nvim-lualine/lualine.nvim',

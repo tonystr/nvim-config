@@ -186,17 +186,17 @@ function! SynStack()
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
 
-fu! SetBang(v) range
-	if a:v == 1
-		normal gv
-	endif
-	let l:t = &shellredir
-	let &shellredir = ">%s\ 2>/dev/tty"
-	let @" = join(systemlist(input("\"!"))," ")[0:-2]
-	let &shellredir = l:t
-endf
-nnoremap "! :cal SetBang(0)<cr>
-xnoremap "! :cal SetBang(1)<cr>
+" fu! SetBang(v) range
+" 	if a:v == 1
+" 		normal gv
+" 	endif
+" 	let l:t = &shellredir
+" 	let &shellredir = ">%s\ 2>/dev/tty"
+" 	let @" = join(systemlist(input("\"!"))," ")[0:-1]
+" 	let &shellredir = l:t
+" endf
+" nnoremap "! :cal SetBang(0)<cr>
+" xnoremap "! :cal SetBang(1)<cr>
 
 au BufRead,BufNewFile *.png set filetype=png
 au BufRead,BufNewFile *.jpg set filetype=jpg

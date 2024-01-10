@@ -12,6 +12,8 @@ maps.n['<C-l>'] = '<cmd>nohlsearch<CR>'
 maps.n['<Esc>'] = '<cmd>nohlsearch<CR>'
 maps.n['<C-z>'] = '<Nop>'
 
+-- ↓ does not work due to relative file paths and rooting
+-- maps.n['gf'] = '<cmd>e <cfile><CR>'
 
 maps.n['<C-s>'] = '<cmd>w<CR>'
 maps.i['<C-s>'] = '<Esc><cmd>w<CR>'
@@ -33,14 +35,35 @@ maps.o['{'] = 'V{'
 maps.o['}'] = 'V}'
 maps.n['<leader>G'] = '<cmd>Git<CR>';
 
-maps.v['I'] = '<C-q>I';
-maps.v['A'] = '<C-q>A';
+maps.n['q:'] = '<Nop>'
+maps.n['q/'] = '<Nop>'
+maps.n['q?'] = '<Nop>'
+
+
+vim.keymap.set('v', 'I', '', {
+	callback = function ()
+		if vim.fn.mode() ~= '' then
+			return 'I'
+		end
+		return 'I'
+	end,
+	expr = true,
+})
+vim.keymap.set('v', 'A', '', {
+	callback = function ()
+		if vim.fn.mode() ~= '' then
+			return 'A'
+		end
+		return 'A'
+	end,
+	expr = true,
+})
 
 maps.n['gA'] = 'g$bEa';
 maps.n['gI'] = 'g^i';
 
-maps.n['g?'] = '<cmd>let @/ = "\\\\<n\\\\>"<CR>N';
-maps.n['g/'] = '<cmd>let @/ = "\\\\<n\\\\>"<CR>n';
+maps.n['g?'] = '<cmd>let @/ = "\\\\<" . @? . "\\\\>"<CR>N';
+maps.n['g/'] = '<cmd>let @/ = "\\\\<" . @/ . "\\\\>"<CR>n';
 
 -- Quickfix list
 maps.n[']q'] = '<cmd>cnext<CR>';
@@ -93,6 +116,11 @@ vim.keymap.set('n', '<C-->', function() change_scale_factor(1 / 1.10) end)
 maps.n['<leader>ff'] = '<cmd>Telescope resume<cr>'
 maps.n['<leader>fj'] = '<cmd>Telescope jumplist<cr>'
 maps.n['<C-p>'] = '<cmd>Telescope find_files<cr>'
+maps.n['<leader>fp'] = function ()
+	require'telescope.builtin'.find_files({
+		cwd = require'telescope.utils'.buffer_dir()
+	})
+end
 maps.n['<leader>fo'] = '<cmd>Telescope oldfiles<cr>'
 maps.n['<leader>fg'] = '<cmd>Telescope live_grep<cr>'
 maps.n['<leader>fb'] = '<cmd>Telescope buffers<cr>'
@@ -106,6 +134,11 @@ maps.n['<leader>ft'] = '<cmd>TodoTelescope<cr>'
 maps.n['<leader>so'] = function() require("telescope.builtin").lsp_document_symbols() end
 maps.n['gr'] = '<cmd>Telescope lsp_references<cr>'
 maps.n['gR'] = function() vim.lsp.buf.references() end
+maps.n['gF'] = function ()
+	require'telescope.builtin'.live_grep({
+		default_text = vim.fn.expand('%:t')
+	})
+end
 -- Git commands
 maps.n['<leader>gs'] = '<cmd>Telescope git_status<cr>'
 maps.n['<leader>gc'] = '<cmd>Telescope git_commits<cr>'
@@ -125,7 +158,6 @@ maps.n[']d'] = function() vim.diagnostic.goto_next() end
 maps.n['<leader>d'] = function() vim.diagnostic.open_float() end
 maps.n['gt'] = function() vim.lsp.buf.type_definition() end
 maps.n['K'] = function() vim.lsp.buf.hover() end
-maps.n['gl'] = function() print('hello world') end
 maps.n['<C-k>'] = function() vim.lsp.buf.signature_help() end
 maps.n['<leader>af'] = function() vim.lsp.buf.code_action() end
 maps.v['<leader>af'] = function() vim.lsp.buf.code_action() end
@@ -134,8 +166,8 @@ maps.n['<leader>rn'] = function() vim.lsp.buf.rename() end
 -- Emmet bindings
 maps.n['<C-h>'] = '<Plug>(emmet-expand-abbr)'
 maps.i['<C-h>'] = '<Plug>(emmet-expand-abbr)'
-maps.n['<C-y>'] = '<Plug>(emmet-expand-yank)'
-maps.i['<C-y>'] = '<Plug>(emmet-expand-yank)'
+-- maps.n['<C-y>'] = '<Plug>(emmet-expand-yank)'
+-- maps.i['<C-y>'] = '<Plug>(emmet-expand-yank)'
 
 -- Visual mode
 maps.v['<'] = '<gv'
@@ -229,6 +261,28 @@ vim.keymap.set('v', 'y', '', {
 
 maps.n['<leader>p'] = '<cmd>pu<CR>=\'[\']^'
 maps.n['<leader>P'] = '<cmd>-1pu<CR>=\'[^'
+
+-- Inline shell command to register @"
+function SetBang()
+	local command = vim.fn.input("\"!")
+	local output = vim.fn.system(command)
+	output = output:gsub('%s+$', '')
+	vim.fn.setreg('"', output)
+end
+
+maps.n['"!'] = SetBang
+maps.x['"!'] = function ()
+	SetBang()
+	vim.cmd'norm p'
+end
+vim.keymap.set('i', '<C-r>!', '', {
+	callback = function ()
+		SetBang()
+		return '"'
+	end,
+	expr = true
+})
+
 
 -- Render maps table into vim keyboard mappings
 for mode, mappings in pairs(maps) do
