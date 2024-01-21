@@ -29,19 +29,19 @@ require'lazy'.setup({
 					PmenuThumb = { bg = theme.ui.bg_p2 },
 					CursorLine = { bg = 'none' },
 					CursorLineNR = { fg = theme.ui.fg_dim },
-					['@string.regex'] = { fg = colors.palette.springBlue },
-					['@property.class.scss'] = { fg = colors.palette.waveAqua2 },
-					['@property.class.css'] = { fg = colors.palette.waveAqua2 },
-					['@type.scss'] = { fg = colors.palette.springBlue },
-					['@type.css'] = { fg = colors.palette.springBlue },
-					['@string.scss'] = { fg = colors.palette.springBlue },
-					['@string.css'] = { fg = colors.palette.springBlue },
-					['@string.unit.scss'] = { fg = colors.palette.autumnYellow },
-					['@string.unit.css'] = { fg = colors.palette.autumnYellow },
-					-- ['@property.scss'] = { fg = colors.palette.springBlue },
-					-- ['@property.css'] = { fg = colors.palette.springBlue },
-					-- ['@string.plain.scss'] = { fg = theme.ui.fg },
-					-- ['@string.plain.css'] = { fg = theme.ui.fg },
+					['@string.regex'] = { fg = theme.syn.special1 },
+					['@property.class.scss'] = { fg = theme.syn.type },
+					['@property.class.css'] = { fg = theme.syn.type },
+					['@type.scss'] = { fg = theme.syn.special1 },
+					['@type.css'] = { fg = theme.syn.special1 },
+					['@string.unit.scss'] = { fg = theme.syn.type },
+					['@string.unit.css'] = { fg = theme.syn.type },
+					['@type.tag.scss'] = { fg = theme.syn.special1 },
+					['@type.tag.css'] = { fg = theme.syn.special1 },
+					['@type.definition.scss'] = { fg = theme.ui.fg },
+					['@type.definition.css'] = { fg = theme.ui.fg },
+					['@constructor.javascript'] = { fg = theme.syn.fun },
+					['@conceal.json'] = { fg = theme.syn.type },
 				}
 			end,
 		},
@@ -120,9 +120,119 @@ require'lazy'.setup({
 	},
 	{
 		'kylechui/nvim-surround',
-		keys = { 'ys', 'ds', 'cs', { '<C-g>s', mode = 'x' }, { 'S', mode = 'x' } },
+		keys = {
+			'ys',
+			'ds',
+			'cs',
+			{ '<C-g>s', mode = 'x' },
+			{ 's', mode = 'x' },
+		},
 		version = '*',
-		config = true,
+		config = {
+			surrounds = {
+				["<"] = {
+					-- Only add treats < as html tag. Other methods treat it as < > pair
+					add = function()
+						local user_input = vim.fn.input'<'
+						if user_input then
+							local element = user_input:match("^<?([^%s%.>]+)")
+							local afterel = user_input:sub(element and (#element + 1) or 1, #user_input)
+							local attributes = afterel:match("^[%s]*(.-)>?$")
+
+							element = element or "div"
+
+							attributes = attributes:gsub("%.([^%s]+)", "class=\"%1\"")
+							attributes = attributes:gsub("%.", " ")
+
+							local open = (#attributes > 0) and element .. " " .. attributes or element
+							local close = element
+
+							return { { "<" .. open .. ">" }, { "</" .. close .. ">" } }
+						end
+					end,
+				},
+				["t"] = {
+					add = function()
+						local user_input = vim.fn.input'<'
+						if user_input then
+							local element = user_input:match("^<?([^%s%.>]*)")
+							local afterel = user_input:sub(#element + 1, #user_input)
+							local attributes = afterel:match("^[%s]*(.-)>?$")
+
+							attributes = attributes:gsub("%.([^%s]+)", "class=\"%1\"")
+							attributes = attributes:gsub("%.", " ")
+
+							local open = (#attributes > 0) and element .. " " .. attributes or element
+							local close = element
+
+							return { { "<" .. open .. ">" }, { "</" .. close .. ">" } }
+						end
+					end,
+					delete = "^(%b<>)().-(%b<>)()$",
+					change = {
+						target = "^<([^%s<>]*)().-([^/]*)()>$",
+						replacement = function()
+							local user_input = vim.fn.input'<'
+							if user_input then
+								local element = user_input:match("^<?([^%s%.>]*)")
+								local afterel = user_input:sub(#element + 1, #user_input)
+								local attributes = afterel:match("^[%s]*(.-)>?$")
+
+								attributes = attributes:gsub("%.([^%s]+)", "class=\"%1\"")
+								attributes = attributes:gsub("%.", " ")
+
+								local open = (#attributes > 0) and element .. " " .. attributes or element
+								local close = element
+
+								return { { open }, { close } }
+							end
+						end,
+					},
+				},
+				["T"] = {
+					add = function()
+						local user_input = vim.fn.input'<'
+						if user_input then
+							local element = user_input:match("^<?([^%s%.>]*)")
+							local afterel = user_input:sub(#element + 1, #user_input)
+							local attributes = afterel:match("^[%s]*(.-)>?$")
+
+							attributes = attributes:gsub("%.([^%s]+)", "class=\"%1\"")
+							attributes = attributes:gsub("%.", " ")
+
+							local open = (#attributes > 0) and element .. " " .. attributes or element
+							local close = element
+
+							return { { "<" .. open .. ">" }, { "</" .. close .. ">" } }
+						end
+					end,
+					delete = "^(%b<>)().-(%b<>)()$",
+					change = {
+						target = "^<([^>]*)().-([^/]*)()>$",
+						replacement = function()
+							local user_input = vim.fn.input'<'
+							if user_input then
+								local element = user_input:match("^<?([^%s%.>]*)")
+								local afterel = user_input:sub(#element + 1, #user_input)
+								local attributes = afterel:match("^[%s]*(.-)>?$")
+
+								attributes = attributes:gsub("%.([^%s]+)", "class=\"%1\"")
+								attributes = attributes:gsub("%.", " ")
+
+								local open = (#attributes > 0) and element .. " " .. attributes or element
+								local close = element
+
+								return { { open }, { close } }
+							end
+						end,
+					},
+				},
+			},
+			keymaps = {
+				visual = 's',
+				visual_line = 'S',
+			},
+		},
 	},
 	{
 		'nvim-treesitter/nvim-treesitter',
@@ -141,7 +251,7 @@ require'lazy'.setup({
 				highlight = {
 					enable = true,
 					disable = function(lang, buf)
-						local max_filesize = 100 * 1024 -- 100 KB
+						local max_filesize = 1000 * 1024 -- 1000 KB
 						local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
 						if ok and stats and stats.size > max_filesize then
 							return true
@@ -162,6 +272,8 @@ require'lazy'.setup({
 					},
 				},
 			}
+
+			vim.api.nvim_set_hl(0, '@text.uri.vue', { underline = false })
 		end
 	},
 	{
@@ -176,7 +288,7 @@ require'lazy'.setup({
 	end },
 	{
 		'numToStr/Comment.nvim',
-		keys = { 'gc', 'gb' },
+		keys = { 'gc', 'gb', { 'gc', mode = 'x' }, { 'gb', mode = 'x' } },
 		dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring' },
 		config = function()
 			require'Comment'.setup {
@@ -185,6 +297,7 @@ require'lazy'.setup({
 		end,
 	},
 	{
+		desc = "fixes Comment.nvim for vue files and more",
 		'JoosepAlviste/nvim-ts-context-commentstring',
 		lazy = true,
 		opts = {
@@ -212,7 +325,11 @@ require'lazy'.setup({
 	},
 	{
 		'Wansmer/treesj',
-		keys = { '<Enter>', 'gS', 'gJ' },
+		keys = {
+			{ '<Enter>', '<cmd>lua require"treesj".toggle()<CR>' },
+			{ 'gS', '<cmd>lua require"treesj".split()<CR>' },
+			{ 'gJ', '<cmd>lua require"treesj".join()<CR>' },
+		},
 		dependencies = { 'nvim-treesitter/nvim-treesitter' },
 		opts = {
 			max_join_length = 666,
@@ -246,12 +363,6 @@ require'lazy'.setup({
 				}
 			}
 		},
-		config = function (_, opts)
-			require'treesj'.setup(opts)
-			vim.keymap.set('n', '<Enter>', '<cmd>lua require"treesj".toggle()<CR>')
-			vim.keymap.set('n', 'gS', '<cmd>lua require"treesj".split()<CR>')
-			vim.keymap.set('n', 'gJ', '<cmd>lua require"treesj".join()<CR>')
-		end,
 	},
 	{ 'mattn/emmet-vim', keys = {
 		{ '<Plug>(emmet-expand-abbr)', mode = { 'i', 'n' } },
@@ -284,6 +395,7 @@ require'lazy'.setup({
 	},
 	{
 		'VidocqH/lsp-lens.nvim',
+		lazy = true,
 		opts = {
 			sections = {
 				definition = false,
@@ -292,10 +404,11 @@ require'lazy'.setup({
 			},
 		},
 	},
-	{ 'williamboman/mason-lspconfig.nvim' },
+	{ 'williamboman/mason-lspconfig.nvim', lazy = true },
 	{
 		'neovim/nvim-lspconfig',
 		event = { "BufReadPre", "BufNewFile" },
+		dependencies = { 'VidocqH/lsp-lens.nvim' },
 		opts = {
 			servers = {
 				lua_ls = {

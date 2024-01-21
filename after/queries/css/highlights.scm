@@ -20,5 +20,9 @@
    (unit) @string.unit)
  ]
 [
+ (pseudo_class_selector
+   (class_name) @type.tag)
+ ] 
+[
  (tag_name)
  ] @type.tag

@@ -35,9 +35,9 @@ maps.o['{'] = 'V{'
 maps.o['}'] = 'V}'
 maps.n['<leader>G'] = '<cmd>Git<CR>';
 
-maps.n['q:'] = '<Nop>'
-maps.n['q/'] = '<Nop>'
-maps.n['q?'] = '<Nop>'
+-- maps.n['q:'] = '<Nop>'
+-- maps.n['q/'] = '<Nop>'
+-- maps.n['q?'] = '<Nop>'
 
 
 vim.keymap.set('v', 'I', '', {
