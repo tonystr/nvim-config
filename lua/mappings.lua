@@ -147,6 +147,9 @@ maps.n['<leader>gC'] = '<cmd>Telescope git_bcommits<cr>' -- current buffer commi
 maps.n['<leader>gb'] = '<cmd>Telescope git_branches<cr>'
 maps.n['<leader>gB'] = '<cmd>GitBlameToggle<cr>'
 
+vim.cmd'command Push Dispatch git push'
+vim.cmd'command Pull Dispatch git pull'
+
 -- LSP key mappings
 maps.n['<leader>lr'] = '<cmd>LspRestart<cr>'
 maps.n['gd'] = function() vim.lsp.buf.definition() end
