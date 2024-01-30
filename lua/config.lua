@@ -1,11 +1,14 @@
-local env = require('env')
+-- local env = require('env')
+
+vim.o.guicursor = 'n-v-c-ci-sm:block,i-ve:ver25,r-cr-o:hor20'
+vim.o.showbreak = '  󱞩 '
 
 -- vim.opt.statuscolumn = "%s %{foldlevel(v:lnum) <= foldlevel(v:lnum-1) ? ' ' : (foldclosed(v:lnum) == -1 ? '' : '')} %{v:relnum ? v:relnum : v:lnum} "
 
 -- vim.g.formatprg = 'prettier --parser typescript --stdin-path %';
 
-local signs = { Error = "", Warn = "", Hint = "", Info = "" }
-for type, icon in pairs(signs) do
+local Signse = { Error = "", Warn = "", Hint = "", Info = "" }
+for type, icon in pairs(Signse) do
 	local hl = "DiagnosticSign" .. type
 	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
@@ -33,7 +36,7 @@ vim.g.user_emmet_settings = {
 
 function Enter()
 	-- if vim.fn.pumvisible() then
-	-- 	return '<CR>???';
+	--	return '<CR>???';
 	-- end
 
 	local col = vim.fn.col('.')
