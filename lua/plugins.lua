@@ -256,7 +256,9 @@ require'lazy'.setup({
 	},
 	{
 		'echasnovski/mini.ai',
-		config = true,
+		opts = {
+			n_lines = 5000,
+		},
 	},
 	{
 		'nvim-treesitter/nvim-treesitter-context',

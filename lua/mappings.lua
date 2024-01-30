@@ -149,6 +149,8 @@ maps.n['<leader>gB'] = '<cmd>GitBlameToggle<cr>'
 
 vim.cmd'command Push Dispatch git push'
 vim.cmd'command Pull Dispatch git pull'
+vim.cmd'command -nargs=1 Cam Dispatch git cam <f-args>'
+vim.cmd'command K Dispatch git <args>'
 
 -- LSP key mappings
 maps.n['<leader>lr'] = '<cmd>LspRestart<cr>'
