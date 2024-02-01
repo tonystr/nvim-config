@@ -127,6 +127,7 @@ maps.n['<leader>fb'] = '<cmd>Telescope buffers<cr>'
 maps.n['<leader>fh'] = '<cmd>Telescope help_tags<cr>'
 maps.n['<leader>fr'] = '<cmd>Telescope registers<cr>'
 maps.n['<leader>fs'] = '<cmd>Telescope spell_suggest<cr>'
+maps.n['z='] = '<cmd>Telescope spell_suggest<cr>'
 maps.n['<leader>fd'] = '<cmd>Telescope diagnostics<cr>'
 maps.n['<leader>fu'] = '<cmd>Telescope undo<cr>'
 maps.n['<leader>gr'] = '<cmd>Telescope repo list<cr>'
@@ -145,6 +146,11 @@ maps.n['<leader>gc'] = '<cmd>Telescope git_commits<cr>'
 maps.n['<leader>gC'] = '<cmd>Telescope git_bcommits<cr>' -- current buffer commits
 maps.n['<leader>gb'] = '<cmd>Telescope git_branches<cr>'
 maps.n['<leader>gB'] = '<cmd>GitBlameToggle<cr>'
+
+vim.cmd'command Push Dispatch git push'
+vim.cmd'command Pull Dispatch git pull'
+vim.cmd'command -nargs=1 Cam Dispatch git cam <f-args>'
+vim.cmd'command -nargs=* K Dispatch git <args>'
 
 -- LSP key mappings
 maps.n['<leader>lr'] = '<cmd>LspRestart<cr>'

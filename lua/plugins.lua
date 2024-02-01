@@ -18,34 +18,15 @@ require'lazy'.setup({
 	-- Theme
 	{
 		'rebelot/kanagawa.nvim',
+		lazy = false,
 		opts = {
 			colors = { theme = { all = { ui = { bg_gutter = 'none' } } } },
-			overrides = function(colors)
-				local theme = colors.theme
-				return {
-					Pmenu = { fg = theme.ui.shade0, bg = theme.ui.bg_p1 },
-					PmenuSel = { fg = 'none', bg = theme.ui.bg_p2 },
-					PmenuSbar = { bg = theme.ui.bg_p1  },
-					PmenuThumb = { bg = theme.ui.bg_p2 },
-					CursorLine = { bg = 'none' },
-					CursorLineNr = { fg = theme.ui.fg_dim },
-					Whitespace = { fg = '#4a4a58' },
-					['@string.regex'] = { fg = theme.syn.special1 },
-					['@property.class.scss'] = { fg = theme.syn.type },
-					['@property.class.css'] = { fg = theme.syn.type },
-					['@type.scss'] = { fg = theme.syn.special1 },
-					['@type.css'] = { fg = theme.syn.special1 },
-					['@string.unit.scss'] = { fg = theme.syn.type },
-					['@string.unit.css'] = { fg = theme.syn.type },
-					['@type.tag.scss'] = { fg = theme.syn.special1 },
-					['@type.tag.css'] = { fg = theme.syn.special1 },
-					['@type.definition.scss'] = { fg = theme.ui.fg },
-					['@type.definition.css'] = { fg = theme.ui.fg },
-					['@constructor.javascript'] = { fg = theme.syn.fun },
-					['@conceal.json'] = { fg = theme.syn.type },
-				}
-			end,
+			overrides = require'kanagawa-colors'
 		},
+		config = function (_, opts)
+			require'kanagawa'.setup(opts)
+			vim.cmd'colors kanagawa'
+		end,
 		priority = 1000,
 	},
 	-- { 'catppuccin/nvim', name = 'catppuccin', lazy = false },
@@ -56,7 +37,7 @@ require'lazy'.setup({
 	-- },
 
 	-- Misc
-	{ 'tpope/vim-abolish' },
+	{ 'tpope/vim-dispatch'--[[ , cmd = 'Dispatch'  ]]},
 	{
 		'Wansmer/sibling-swap.nvim',
 		requires = { 'nvim-treesitter' },
@@ -273,6 +254,12 @@ require'lazy'.setup({
 
 			vim.api.nvim_set_hl(0, '@text.uri.vue', { underline = false })
 		end
+	},
+	{
+		'echasnovski/mini.ai',
+		opts = {
+			n_lines = 5000,
+		},
 	},
 	{
 		'nvim-treesitter/nvim-treesitter-context',
