@@ -28,7 +28,8 @@ require'lazy'.setup({
 					PmenuSbar = { bg = theme.ui.bg_p1  },
 					PmenuThumb = { bg = theme.ui.bg_p2 },
 					CursorLine = { bg = 'none' },
-					CursorLineNR = { fg = theme.ui.fg_dim },
+					CursorLineNr = { fg = theme.ui.fg_dim },
+					Whitespace = { fg = '#4a4a58' },
 					['@string.regex'] = { fg = theme.syn.special1 },
 					['@property.class.scss'] = { fg = theme.syn.type },
 					['@property.class.css'] = { fg = theme.syn.type },
@@ -55,17 +56,13 @@ require'lazy'.setup({
 	-- },
 
 	-- Misc
+	{ 'tpope/vim-abolish' },
 	{
 		'Wansmer/sibling-swap.nvim',
 		requires = { 'nvim-treesitter' },
 		keys = { '<C-,>', '<C-.>', '<leader>,', '<leader>.' },
 		config = true,
 	},
-	-- { -- NOTE: cool concept, but felt a bit invasive. Also triggered on zt
-	-- 	'gukz/ftFT.nvim',
-	-- 	keys = { 'f', 't', 'F', 'T' },
-	-- 	config = true,
-	-- },
 	{
 		'monaqa/dial.nvim',
 		keys = { '<C-a>', 'g<C-a>', '<C-x>', 'g<C-x>', },
@@ -126,6 +123,7 @@ require'lazy'.setup({
 			'cs',
 			{ '<C-g>s', mode = 'x' },
 			{ 's', mode = 'x' },
+			{ 'S', mode = 'x' },
 		},
 		version = '*',
 		config = {
@@ -609,6 +607,17 @@ require'lazy'.setup({
 
 	-- UI
 	-- { 'j-hui/fidget.nvim', config = true },
+	{
+		'chentoast/marks.nvim',
+		event = { 'BufReadPost', 'BufNewFile' },
+		opts = {
+			builtin_marks = { '.', '<', '>', '^' },
+		},
+		config = function(_, opts)
+			require'marks'.setup(opts)
+			vim.api.nvim_set_hl(0, 'MarkSignNumHL', { guifg = nil })
+		end
+	},
 	{ 'm00qek/baleia.nvim', tag = 'v1.3.0', lazy = true },
 	{
 		'samodostal/image.nvim',
@@ -820,8 +829,8 @@ require'lazy'.setup({
 				},
 			}
 
-			vim.api.nvim_set_hl(0, 'lualine_c_normal', { fg='#666677' })
-			vim.api.nvim_set_hl(0, 'lualine_c_inactive', { fg='#666677' })
+			vim.api.nvim_set_hl(0, 'lualine_c_normal', { fg='#666677', bg='#1d1d26' })
+			vim.api.nvim_set_hl(0, 'lualine_c_inactive', { fg='#666677', bg='#1d1d26' })
 		end
 	},
 	-- NOTE: use :Telescope keymaps instead

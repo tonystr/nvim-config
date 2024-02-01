@@ -262,6 +262,15 @@ vim.keymap.set('v', 'y', '', {
 maps.n['<leader>p'] = '<cmd>pu<CR>=\'[\']^'
 maps.n['<leader>P'] = '<cmd>-1pu<CR>=\'[^'
 
+-- smart blackhole deletion
+vim.keymap.set("n", "dd", function()
+	---@diagnostic disable-next-line: param-type-mismatch
+	if vim.fn.getline(".") == "" then
+		return '"_dd'
+	end
+	return "dd"
+end, { expr = true })
+
 -- Inline shell command to register @"
 function SetBang()
 	local command = vim.fn.input("\"!")
