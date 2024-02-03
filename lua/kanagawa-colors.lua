@@ -8,7 +8,7 @@ return function(colors)
 		PmenuSbar = { bg = theme.ui.bg_p1  },
 		PmenuThumb = { bg = theme.ui.bg_p2 },
 		CursorLine = { bg = 'none' },
-		CursorLineNR = { fg = theme.ui.fg_dim },
+		CursorLineNr = { fg = theme.ui.fg_dim },
 		['@string.regex'] = { fg = theme.syn.special1 },
 		['@property.class.scss'] = { fg = theme.syn.type },
 		['@property.class.css'] = { fg = theme.syn.type },
