@@ -3,8 +3,8 @@ local maps = { i = {}, n = {}, v = {}, t = {}, x = {}, c = {}, o = {}, [''] = {}
 -- Key mappings
 maps['']['<space>'] = '<nop>'
 maps.n['<leader>of'] = '<cmd>call File_manager()<CR>'
-maps.n['<leader>ot'] = '<cmd>silent !wt -d %:h<CR>'
-maps.n['<leader>oT'] = '<cmd>silent !wt -d .<CR>'
+maps.n['<leader>ot'] = '<cmd>silent !wt -w 0 nt -d %:h<CR>'
+maps.n['<leader>oT'] = '<cmd>silent !wt -w 0 nt -d .<CR>'
 maps.n['<C-t>'] = '<cmd>tabnew<CR>'
 maps.n['gt'] = '<cmd>tabn<CR>'
 maps.n['gT'] = '<cmd>tabp<CR>'
@@ -34,6 +34,25 @@ maps.n['<leader>br'] = '<cmd>echo "test"<CR>'
 maps.o['{'] = 'V{'
 maps.o['}'] = 'V}'
 maps.n['<leader>G'] = '<cmd>Git<CR>';
+
+-- vim.keymap.set('n', 'gx', function()
+-- 	local file = vim.fn.expand '<cfile>' --[[@as string]]
+--
+-- 	-- First try the default behaviour from https://github.com/neovim/neovim/blob/597355deae2ebddcb8b930da9a8b45a65d05d09b/runtime/lua/vim/_editor.lua#L1084.
+-- 	local _, err = vim.ui.open(file)
+-- 	if not err then return end
+--
+-- 	-- Consider anything that looks like string/string a GitHub link.
+-- 	local link = file:match '%w[%w%-]+/[%w%-%._]+'
+-- 	if link then
+-- 		_, err = vim.ui.open('https://www.github.com/' .. link)
+-- 	end
+--
+-- 	-- If that fails, just blame me.
+-- 	if err then
+-- 		vim.notify(err, vim.log.levels.ERROR)
+-- 	end
+-- end, { desc = 'Open filepath or URI under cursor' })
 
 -- maps.n['q:'] = '<Nop>'
 -- maps.n['q/'] = '<Nop>'

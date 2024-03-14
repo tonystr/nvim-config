@@ -1,5 +1,26 @@
 -- local env = require('env')
 
+-- -- Next step: segment motions. Find a way to check if buffer changed?
+-- local motion = ''
+-- local prev_mode = vim.api.nvim_get_mode().mode
+-- vim.on_key(function(key)
+-- 	vim.defer_fn(function()
+-- 		local mode = vim.api.nvim_get_mode().mode
+--
+-- 		motion = motion .. key
+--
+-- 		if mode == 'n' and prev_mode ~= 'n' then
+-- 			vim.cmd('echo "motion: ' .. motion .. '"')
+-- 			motion = ''
+-- 		end
+--
+-- 		if mode ~= prev_mode then
+-- 			prev_mode = mode
+-- 		end
+-- 	end, 0)
+-- 	return key
+-- end, 0)
+
 vim.o.guicursor = 'n-v-c-ci-sm:block,i-ve:ver25,r-cr-o:hor20'
 vim.o.showbreak = '  󱞩 '
 

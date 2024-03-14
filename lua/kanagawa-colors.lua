@@ -22,6 +22,7 @@ return function(colors)
 		['@type.definition.css'] = { fg = theme.ui.fg },
 		['@constructor.javascript'] = { fg = theme.syn.fun },
 		['@conceal.json'] = { fg = theme.syn.type },
+		['@variable.member.typescript'] = { fg = theme.syn.identifier },
 		IndentBlanklineContextChar = { fg='#4a4a58' },
 		IndentBlanklineChar = { fg='#2f2f3f' },
 		Comment = { fg='#666677', italic=true },

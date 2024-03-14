@@ -255,12 +255,12 @@ require'lazy'.setup({
 			vim.api.nvim_set_hl(0, '@text.uri.vue', { underline = false })
 		end
 	},
-	{
-		'echasnovski/mini.ai',
-		opts = {
-			n_lines = 5000,
-		},
-	},
+	-- {
+	-- 	'echasnovski/mini.ai',
+	-- 	opts = {
+	-- 		n_lines = 5000,
+	-- 	},
+	-- },
 	{
 		'nvim-treesitter/nvim-treesitter-context',
 		cmd = { 'TSContextEnable', 'TSContextToggle', 'TSContextDisable' },
@@ -390,6 +390,11 @@ require'lazy'.setup({
 		},
 	},
 	{ 'williamboman/mason-lspconfig.nvim', lazy = true },
+	-- {
+	-- 	'pmizio/typescript-tools.nvim',
+	-- 	dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+	-- 	opts = {},
+	-- },
 	{
 		'neovim/nvim-lspconfig',
 		event = { "BufReadPre", "BufNewFile" },
@@ -423,9 +428,26 @@ require'lazy'.setup({
 						hostInfo = 'neovim',
 						typescript = {
 							tsdk = require'env'.tsdk
-						}
-					}
-				}
+						},
+						plugins = {
+							{
+								name = '@vue/typescript-plugin',
+								-- location = '/c/Program Files/nodejs/node_modules/@vue/typescript-plugin',
+								location = 'C:\\Program Files\\nodejs\\node_modules\\@vue\\typescript-plugin',
+								languages = { 'javascript', 'typescript', 'vue' },
+							},
+						},
+					},
+					filetypes = {
+						'vue',
+						'javascript',
+						'typescript',
+						'javascriptreact',
+						'javascript.jsx',
+						'typescriptreact',
+						'typescript.tsx',
+					},
+				},
 			},
 			setup = {},
 		},
@@ -452,6 +474,9 @@ require'lazy'.setup({
 			local function setup(server)
 				local server_opts = vim.tbl_deep_extend("force", {
 					capabilities = vim.deepcopy(capabilities),
+					-- on_attach = function (client, bufnr)
+					-- 	require'workspace-diagnostics'.populate_workspace_diagnostics(client, bufnr)
+					-- end
 				}, servers[server] or {})
 
 				if opts.setup[server] then
@@ -473,6 +498,7 @@ require'lazy'.setup({
 		end
 	},
 	-- { 'folke/neodev.nvim', config = true },
+	-- { 'artemave/workspace-diagnostics.nvim' },
 	{
 		'ray-x/lsp_signature.nvim',
 		event = 'VeryLazy',
@@ -500,6 +526,7 @@ require'lazy'.setup({
 	end },
 	{ 'rafamadriz/friendly-snippets', lazy = true },
 	{
+		-- https://tonystr.net
 		'L3MON4D3/LuaSnip',
 		version = '2.*',
 		build = 'make install_jsregexp',
