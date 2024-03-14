@@ -37,6 +37,18 @@ require'lazy'.setup({
 	-- },
 
 	-- Misc
+	{ 'LunarVim/bigfile.nvim', opts = {
+		filesize = 2, -- MiB
+		features = { -- features to disable
+			"indent_blankline",
+			"illuminate",
+			"lsp",
+			"treesitter",
+			"syntax",
+			"vimopts",
+			"filetype",
+		},
+	} },
 	{ 'tpope/vim-dispatch'--[[ , cmd = 'Dispatch'  ]]},
 	{
 		'Wansmer/sibling-swap.nvim',
@@ -255,12 +267,6 @@ require'lazy'.setup({
 			vim.api.nvim_set_hl(0, '@text.uri.vue', { underline = false })
 		end
 	},
-	-- {
-	-- 	'echasnovski/mini.ai',
-	-- 	opts = {
-	-- 		n_lines = 5000,
-	-- 	},
-	-- },
 	{
 		'nvim-treesitter/nvim-treesitter-context',
 		cmd = { 'TSContextEnable', 'TSContextToggle', 'TSContextDisable' },
@@ -390,11 +396,6 @@ require'lazy'.setup({
 		},
 	},
 	{ 'williamboman/mason-lspconfig.nvim', lazy = true },
-	-- {
-	-- 	'pmizio/typescript-tools.nvim',
-	-- 	dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-	-- 	opts = {},
-	-- },
 	{
 		'neovim/nvim-lspconfig',
 		event = { "BufReadPre", "BufNewFile" },
@@ -520,7 +521,7 @@ require'lazy'.setup({
 	{ 'RRethy/vim-illuminate', event = { 'BufReadPost', 'BufNewFile' }, config = function ()
 		require'illuminate'.configure {
 			modes_allowlist = { 'n' },
-			filetypes_denylist = { 'help', 'qf', 'fugitive', 'vimwiki' },
+			filetypes_denylist = { 'help', 'qf', 'fugitive', 'vimwiki', 'md', 'markdown', 'txt' },
 			min_count_to_highlight = 2,
 		}
 	end },
