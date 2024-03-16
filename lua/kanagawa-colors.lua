@@ -18,6 +18,12 @@ return function(colors)
 		['@string.unit.css'] = { fg = theme.syn.type },
 		['@type.tag.scss'] = { fg = theme.syn.special1 },
 		['@type.tag.css'] = { fg = theme.syn.special1 },
+
+		-- Special elements [vue]
+		['@template.tag.vue'] = { fg = theme.syn.identifier },
+		['@style.tag.vue'] = { fg = theme.syn.identifier },
+		['@script.tag.vue'] = { fg = theme.syn.identifier },
+
 		['@type.definition.scss'] = { fg = theme.ui.fg },
 		['@type.definition.css'] = { fg = theme.ui.fg },
 		['@constructor.javascript'] = { fg = theme.syn.fun },
