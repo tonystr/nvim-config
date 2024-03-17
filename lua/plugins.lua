@@ -12,8 +12,6 @@ end
 
 vim.opt.runtimepath:prepend(lazypath)
 
-local leet_arg = 'leetcode.nvim';
-
 require'lazy'.setup({
 	-- Theme
 	{
@@ -361,22 +359,6 @@ require'lazy'.setup({
 		{ '<C-y>', mode = { 'i', 'n' } },
 	}},
 	{ 'vimwiki/vimwiki', keys = { '<leader>w' } },
-	{
-		'kawre/leetcode.nvim',
-		build = ':TSUpdate html',
-		dependencies = {
-			'nvim-treesitter/nvim-treesitter',
-			'nvim-telescope/telescope.nvim',
-			'nvim-lua/plenary.nvim', -- required by telescope
-			'MunifTanjim/nui.nvim',
-			-- 'rcarriga/nvim-notify',
-			'nvim-web-devicons',
-		},
-		lazy = leet_arg ~= vim.fn.argv()[1],
-		opts = {
-			arg = leet_arg,
-		},
-	},
 
 	-- Lsp
 	{
@@ -621,32 +603,19 @@ require'lazy'.setup({
 	{ 'rbong/vim-flog', dependencies = { 'vim-fugitive' }, cmd = { 'Flog', 'Flogsplit', 'Floggit' } },
 
 	-- UI
-	-- { 'j-hui/fidget.nvim', config = true },
-	{
-		'chentoast/marks.nvim',
-		event = { 'BufReadPost', 'BufNewFile' },
-		opts = {
-			builtin_marks = { '.', '<', '>', '^' },
-		},
-		config = function(_, opts)
-			require'marks'.setup(opts)
-			vim.api.nvim_set_hl(0, 'MarkSignNumHL', { guifg = nil })
-		end
-	},
-	{ 'm00qek/baleia.nvim', tag = 'v1.3.0', lazy = true },
-	{
-		'samodostal/image.nvim',
-		ft = { 'png', 'jpg', 'jpeg', 'gif', 'bmp', 'ico' },
-		dependencies = { 'nvim-lua/plenary.nvim', 'm00qek/baleia.nvim' },
-		opts = {
-			render = {
-				foreground_color = true,
-				background_color = true,
-			}
-		},
-	},
+	-- -- Marks.nvim causes clipping in hover docs (https://github.com/chentoast/marks.nvim/issues/79)
+	-- {
+	-- 	'chentoast/marks.nvim',
+	-- 	event = { 'BufReadPost', 'BufNewFile' },
+	-- 	opts = {
+	-- 		builtin_marks = { '.', '<', '>', '^' },
+	-- 	},
+	-- 	config = function(_, opts)
+	-- 		require'marks'.setup(opts)
+	-- 		vim.api.nvim_set_hl(0, 'MarkSignNumHL', { guifg = nil })
+	-- 	end
+	-- },
 	{ 'nvim-tree/nvim-web-devicons', lazy = true },
-	{ 'folke/zen-mode.nvim', cmd = { 'ZenMode' }, config = true },
 	{ 'stevearc/oil.nvim', config = true, cmd = 'Oil' },
 	{
 		'romgrk/barbar.nvim',
@@ -711,10 +680,7 @@ require'lazy'.setup({
 	{ 'debugloop/telescope-undo.nvim', keys = { { '<leader>fu', '<cmd>Telescope undo<CR>' } }, config = function ()
 		require'telescope'.load_extension'undo'
 	end },
-	{ 'cljoly/telescope-repo.nvim', keys = { { '<leader>gr', '<cmd>Telescope repo list<CR>' } }, config = function ()
-		require'telescope'.load_extension'repo'
-	end },
-	-- { 'nvim-telescope/telescope-symbols.nvim', event = 'VeryLazy' },
+	{ 'nvim-telescope/telescope-symbols.nvim', event = 'VeryLazy' },
 	{ 'stevearc/dressing.nvim', event = 'VeryLazy' },
 	{
 		'kevinhwang91/nvim-ufo',
@@ -752,7 +718,11 @@ require'lazy'.setup({
 			end
 			ufo.setup{
 				fold_virt_text_handler = handler,
-				close_fold_kinds = {'imports', 'comment'},
+				close_fold_kinds_for_ft = {
+					vue = {'imports', 'comment'},
+					typescript = {'imports', 'comment'},
+					javascript = {'imports', 'comment'},
+				},
 
 			}
 			vim.keymap.set('n', 'zR', ufo.openAllFolds)
