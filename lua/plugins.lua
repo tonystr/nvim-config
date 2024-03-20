@@ -366,22 +366,22 @@ require'lazy'.setup({
 		config = true,
 		cmd = { 'Mason', 'LspInfo', 'MasonLog' },
 	},
-	{
-		'VidocqH/lsp-lens.nvim',
-		lazy = true,
-		opts = {
-			sections = {
-				definition = false,
-				implements = false,
-				git_authors = true,
-			},
-		},
-	},
+	-- {
+	-- 	'VidocqH/lsp-lens.nvim',
+	-- 	lazy = true,
+	-- 	opts = {
+	-- 		sections = {
+	-- 			definition = false,
+	-- 			implements = false,
+	-- 			git_authors = true,
+	-- 		},
+	-- 	},
+	-- },
 	{ 'williamboman/mason-lspconfig.nvim', lazy = true },
 	{
 		'neovim/nvim-lspconfig',
-		event = { "BufReadPre", "BufNewFile" },
-		dependencies = { 'VidocqH/lsp-lens.nvim' },
+		event = { "BufReadPost", "BufNewFile" },
+		-- dependencies = { 'VidocqH/lsp-lens.nvim' },
 		opts = {
 			servers = {
 				lua_ls = {
@@ -587,7 +587,10 @@ require'lazy'.setup({
 		vim.keymap.set('n', '<leader>hr', gitsigns.reset_hunk)
 		vim.keymap.set('v', '<leader>hr', function() gitsigns.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
 	end },
-	{ 'f-person/git-blame.nvim', lazy = true },
+	{
+		'f-person/git-blame.nvim',
+		event = { 'BufReadPost', 'BufNewFile' },
+	},
 	{
 		'sindrets/diffview.nvim',
 		opts = {

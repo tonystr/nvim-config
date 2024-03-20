@@ -133,7 +133,7 @@ vim.keymap.set("o", "u", commented_lines_textobject,
 		{ silent = true, desc = "Textobject for adjacent commented lines" })
 
 -- Gitblame configuration
-vim.g.gitblame_enabled = 0
+vim.g.gitblame_ignored_filetypes = { 'startup', 'markdown' }
 vim.g.gitblame_display_virtual_text = 0
 vim.g.gitblame_message_template = '<author>  <summary>'
 vim.g.gitblame_message_when_no_blame = ' No blame information available'
