@@ -38,6 +38,7 @@ maps.n['<leader>G'] = '<cmd>Git<CR>';
 
 maps.n['<leader>cc'] = function () require'tinygit'.smartCommit() end
 -- maps.n['<leader>gp'] = function () require'tinygit'.push() end
+-- Test
 maps.n['<leader>gp'] = '<cmd>Dispatch! git push<CR>';
 
 -- vim.keymap.set('n', 'gx', function()
