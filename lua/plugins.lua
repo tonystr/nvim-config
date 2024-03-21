@@ -569,6 +569,16 @@ require'lazy'.setup({
 
 	-- Git
 	{ 'tpope/vim-fugitive', cmd = { 'G', 'Gwrite', 'Git', 'Gdiffsplit', 'Gvdiffsplit' } },
+	-- { 'SuperBo/fugit2.nvim' }, -- Could not build libgit2
+	{
+		'chrisgrieser/nvim-tinygit',
+		ft = { 'gitrebase', 'gitcommit' }, -- so ftplugins are loaded
+		dependencies = {
+			'stevearc/dressing.nvim',
+			'nvim-telescope/telescope.nvim',
+			'rcarriga/nvim-notify',
+		},
+	},
 	-- { 'akinsho/git-conflict.nvim', version = "v1.1.2", opts = { disable_diagnostics = true } },
 	{ 'lewis6991/gitsigns.nvim', event = { 'BufReadPost', 'BufNewFile' }, config = function()
 		local gitsigns = require'gitsigns'
@@ -784,10 +794,7 @@ require'lazy'.setup({
 			vim.g.showwords = 1
 
 			local function getWords()
-				if (vim.g.showwords == 1 and Contains(wcFiles, vim.bo.filetype)) then
-					return tostring(vim.fn.wordcount().words)
-				end
-				return ''
+				return tostring(vim.fn.wordcount().words)
 			end
 
 			require'lualine'.setup {
@@ -801,10 +808,17 @@ require'lazy'.setup({
 						}
 					},
 					lualine_c = {
-						{ getWords },
+						{
+							getWords,
+							cond = function()
+								return vim.g.showwords == 1 and Contains(wcFiles, vim.bo.filetype)
+							end,
+						},
 						{
 							git_blame.get_current_blame_text,
-							cond = git_blame.is_blame_text_available,
+							cond = function ()
+								return git_blame.is_blame_text_available() and git_blame.get_current_blame_text() ~= nil
+							end
 						}
 					},
 					lualine_x = {
