@@ -40,29 +40,17 @@ maps.n['<leader>cc'] = function () require'tinygit'.smartCommit() end
 -- maps.n['<leader>gp'] = function () require'tinygit'.push() end
 maps.n['<leader>gp'] = '<cmd>Dispatch! git push<CR>';
 
--- vim.keymap.set('n', 'gx', function()
--- 	local file = vim.fn.expand '<cfile>' --[[@as string]]
---
--- 	-- First try the default behaviour from https://github.com/neovim/neovim/blob/597355deae2ebddcb8b930da9a8b45a65d05d09b/runtime/lua/vim/_editor.lua#L1084.
--- 	local _, err = vim.ui.open(file)
--- 	if not err then return end
---
--- 	-- Consider anything that looks like string/string a GitHub link.
--- 	local link = file:match '%w[%w%-]+/[%w%-%._]+'
--- 	if link then
--- 		_, err = vim.ui.open('https://www.github.com/' .. link)
--- 	end
---
--- 	-- If that fails, just blame me.
--- 	if err then
--- 		vim.notify(err, vim.log.levels.ERROR)
--- 	end
--- end, { desc = 'Open filepath or URI under cursor' })
+maps.n['<leader>wp'] = '<cmd>e ~/OneDrive/projects/<CR>';
 
--- maps.n['q:'] = '<Nop>'
--- maps.n['q/'] = '<Nop>'
--- maps.n['q?'] = '<Nop>'
-
+-- Fixes a bug where neovide hangs when deleting many lines in visual mode.
+-- TODO: remove when neovide is fixed
+vim.keymap.set('v', 'd', '', {
+	callback = function()
+		vim.cmd'IndentBlanklineDisable'
+		return 'd<cmd>IndentBlanklineEnable<CR>'
+	end,
+	expr = true,
+})
 
 vim.keymap.set('v', 'I', '', {
 	callback = function ()
@@ -174,6 +162,8 @@ maps.n['<leader>gB'] = '<cmd>GitBlameToggle<cr>'
 vim.cmd'command Push Dispatch git push'
 vim.cmd'command Pull Dispatch git pull'
 vim.cmd'command -nargs=1 Cam Dispatch git cam <f-args>'
+vim.cmd'command -nargs=1 Commit Dispatch git commit -m <f-args>'
+-- vim.cmd'command -nargs=1 Com Dispatch git commit -m <f-args>'
 vim.cmd'command -nargs=* K Dispatch git <args>'
 
 -- LSP key mappings

@@ -14,6 +14,9 @@ if vim.g.neovide then
 	vim.g.neovide_scroll_animation_length = 0.14
 	vim.g.neovide_scroll_animation_far_lines = 48
 	vim.g.neovide_cursor_trail_size = 0.5
+	vim.g.neovide_window_blurred = false
+	vim.g.neovide_floating_blur_amount_x = 0.0
+	vim.g.neovide_floating_blur_amount_y = 0.0
 
 	vim.g.neovide_scale_factor = 1.0
 else
@@ -39,7 +42,7 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
 )
 
 vim.diagnostic.config{
-	float={border=_border}
+	float = { border = _border }
 }
 
 -- globals
@@ -54,6 +57,7 @@ vim.g.vimwiki_list = {
 	{ path = '~/OneDrive/vimwiki/',          syntax = 'markdown', ext = '.md' },
 	{ path = '~/OneDrive/work/',             syntax = 'markdown', ext = '.md' },
 	{ path = '~/OneDrive/entrepreneurship/', syntax = 'markdown', ext = '.md' },
+	{ path = '~/OneDrive/projects/',         syntax = 'markdown', ext = '.md' },
 }
 
 vim.g.splitjoin_html_attributes_bracket_on_new_line = 1

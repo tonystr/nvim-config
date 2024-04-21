@@ -35,16 +35,42 @@ require'lazy'.setup({
 	-- },
 
 	-- Misc
+	{
+		'jackMort/ChatGPT.nvim',
+		keys = {
+			{ '<C-Space>', '<cmd>ChatGPT<CR>' },
+			{ '<S-Space>', '<cmd>ChatGPT<CR>' },
+			{ '<leader><leader>', '<cmd>ChatGPT<CR>' },
+		},
+		cmd = {
+			'ChatGPT',
+			'ChatGPTActAs',
+			'ChatGPTCompleteCode',
+			'ChatGPTEditWithInstructions',
+			'ChatGPTRun',
+		},
+		opts = {
+			openai_params = {
+				model = 'gpt-4',
+			}
+		},
+		dependencies = {
+			'MunifTanjim/nui.nvim',
+			'nvim-lua/plenary.nvim',
+			'folke/trouble.nvim',
+			'nvim-telescope/telescope.nvim'
+		}
+	},
 	{ 'LunarVim/bigfile.nvim', opts = {
 		filesize = 2, -- MiB
 		features = { -- features to disable
-			"indent_blankline",
-			"illuminate",
-			"lsp",
-			"treesitter",
-			"syntax",
-			"vimopts",
-			"filetype",
+			'indent_blankline',
+			'illuminate',
+			'lsp',
+			'treesitter',
+			'syntax',
+			'vimopts',
+			'filetype',
 		},
 	} },
 	{ 'tpope/vim-dispatch'--[[ , cmd = 'Dispatch'  ]]},
@@ -95,17 +121,17 @@ require'lazy'.setup({
 		end
 	},
 	{ 'christoomey/vim-sort-motion', keys = { 'gs' } },
-	{
-		dir = 'C:/Users/tonys/Documents/git/tw-values.nvim',
-		keys = {
-			{ '<leader>sv', "<cmd>TWValues<cr>", desc = "Show tailwind CSS values" },
-			{ '<leader>sc', "<cmd>TWCopy<cr>", desc = "Copy tailwind CSS values" },
-		},
-		opts = {
-			border = 'rounded',
-			show_unknown_classes = true
-		}
-	},
+	-- {
+	-- 	dir = 'C:/Users/tonys/Documents/git/tw-values.nvim',
+	-- 	keys = {
+	-- 		{ '<leader>sv', "<cmd>TWValues<cr>", desc = "Show tailwind CSS values" },
+	-- 		{ '<leader>sc', "<cmd>TWCopy<cr>", desc = "Copy tailwind CSS values" },
+	-- 	},
+	-- 	opts = {
+	-- 		border = 'rounded',
+	-- 		show_unknown_classes = true
+	-- 	}
+	-- },
 	{
 		'kylechui/nvim-surround',
 		keys = {
@@ -308,6 +334,7 @@ require'lazy'.setup({
 	}},
 	{
 		'lukas-reineke/indent-blankline.nvim',
+		-- main = 'ibl',
 		version = '2.20.7',
 		event = { 'BufReadPost', 'BufNewFile' },
 		opts = { show_current_context = true },

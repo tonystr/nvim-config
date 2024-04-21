@@ -20,3 +20,7 @@ nmap <buffer> r <NOP>
 nmap <buffer> s <NOP>
 nmap <buffer> c <NOP>
 nmap <buffer> c <NOP>
+
+nmap <buffer> <C-Space> <cmd>BufferClose<CR><cmd>ChatGPT<CR>
+nmap <buffer> <S-Space> <cmd>BufferClose<CR><cmd>ChatGPT<CR>
+nmap <buffer> <leader><leader> <cmd>BufferClose<CR><cmd>ChatGPT<CR>

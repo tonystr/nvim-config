@@ -24,6 +24,16 @@
 vim.o.guicursor = 'n-v-c-ci-sm:block,i-ve:ver25,r-cr-o:hor20'
 vim.o.showbreak = '  󱞩 '
 
+-- local function check_floating_window()
+-- 	if vim.api.nvim_win_get_config(0).relative ~= '' then
+-- 		vim.opt_local.showbreak = ''
+-- 	end
+-- end
+-- vim.api.nvim_create_autocmd('WinEnter', {
+-- 	pattern = '*',
+-- 	callback = check_floating_window
+-- })
+
 -- vim.opt.statuscolumn = "%s %{foldlevel(v:lnum) <= foldlevel(v:lnum-1) ? ' ' : (foldclosed(v:lnum) == -1 ? '' : '')} %{v:relnum ? v:relnum : v:lnum} "
 
 -- vim.g.formatprg = 'prettier --parser typescript --stdin-path %';
