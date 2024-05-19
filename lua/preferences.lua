@@ -26,6 +26,7 @@ end
 vim.g.flog_permanent_default_opts = {
     date = 'relative',
 }
+vim.opt.statuscolumn = "%s%{foldlevel(v:lnum) <= foldlevel(v:lnum-1) ? ' ' : (foldclosed(v:lnum) == -1 ? '' : '')} %{v:relnum ? v:relnum : v:lnum} "
 
 local _border = "rounded"
 

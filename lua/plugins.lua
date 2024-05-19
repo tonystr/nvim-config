@@ -35,6 +35,7 @@ require'lazy'.setup({
 	-- },
 
 	-- Misc
+	-- { 'cbochs/portal.nvim' },
 	{
 		'jackMort/ChatGPT.nvim',
 		keys = {
@@ -332,12 +333,31 @@ require'lazy'.setup({
 	{ 'junegunn/vim-easy-align', keys = {
 		{ 'ga', '<Plug>(EasyAlign)', mode = { 'n', 'v' } },
 	}},
+	-- {
+	-- 	'lukas-reineke/indent-blankline.nvim',
+	-- 	-- main = 'ibl',
+	-- 	version = '2.20.7',
+	-- 	event = { 'BufReadPost', 'BufNewFile' },
+	-- 	opts = { show_current_context = true },
+	-- },
+	-- Fascinating...
 	{
 		'lukas-reineke/indent-blankline.nvim',
-		-- main = 'ibl',
-		version = '2.20.7',
+		main = 'ibl',
 		event = { 'BufReadPost', 'BufNewFile' },
-		opts = { show_current_context = true },
+		opts = {
+			indent = {
+				highlight = {
+					'IndentBlanklineChar',
+				},
+			},
+			scope = {
+				show_start = false,
+				highlight = {
+					'IndentBlanklineContextChar',
+				},
+			}
+		},
 	},
 	{
 		'Wansmer/treesj',
@@ -648,20 +668,28 @@ require'lazy'.setup({
 	{ 'rbong/vim-flog', dependencies = { 'vim-fugitive' }, cmd = { 'Flog', 'Flogsplit', 'Floggit' } },
 
 	-- UI
-	-- -- Marks.nvim causes clipping in hover docs (https://github.com/chentoast/marks.nvim/issues/79)
-	-- {
-	-- 	'chentoast/marks.nvim',
-	-- 	event = { 'BufReadPost', 'BufNewFile' },
-	-- 	opts = {
-	-- 		builtin_marks = { '.', '<', '>', '^' },
-	-- 	},
-	-- 	config = function(_, opts)
-	-- 		require'marks'.setup(opts)
-	-- 		vim.api.nvim_set_hl(0, 'MarkSignNumHL', { guifg = nil })
-	-- 	end
-	-- },
+	{
+		'chentoast/marks.nvim',
+		-- Marks.nvim causes clipping in hover docs (https://github.com/chentoast/marks.nvim/issues/79)
+		-- Fixed with this PR:
+		commit = 'e0909e4868671d158a7dce1bc7872fd7a1f7d656',
+		event = { 'BufReadPost', 'BufNewFile' },
+		opts = {
+			builtin_marks = { '.', '<', '>', '^' },
+		},
+		config = function(_, opts)
+			require'marks'.setup(opts)
+			vim.api.nvim_set_hl(0, 'MarkSignNumHL', { link = 'LineNr' })
+		end
+	},
 	{ 'nvim-tree/nvim-web-devicons', lazy = true },
-	{ 'stevearc/oil.nvim', config = true, cmd = 'Oil' },
+	{ 'stevearc/oil.nvim', config = {
+		skip_confirm_for_simple_edits = true,
+		float = {
+			padding = 4,
+			max_height = 24,
+		}
+	}, cmd = 'Oil' },
 	{
 		'romgrk/barbar.nvim',
 		dependencies = { 'nvim-web-devicons' },
@@ -782,17 +810,45 @@ require'lazy'.setup({
 			end)
 		end
 	},
-	{ 'startup-nvim/startup.nvim', cmd = 'Startup', opts = { theme = 'dragon' } },
+	{
+		'startup-nvim/startup.nvim',
+		cmd = 'Startup',
+		opts = { theme = 'dragon' },
+	},
 	{ 'folke/todo-comments.nvim', event = { 'BufReadPost', 'BufNewFile' }, config = true },
 	{
-		'norcalli/nvim-colorizer.lua',
+		'brenoprata10/nvim-highlight-colors',
 		event = 'VeryLazy',
 		opts = {
-			['*'] = { names = false },
-			css = { css = true, css_fn = true },
-			scss = { css = true, css_fn = true },
-		}
+			render = 'background',
+
+			---Set virtual symbol (requires render to be set to 'virtual')
+			virtual_symbol = '■',
+
+			---Highlight named colors, e.g. 'green'
+			enable_named_colors = true,
+
+			---Highlight tailwind colors, e.g. 'bg-blue-500'
+			enable_tailwind = false,
+
+			---Set custom colors
+			---Label must be properly escaped with '%' to adhere to `string.gmatch`
+			--- :help string.gmatch
+			custom_colors = {
+				{ label = '%-%-theme%-primary%-color', color = '#0f1219' },
+				{ label = '%-%-theme%-secondary%-color', color = '#5a5d64' },
+			}
+		},
 	},
+	-- {
+	-- 	'norcalli/nvim-colorizer.lua',
+	-- 	event = 'VeryLazy',
+	-- 	opts = {
+	-- 		['*'] = { names = false },
+	-- 		css = { css = true, css_fn = true },
+	-- 		scss = { css = true, css_fn = true },
+	-- 	}
+	-- },
 	{
 		'nvim-neo-tree/neo-tree.nvim',
 		dependencies = { "nvim-lua/plenary.nvim", "nvim-web-devicons", "MunifTanjim/nui.nvim", },

@@ -21,3 +21,6 @@ In one word, Queequeg, said I, rather digressively; hell is an idea first born o
 
 No soul likes to be robbed of truth
     - Plato
+
+To the cannon, all men are equal 
+    - Napoleon Bonaparte

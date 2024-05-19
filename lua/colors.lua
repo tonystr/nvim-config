@@ -30,6 +30,8 @@ return function(colors)
 		-- LineNr = { bg='none', fg='#54546D' },
 		-- CursorLine = {},
 		-- CursorLineNR = { ctermfg='yellow', fg='#C8C093' },
+		-- MarkSignNumHl = { bg='none', fg='#54546D' },
+		-- MarkSignHl = { bg='none', fg='#54546D' },
 		EndOfBuffer = { ctermfg='black', fg='#1f1f28' },
 		Whitespace = { fg='#4a4a58' },
 		VertSplit = { ctermbg='none', bg='none', fg='#4a4a58' },

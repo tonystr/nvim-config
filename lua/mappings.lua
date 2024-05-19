@@ -5,7 +5,7 @@ maps['']['<space>'] = '<nop>'
 maps.n['<leader>of'] = '<cmd>call File_manager()<CR>'
 maps.n['<leader>ot'] = '<cmd>silent !wt -w 0 nt -d %:h<CR>'
 maps.n['<leader>oT'] = '<cmd>silent !wt -w 0 nt -d .<CR>'
-maps.n['<leader>oi'] = '<cmd>Oil<CR>'
+maps.n['<leader>oi'] = '<cmd>Oil --float<CR>'
 maps.n['<C-t>'] = '<cmd>tabnew<CR>'
 maps.n['gt'] = '<cmd>tabn<CR>'
 maps.n['gT'] = '<cmd>tabp<CR>'
@@ -42,15 +42,15 @@ maps.n['<leader>gp'] = '<cmd>Dispatch! git push<CR>';
 
 maps.n['<leader>wp'] = '<cmd>e ~/OneDrive/projects/<CR>';
 
--- Fixes a bug where neovide hangs when deleting many lines in visual mode.
--- TODO: remove when neovide is fixed
-vim.keymap.set('v', 'd', '', {
-	callback = function()
-		vim.cmd'IndentBlanklineDisable'
-		return 'd<cmd>IndentBlanklineEnable<CR>'
-	end,
-	expr = true,
-})
+-- I think this is fixed now?
+-- -- Fixes a bug where neovide hangs when deleting many lines in visual mode.
+-- vim.keymap.set('v', 'd', '', {
+-- 	callback = function()
+-- 		vim.cmd'IndentBlanklineDisable'
+-- 		return 'd<cmd>IndentBlanklineEnable<CR>'
+-- 	end,
+-- 	expr = true,
+-- })
 
 vim.keymap.set('v', 'I', '', {
 	callback = function ()

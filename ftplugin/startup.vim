@@ -3,6 +3,8 @@ setlocal noruler
 setlocal noshowcmd
 setlocal linebreak
 
+setlocal statuscolumn=""
+
 nmap <buffer> i 1<leader>w<leader>w
 nmap <buffer> a 2<leader>w<leader>w
 nmap <buffer> v <NOP>
