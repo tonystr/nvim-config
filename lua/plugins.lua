@@ -297,11 +297,6 @@ require'lazy'.setup({
 		cmd = { 'TSContextEnable', 'TSContextToggle', 'TSContextDisable' },
 		config = true,
 	},
-	{ 'nvim-treesitter/playground', cmd = { 'TSNodeUnderCursor', 'TSHighlightCapturesUnderCursor', 'TSPlaygroundToggle' }, config = function()
-		require'nvim-treesitter.configs'.setup {
-			playground = { enable = true },
-		}
-	end },
 	{
 		'numToStr/Comment.nvim',
 		keys = { 'gc', 'gb', { 'gc', mode = 'x' }, { 'gb', mode = 'x' } },
@@ -579,11 +574,14 @@ require'lazy'.setup({
 
 			cmp.setup {
 				formatting = {
+					fields = { "kind", "abbr", },
 					format = function (entry, item)
-						require'luasnip.loaders.from_vscode'.lazy_load();
+						-- require'luasnip.loaders.from_vscode'.lazy_load();
 						return require'lspkind'.cmp_format({
 							mode = 'symbol', -- show only symbol annotations
+							-- preset = 'codicons',
 							maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+							show_labelDetails = true, 
 						})(entry, item)
 						-- return require'tailwindcss-colorizer-cmp'.formatter(entry, item)
 					end
