@@ -36,6 +36,8 @@ return function(colors)
 		Comment = { fg='#666677', italic=true },
 		Folded = { bg='none' },
 
+		['VimwikiHeader1'] = { fg='#ffd282' },
+
 		-- LineNr = { bg='none', fg='#54546D' },
 		-- CursorLine = {},
 		EndOfBuffer = { ctermfg='black', fg='#1f1f28' },

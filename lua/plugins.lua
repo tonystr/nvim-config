@@ -755,7 +755,7 @@ require'lazy'.setup({
 	{ 'stevearc/dressing.nvim', event = 'VeryLazy' },
 	{
 		'kevinhwang91/nvim-ufo',
-		keys = { 'zR', 'zM', 'zr', 'zm', 'zK' },
+		keys = { 'zR', 'zM', 'zr', 'zm', 'zK', 'zf' },
 		ft = { 'vue', 'javascript', 'typescript', 'typescriptreact', 'javascriptreact', 'svelte' },
 		dependencies = 'kevinhwang91/promise-async',
 		config = function ()

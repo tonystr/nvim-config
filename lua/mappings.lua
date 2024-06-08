@@ -42,6 +42,8 @@ maps.n['<leader>gp'] = '<cmd>Dispatch! git push<CR>';
 
 maps.n['<leader>wp'] = '<cmd>e ~/OneDrive/projects/<CR>';
 
+maps.n['<leader>ai'] = function() vim.lsp.buf.code_action({ filter = function(action) return action.command.title:find("import") end, apply = true }) end
+
 -- I think this is fixed now?
 -- -- Fixes a bug where neovide hangs when deleting many lines in visual mode.
 -- vim.keymap.set('v', 'd', '', {
