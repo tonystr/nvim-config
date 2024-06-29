@@ -28,18 +28,29 @@ require'lazy'.setup({
 		priority = 1000,
 	},
 	-- { 'catppuccin/nvim', name = 'catppuccin', lazy = false },
-	-- {
-	-- 	"folke/tokyonight.nvim",
-	-- 	lazy = true,
-	-- 	opts = {},
-	-- },
+	{
+		"folke/tokyonight.nvim",
+		opts = {},
+	},
 
 	-- Misc
-	-- { 'cbochs/portal.nvim' },
+	-- {
+	-- 	'kndndrj/nvim-dbee',
+	-- 	dependencies = { 'MunifTanjim/nui.nvim' },
+	-- 	build = function()
+	-- 		-- Install tries to automatically detect the install method.
+	-- 		-- if it fails, try calling it with one of these parameters:
+	-- 		--    "curl", "wget", "bitsadmin", "go"
+	-- 		require'dbee'.install("go")
+	-- 	end,
+	-- 	config = function()
+	-- 		require'dbee'.setup()
+	-- 	end
+	-- },
 	{
 		'jackMort/ChatGPT.nvim',
 		keys = {
-			{ '<C-Space>', '<cmd>ChatGPT<CR>' },
+			{ '--[[ <C-Space> ]]', '<cmd>ChatGPT<CR>' },
 			{ '<S-Space>', '<cmd>ChatGPT<CR>' },
 			{ '<leader><leader>', '<cmd>ChatGPT<CR>' },
 		},

@@ -161,10 +161,10 @@ maps.n['<leader>gC'] = '<cmd>Telescope git_bcommits<cr>' -- current buffer commi
 maps.n['<leader>gb'] = '<cmd>Telescope git_branches<cr>'
 maps.n['<leader>gB'] = '<cmd>GitBlameToggle<cr>'
 
-vim.cmd'command Push Dispatch git push'
-vim.cmd'command Pull Dispatch git pull'
-vim.cmd'command -nargs=1 Cam Dispatch git cam <f-args>'
-vim.cmd'command -nargs=1 Commit Dispatch git commit -m <f-args>'
+vim.cmd'command Push Dispatch! git push'
+vim.cmd'command Pull Dispatch! git pull'
+vim.cmd'command -nargs=1 Cam Dispatch! git cam <f-args>'
+vim.cmd'command -nargs=1 Commit Dispatch! git commit -m <f-args>'
 -- vim.cmd'command -nargs=1 Com Dispatch git commit -m <f-args>'
 vim.cmd'command -nargs=* K Dispatch git <args>'
 
