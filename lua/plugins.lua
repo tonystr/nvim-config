@@ -35,6 +35,16 @@ require'lazy'.setup({
 
 	-- Misc
 	-- {
+	-- 	'mistweaverco/kulala.nvim',
+	-- 	config = true,
+	-- 	keys = {
+	-- 		{ '<leader>ka', function() require'kulala'.run() end },
+	-- 		{ '<leader>kt', function() require'kulala'.toggle_view() end },
+	-- 		{ '<leader>kn', function() require'kulala'.jump_next() end },
+	-- 		{ '<leader>kp', function() require'kulala'.jump_prev() end },
+	-- 	},
+	-- },
+	-- {
 	-- 	'kndndrj/nvim-dbee',
 	-- 	dependencies = { 'MunifTanjim/nui.nvim' },
 	-- 	build = function()
@@ -406,11 +416,17 @@ require'lazy'.setup({
 			}
 		},
 	},
-	{ 'mattn/emmet-vim', keys = {
-		{ '<Plug>(emmet-expand-abbr)', mode = { 'i', 'n' } },
-		{ '<Plug>(emmet-expand-yank)', mode = { 'i', 'n' } },
-		{ '<C-y>', mode = { 'i', 'n' } },
-	}},
+	{
+		'mattn/emmet-vim',
+		keys = {
+			{ '<Plug>(emmet-expand-abbr)', mode = { 'i', 'n' } },
+			{ '<Plug>(emmet-expand-yank)', mode = { 'i', 'n' } },
+			{ '<C-z>', mode = { 'i', 'n' } },
+		},
+		config = function()
+			vim.g.user_emmet_leader_key = '<C-z>'
+		end,
+	},
 	{ 'vimwiki/vimwiki', keys = { '<leader>w' } },
 
 	-- Lsp
@@ -678,19 +694,25 @@ require'lazy'.setup({
 
 	-- UI
 	{
-		'chentoast/marks.nvim',
-		-- Marks.nvim causes clipping in hover docs (https://github.com/chentoast/marks.nvim/issues/79)
-		-- Fixed with this PR:
-		commit = 'e0909e4868671d158a7dce1bc7872fd7a1f7d656',
-		event = { 'BufReadPost', 'BufNewFile' },
-		opts = {
-			builtin_marks = { '.', '<', '>', '^' },
-		},
-		config = function(_, opts)
-			require'marks'.setup(opts)
-			vim.api.nvim_set_hl(0, 'MarkSignNumHL', { link = 'LineNr' })
-		end
+		'Fildo7525/pretty_hover',
+		-- event = "LspAttach",
+		keys = { { 'K', function() require'pretty_hover'.hover() end } },
+		opts = {}
 	},
+	-- {
+	-- 	'chentoast/marks.nvim',
+	-- 	-- Marks.nvim causes clipping in hover docs (https://github.com/chentoast/marks.nvim/issues/79)
+	-- 	-- Fixed with this PR:
+	-- 	commit = 'e0909e4868671d158a7dce1bc7872fd7a1f7d656',
+	-- 	event = { 'BufReadPost', 'BufNewFile' },
+	-- 	opts = {
+	-- 		builtin_marks = { '.', '<', '>', '^' },
+	-- 	},
+	-- 	config = function(_, opts)
+	-- 		require'marks'.setup(opts)
+	-- 		vim.api.nvim_set_hl(0, 'MarkSignNumHL', { link = 'LineNr' })
+	-- 	end
+	-- },
 	{ 'nvim-tree/nvim-web-devicons', lazy = true },
 	{ 'stevearc/oil.nvim', config = {
 		skip_confirm_for_simple_edits = true,
@@ -704,7 +726,7 @@ require'lazy'.setup({
 		dependencies = { 'nvim-web-devicons' },
 		-- event = { 'BufWinEnter', 'BufNewFile' },
 		opts = {
-			exclude_ft = { 'fugitive', 'neo-tree', 'startup', '' },
+			exclude_ft = { 'fugitive', 'neo-tree', 'startup' },
 			auto_hide = true,
 			animation = false,
 			icons = {
@@ -718,8 +740,13 @@ require'lazy'.setup({
 				sidebar_filetypes = {
 					NvimTree = true,
 					['neo-tree'] = { event = 'BufWipeout' }
+				},
+				gitsigns = {
+					added = {enabled = true, icon = ' '},
+					changed = {enabled = true, icon = '柳'},
+					deleted = {enabled = true, icon = ' '},
 				}
-			}
+			},
 		},
 	},
 

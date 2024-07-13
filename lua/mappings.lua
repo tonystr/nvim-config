@@ -13,6 +13,24 @@ maps.n['<C-l>'] = '<cmd>nohlsearch<CR>'
 maps.n['<Esc>'] = '<cmd>nohlsearch<CR>'
 maps.n['<C-z>'] = '<Nop>'
 
+maps.n['<C-Up>']     = '<C-y>'
+maps.n['<C-Down>']   = '<C-e>'
+maps.n['<S-Up>']     = '3<C-y>'
+maps.n['<S-Down>']   = '3<C-e>'
+maps.n['<C-S-Up>']   = '3<C-y>'
+maps.n['<C-S-Down>'] = '3<C-e>'
+maps.n['<C-S-y>']    = '3<C-y>'
+maps.n['<C-S-e>']    = '3<C-e>'
+
+maps.n['<A-Up>'] = '<cmd>resize +1<CR>'
+maps.n['<A-Down>'] = '<cmd>resize -1<CR>'
+maps.n['<S-A-Up>'] = '<cmd>resize +3<CR>'
+maps.n['<S-A-Down>'] = '<cmd>resize -3<CR>'
+
+maps.n['digv'] = 'gvd'
+maps.n['yigv'] = 'gvy'
+maps.n['cigv'] = 'gvc'
+
 -- ↓ does not work due to relative file paths and rooting
 -- maps.n['gf'] = '<cmd>e <cfile><CR>'
 
@@ -188,12 +206,29 @@ maps.n['<leader>rn'] = function() vim.lsp.buf.rename() end
 -- Emmet bindings
 maps.n['<C-h>'] = '<Plug>(emmet-expand-abbr)'
 maps.i['<C-h>'] = '<Plug>(emmet-expand-abbr)'
--- maps.n['<C-y>'] = '<Plug>(emmet-expand-yank)'
--- maps.i['<C-y>'] = '<Plug>(emmet-expand-yank)'
 
 -- Visual mode
 maps.v['<'] = '<gv'
 maps.v['>'] = '>gv'
+
+-- Move between windows
+maps.n['<A-h>'] = '<Cmd>wincmd h<CR>'
+maps.n['<A-j>'] = '<Cmd>wincmd j<CR>'
+maps.n['<A-k>'] = '<Cmd>wincmd k<CR>'
+maps.n['<A-l>'] = '<Cmd>wincmd l<CR>'
+
+-- maps.n['<A-,>'] = '<Cmd>bn<CR>'
+-- maps.n['<A-.>'] = '<Cmd>bp<CR>'
+-- maps.n['<A-Left>'] = '<Cmd>bp<CR>'
+-- maps.n['<A-Right>'] = '<Cmd>bn<CR>'
+--
+-- maps.n['<A-w>'] = '<Cmd>bd<CR>'
+-- maps.n['<A-W>'] = '<Cmd>BufferWipeout<CR>'
+-- maps.n['<A-o>'] = '<C-w>o<CR>'
+-- maps.n['<A-S-o>'] = '<C-w>o<Cmd>BufferCloseAllButCurrent<CR>'
+-- maps.n['<A-e>'] = '<Cmd>BufferDelete #<CR>'
+-- maps.n['<A-r>'] = '<Cmd>BufferRestore<CR>'
+-- maps.n['<A-s>'] = '<C-w>s'
 
 -- Barbar keybindings
 -- Move to previous/next
@@ -201,11 +236,6 @@ maps.n['<A-,>'] = '<Cmd>BufferPrevious<CR>'
 maps.n['<A-.>'] = '<Cmd>BufferNext<CR>'
 maps.n['<A-Left>'] = '<Cmd>BufferPrevious<CR>'
 maps.n['<A-Right>'] = '<Cmd>BufferNext<CR>'
--- Move between windows
-maps.n['<A-h>'] = '<Cmd>wincmd h<CR>'
-maps.n['<A-j>'] = '<Cmd>wincmd j<CR>'
-maps.n['<A-k>'] = '<Cmd>wincmd k<CR>'
-maps.n['<A-l>'] = '<Cmd>wincmd l<CR>'
 -- Re-order to previous/next
 maps.n['<A-<>'] = '<Cmd>BufferMovePrevious<CR>'
 maps.n['<A->>'] = '<Cmd>BufferMoveNext<CR>'
@@ -221,14 +251,16 @@ maps.n['<A-8>'] = '<Cmd>BufferGoto 8<CR>'
 maps.n['<A-9>'] = '<Cmd>BufferGoto 9<CR>'
 maps.n['<A-0>'] = '<Cmd>BufferLast<CR>'
 -- Pin/unpin buffer
--- maps.n['<A-p>'] = '<Cmd>BufferPin<CR>'
+maps.n['<A-p>'] = '<Cmd>BufferPin<CR>'
 -- Close buffer
 maps.n['<A-w>'] = '<Cmd>BufferDelete<CR>'
 maps.n['<A-W>'] = '<Cmd>BufferWipeout<CR>'
-maps.n['<A-o>'] = '<C-w>o<Cmd>BufferCloseAllButCurrent<CR>'
+maps.n['<A-o>'] = '<C-w>o<CR>'
+maps.n['<A-S-o>'] = '<C-w>o<Cmd>BufferCloseAllButCurrent<CR>'
 maps.n['<A-e>'] = '<Cmd>BufferDelete #<CR>'
 maps.n['<A-r>'] = '<Cmd>BufferRestore<CR>'
 maps.n['<A-s>'] = '<C-w>s'
+
 -- Sort automatically by...
 -- maps.n['<leader>bb'] = '<Cmd>BufferOrderByBufferNumber<CR>'
 -- maps.n['<leader>bd'] = '<Cmd>BufferOrderByDirectory<CR>'

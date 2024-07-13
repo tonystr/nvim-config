@@ -106,3 +106,49 @@ vim.api.nvim_create_autocmd('FileType', {
     pattern = '*',
     command = 'setlocal formatoptions-=c formatoptions-=r formatoptions-=o',
 })
+
+vim.cmd [[
+augroup RestoreCursor
+autocmd!
+autocmd BufRead * autocmd FileType <buffer> ++once
+\ let s:line = line("'\"")
+\ | if s:line >= 1 && s:line <= line("$") && &filetype !~# 'commit'
+\      && index(['xxd', 'gitrebase'], &filetype) == -1
+\ |   execute "normal! g`\""
+\ | endif
+augroup END
+
+" autocmd BufLeave * sil mkview
+" autocmd BufEnter * sil loadview
+"autocmd BufLeave * if bufname('%') != '' && !&modified | g.neovide_scroll_animation_length = 0.14 | endif
+" autocmd BufLeave * if bufname('%') != '' && !&modified | mkview | endif
+" autocmd BufEnter * if bufname('%') != '' && filereadable(expand('%')) | silent loadview | endif
+]]
+
+vim.api.nvim_create_autocmd({'BufLeave'}, {
+	pattern = '*',
+	callback = function()
+		vim.g.neovide_scroll_animation_length = 0.0
+		vim.g.neovide_cursor_animation_length = 0.0
+		vim.g.neovide_scroll_animation_far_lines = 0
+		if vim.fn.bufname('%') ~= '' and vim.fn.empty(vim.fn.expand('%:p')) == 0 then
+			-- vim.cmd('mkview')
+			local success, err = pcall(function() vim.cmd('silent mkview') end)
+		end
+	end,
+})
+
+vim.api.nvim_create_autocmd({'BufEnter'}, {
+	pattern = '*',
+	callback = function()
+		if vim.fn.bufname('%') ~= '' and vim.fn.filereadable(vim.fn.expand('%')) then
+			-- vim.cmd('silent loadview')
+			local success, err = pcall(function() vim.cmd('silent loadview') end)
+		end
+		vim.defer_fn(function()
+			vim.g.neovide_scroll_animation_length = 0.14
+			vim.g.neovide_cursor_animation_length = 0.06
+			vim.g.neovide_scroll_animation_far_lines = 48
+		end, 100)
+	end,
+})
