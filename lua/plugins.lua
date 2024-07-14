@@ -427,7 +427,7 @@ require'lazy'.setup({
 			vim.g.user_emmet_leader_key = '<C-z>'
 		end,
 	},
-	{ 'vimwiki/vimwiki', keys = { '<leader>w' } },
+	{ 'vimwiki/vimwiki', keys = { '<leader>w' }, cmd = { 'VimwikiMakeDiaryNote' } },
 
 	-- Lsp
 	{
