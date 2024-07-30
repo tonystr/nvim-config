@@ -91,6 +91,75 @@ vim.keymap.set('i', '<CR>', '', {
     expr = true,
 })
 
+local function get_visual_selection()
+	local s_start = { '', vim.fn.line('.'), vim.fn.col('.') }
+	local s_end = { '', vim.fn.line('v'), vim.fn.col('v') }
+
+	if s_start[2] > s_end[2] or (s_start[2] == s_end[2] and s_start[3] > s_end[3]) then
+		s_start, s_end = s_end, s_start
+	end
+
+	local n_lines = math.abs(s_end[2] - s_start[2]) + 1
+	local lines = vim.api.nvim_buf_get_lines(0, s_start[2] - 1, s_end[2], false)
+	lines[1] = lines[1]:sub(s_start[3], -1)
+	if n_lines == 1 then
+		lines[n_lines] = lines[n_lines]:sub(1, s_end[3] - s_start[3] + 1)
+	else
+		lines[n_lines] = lines[n_lines]:sub(1, s_end[3])
+	end
+	return table.concat(lines, '\n')
+end
+
+vim.keymap.set('v', '=', '', {
+	callback = function()
+		local selected_text = get_visual_selection()
+		return 'c<C-r>=' .. selected_text
+	end,
+	expr = true,
+})
+
+vim.keymap.set('n', '<M-=>', '', {
+	callback = function()
+		local col = vim.fn.col('.')
+		local linenr = vim.fn.line('.')
+		local line_text = vim.api.nvim_buf_get_lines(0, linenr - 1, linenr, false)[1]
+
+		local on_number = line_text:sub(col, col):match("[%d%.]") ~= nil
+		local start_col = col
+		local end_col = col
+
+		if on_number then
+			while start_col > 0 and line_text:sub(start_col, start_col):match("[%d%.]") do
+				start_col = start_col - 1
+			end
+			-- Find the end of the number
+			while end_col <= #line_text and line_text:sub(end_col, end_col):match("[%d%.]") do
+				end_col = end_col + 1
+			end
+		else
+			start_col, end_col = line_text:sub(col):find('%d*%.?%d+')
+
+			if not start_col or not end_col then
+				return
+			end
+
+			start_col = col + start_col - 2
+			end_col = col + end_col
+		end
+
+		local number = line_text:sub(start_col + 1, end_col - 1)
+
+		if number:match("^[%d%.]+$") then
+			local movement = '0' .. start_col + 0 .. 'l'
+
+			local col_range = end_col - start_col - 1
+			return movement .. 'c' .. col_range .. 'l<C-r>=' .. number
+		end
+		return
+	end,
+	expr = true,
+})
+
 -- Comment uncomment
 local function commented_lines_textobject()
 	local U = require("Comment.utils")
@@ -231,4 +300,5 @@ au BufRead,BufNewFile *.ico set filetype=ico
 " endfunc
 " au BufRead,BufNewFile * call TryEnterCode()
 ]])
+
 

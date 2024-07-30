@@ -144,6 +144,10 @@ end
 vim.keymap.set('n', '<C-=>', function() change_scale_factor(1.10) end)
 vim.keymap.set('n', '<C-->', function() change_scale_factor(1 / 1.10) end)
 
+vim.keymap.set('n', '<A-Enter>', function()
+	vim.g.neovide_fullscreen = not vim.g.neovide_fullscreen
+end)
+
 -- Telescope mappings
 maps.n['<leader>ff'] = '<cmd>Telescope resume<cr>'
 maps.n['<leader>fj'] = '<cmd>Telescope jumplist<cr>'
@@ -271,7 +275,52 @@ maps.n['<A-s>'] = '<C-w>s'
 vim.keymap.set({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
 vim.keymap.set({'o', 'x'}, 'ah', ':<C-U>Gitsigns select_hunk<CR>')
 
-maps.n['<C-v>'] = '<cmd>pu +<CR>=\'[\']^'
+-- maps.n['<C-v>'] = '<cmd>pu +<CR>=\'[\']^'
+
+vim.keymap.set('n', '<C-v>', '', {
+	callback = function()
+		local plusreg = vim.fn.getreg('+')
+
+		if plusreg:match('#?[0-9a-fA-F]+') then
+			local hex = plusreg
+			if #plusreg == 6 or #plusreg == 3 or #plusreg == 8 then
+				hex = '#' .. plusreg
+			end
+
+			local col = vim.fn.col('.')
+			local line = vim.fn.getline('.')
+
+			local hex_start = col
+			local hex_end = col
+
+			while hex_start > 0 and col - hex_start < 10 and line:sub(hex_start, hex_start):match('[#0-9a-fA-F]') do
+				hex_start = hex_start - 1
+			end
+
+			while hex_end < #line and hex_end - hex_start < 10 and line:sub(hex_end, hex_end):match('[#0-9a-fA-F]') do
+				hex_end = hex_end + 1
+			end
+
+			if not line:sub(hex_end, hex_end):match('[0-9a-fA-F]') or hex_end - hex_start >= 10 then
+				hex_end = hex_end - 1
+			end
+
+			if hex_end - hex_start >= 3 then
+				local before = line:sub(1, hex_start)
+				local after = line:sub(hex_end + 1)
+
+				vim.defer_fn(function()
+					vim.fn.setline('.', before .. hex .. after)
+				end, 0)
+				
+				return ''
+			end
+		end
+		return '"+p'
+	end,
+	expr = true,
+})
+
 maps.n['<leader><C-v>'] = '<cmd>-1pu +<CR>=\'[\']^'
 maps.v['<C-v>'] = '"+p=\'[\']^'
 maps.i['<C-v>'] = '<C-r>+'

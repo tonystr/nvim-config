@@ -49,7 +49,7 @@ local settings = {
 			{ "Work note", "2VimwikiMakeDiaryNote", "2" },
 			{ "Startup note", "3VimwikiMakeDiaryNote", "3" },
 			{ "SoundShop frontend", "norm `S", "s" },
-			{ "SoundShop api", "norm `E", "e" },
+			{ "SoundShop api", "norm `E<CR><cmd>colors tokyonight-night", "e" },
 		},
 		highlight = "Comment",
 		default_color = "#1f1f28",

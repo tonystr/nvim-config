@@ -12,7 +12,7 @@ if vim.g.neovide then
 	vim.g.neovide_cursor_animate_command_line = false
 	vim.g.neovide_floating_shadow = false
 	vim.g.neovide_scroll_animation_length = 0.14
-	vim.g.neovide_scroll_animation_far_lines = 48
+	vim.g.neovide_scroll_animation_far_lines = 50
 	vim.g.neovide_cursor_trail_size = 0.5
 	vim.g.neovide_window_blurred = false
 	vim.g.neovide_floating_blur_amount_x = 0.0
@@ -117,22 +117,12 @@ autocmd BufRead * autocmd FileType <buffer> ++once
 \ |   execute "normal! g`\""
 \ | endif
 augroup END
-
-" autocmd BufLeave * sil mkview
-" autocmd BufEnter * sil loadview
-"autocmd BufLeave * if bufname('%') != '' && !&modified | g.neovide_scroll_animation_length = 0.14 | endif
-" autocmd BufLeave * if bufname('%') != '' && !&modified | mkview | endif
-" autocmd BufEnter * if bufname('%') != '' && filereadable(expand('%')) | silent loadview | endif
 ]]
 
 vim.api.nvim_create_autocmd({'BufLeave'}, {
 	pattern = '*',
 	callback = function()
-		vim.g.neovide_scroll_animation_length = 0.0
-		vim.g.neovide_cursor_animation_length = 0.0
-		vim.g.neovide_scroll_animation_far_lines = 0
 		if vim.fn.bufname('%') ~= '' and vim.fn.empty(vim.fn.expand('%:p')) == 0 then
-			-- vim.cmd('mkview')
 			local success, err = pcall(function() vim.cmd('silent mkview') end)
 		end
 	end,
@@ -141,14 +131,16 @@ vim.api.nvim_create_autocmd({'BufLeave'}, {
 vim.api.nvim_create_autocmd({'BufEnter'}, {
 	pattern = '*',
 	callback = function()
+		vim.g.neovide_scroll_animation_length = 0.0
+		vim.g.neovide_cursor_animation_length = 0.0
+		vim.g.neovide_scroll_animation_far_lines = 0
 		if vim.fn.bufname('%') ~= '' and vim.fn.filereadable(vim.fn.expand('%')) then
-			-- vim.cmd('silent loadview')
 			local success, err = pcall(function() vim.cmd('silent loadview') end)
 		end
 		vim.defer_fn(function()
 			vim.g.neovide_scroll_animation_length = 0.14
 			vim.g.neovide_cursor_animation_length = 0.06
-			vim.g.neovide_scroll_animation_far_lines = 48
+			vim.g.neovide_scroll_animation_far_lines = 50 
 		end, 100)
 	end,
 })

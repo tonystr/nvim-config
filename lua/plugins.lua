@@ -694,6 +694,16 @@ require'lazy'.setup({
 
 	-- UI
 	{
+		'Pocco81/true-zen.nvim',
+		config = true,
+	},
+	{
+		'folke/twilight.nvim'
+	},
+	{
+		'folke/zen-mode.nvim'
+	},
+	{
 		'Fildo7525/pretty_hover',
 		-- event = "LspAttach",
 		keys = { { 'K', function() require'pretty_hover'.hover() end } },
@@ -855,26 +865,7 @@ require'lazy'.setup({
 	{
 		'brenoprata10/nvim-highlight-colors',
 		event = 'VeryLazy',
-		opts = {
-			render = 'background',
-
-			---Set virtual symbol (requires render to be set to 'virtual')
-			virtual_symbol = '■',
-
-			---Highlight named colors, e.g. 'green'
-			enable_named_colors = true,
-
-			---Highlight tailwind colors, e.g. 'bg-blue-500'
-			enable_tailwind = false,
-
-			---Set custom colors
-			---Label must be properly escaped with '%' to adhere to `string.gmatch`
-			--- :help string.gmatch
-			custom_colors = {
-				{ label = '%-%-theme%-primary%-color', color = '#0f1219' },
-				{ label = '%-%-theme%-secondary%-color', color = '#5a5d64' },
-			}
-		},
+		opts = {},
 	},
 	-- {
 	-- 	'norcalli/nvim-colorizer.lua',

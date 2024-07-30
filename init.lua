@@ -16,9 +16,6 @@ let $QUOTES='~\AppData\Local\nvim\lua\startup\themes\quotes.md'
 
 require'preferences'
 
--- vim.cmd[[
--- source ~\AppData\Local\nvim\mappings.vim
--- ]]
 require'mappings'
 
 require'plugins'
