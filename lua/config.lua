@@ -26,7 +26,12 @@ vim.o.showbreak = '  󱞩 '
 
 -- vim.g.formatprg = 'prettier --parser typescript --stdin-path %';
 
-local Signse = { Error = "", Warn = "", Hint = "", Info = "" }
+local Signse = {
+	Error = "",
+	Warn = "",
+	Hint = "󰌵",
+	Info = "󰆈",
+}
 for type, icon in pairs(Signse) do
 	local hl = "DiagnosticSign" .. type
 	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })

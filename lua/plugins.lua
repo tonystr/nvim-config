@@ -550,7 +550,6 @@ require'lazy'.setup({
 		end
 	},
 	-- { 'folke/neodev.nvim', config = true },
-	-- { 'artemave/workspace-diagnostics.nvim' },
 	{
 		'ray-x/lsp_signature.nvim',
 		event = 'VeryLazy',
@@ -694,14 +693,8 @@ require'lazy'.setup({
 
 	-- UI
 	{
-		'Pocco81/true-zen.nvim',
-		config = true,
-	},
-	{
-		'folke/twilight.nvim'
-	},
-	{
-		'folke/zen-mode.nvim'
+		'folke/twilight.nvim',
+		cmd = { 'Twilight', 'TwilightEnable', 'TwilightDisable' }
 	},
 	{
 		'Fildo7525/pretty_hover',
@@ -932,7 +925,15 @@ require'lazy'.setup({
 						}
 					},
 					lualine_x = {
-						'diagnostics',
+						{
+							'diagnostics',
+							symbols = {
+								error = " ",
+								warn = " ",
+								hint = "󰌵 ",
+								info = "󰆈 ",
+							}
+						}
 					},
 					lualine_y = {
 						'branch',
