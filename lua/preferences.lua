@@ -128,15 +128,20 @@ vim.api.nvim_create_autocmd({'BufLeave'}, {
 	end,
 })
 
-vim.api.nvim_create_autocmd({'BufEnter'}, {
+vim.api.nvim_create_autocmd({'BufWinEnter'}, {
 	pattern = '*',
 	callback = function()
 		vim.g.neovide_scroll_animation_length = 0.0
 		vim.g.neovide_cursor_animation_length = 0.0
 		vim.g.neovide_scroll_animation_far_lines = 0
-		if vim.fn.bufname('%') ~= '' and vim.fn.filereadable(vim.fn.expand('%')) then
+
+		if 
+			vim.fn.bufname('%') ~= '' and
+			vim.fn.filereadable(vim.fn.expand('%'))
+		then
 			local success, err = pcall(function() vim.cmd('silent loadview') end)
 		end
+
 		vim.defer_fn(function()
 			vim.g.neovide_scroll_animation_length = 0.14
 			vim.g.neovide_cursor_animation_length = 0.06

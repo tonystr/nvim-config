@@ -95,7 +95,7 @@ require'lazy'.setup({
 			'filetype',
 		},
 	} },
-	{ 'tpope/vim-dispatch'--[[ , cmd = 'Dispatch'  ]]},
+	{ 'tpope/vim-dispatch', event = 'VeryLazy' --[[ , cmd = 'Dispatch'  ]] },
 	{
 		'Wansmer/sibling-swap.nvim',
 		requires = { 'nvim-treesitter' },
@@ -273,7 +273,7 @@ require'lazy'.setup({
 	},
 	{
 		'nvim-treesitter/nvim-treesitter',
-		event = { 'BufReadPost', 'BufNewFile' },
+		event = 'VeryLazy',
 		build = ':TSUpdate',
 		config = function ()
 			local tsi = require'nvim-treesitter.install'
@@ -360,7 +360,7 @@ require'lazy'.setup({
 	{
 		'lukas-reineke/indent-blankline.nvim',
 		main = 'ibl',
-		event = { 'BufReadPost', 'BufNewFile' },
+		event = 'VeryLazy',
 		opts = {
 			indent = {
 				highlight = {
@@ -449,7 +449,7 @@ require'lazy'.setup({
 	{ 'williamboman/mason-lspconfig.nvim', lazy = true },
 	{
 		'neovim/nvim-lspconfig',
-		event = { "BufReadPost", "BufNewFile" },
+		event = 'VeryLazy',
 		-- dependencies = { 'VidocqH/lsp-lens.nvim' },
 		opts = {
 			servers = {
@@ -568,7 +568,7 @@ require'lazy'.setup({
 		}
 	end },
 	{ 'onsails/lspkind.nvim', lazy = true },
-	{ 'RRethy/vim-illuminate', event = { 'BufReadPost', 'BufNewFile' }, config = function ()
+	{ 'RRethy/vim-illuminate', event = 'VeryLazy', config = function ()
 		require'illuminate'.configure {
 			modes_allowlist = { 'n' },
 			filetypes_denylist = { 'help', 'qf', 'fugitive', 'vimwiki', 'md', 'markdown', 'txt' },
@@ -639,7 +639,12 @@ require'lazy'.setup({
 	-- { 'jose-elias-alvarez/typescript.nvim', lazy = true },
 
 	-- Git
-	{ 'tpope/vim-fugitive', cmd = { 'G', 'Gwrite', 'Git', 'Gdiffsplit', 'Gvdiffsplit' } },
+	{
+		'tpope/vim-fugitive',
+		cmd = { 'G', 'Gwrite', 'Git', 'Gdiffsplit', 'Gvdiffsplit' },
+		dependencies = { 'tpope/vim-rhubarb' }
+	},
+	{ 'tpope/vim-rhubarb', lazy = true },
 	-- { 'SuperBo/fugit2.nvim' }, -- Could not build libgit2
 	-- {
 	-- 	'chrisgrieser/nvim-tinygit',
@@ -651,7 +656,7 @@ require'lazy'.setup({
 	-- 	},
 	-- },
 	-- { 'akinsho/git-conflict.nvim', version = "v1.1.2", opts = { disable_diagnostics = true } },
-	{ 'lewis6991/gitsigns.nvim', event = { 'BufReadPost', 'BufNewFile' }, config = function()
+	{ 'lewis6991/gitsigns.nvim', event = 'VeryLazy', config = function()
 		local gitsigns = require'gitsigns'
 		gitsigns.setup{
 			diff_opts = { vertical = false },
@@ -675,7 +680,7 @@ require'lazy'.setup({
 	end },
 	{
 		'f-person/git-blame.nvim',
-		event = { 'BufReadPost', 'BufNewFile' },
+		event = 'VeryLazy',
 	},
 	{
 		'sindrets/diffview.nvim',
@@ -755,7 +760,8 @@ require'lazy'.setup({
 
 	{
 		'nvim-telescope/telescope.nvim',
-		cmd = 'Telescope',
+		-- cmd = 'Telescope',
+		event = 'VeryLazy', -- We want this one opening smoothly the first time!
 		version = '0.1.4',
 		dependencies = { 'nvim-lua/plenary.nvim' },
 		opts = {
@@ -789,10 +795,13 @@ require'lazy'.setup({
 			},
 		},
 	},
-	{ 'debugloop/telescope-undo.nvim', keys = { { '<leader>fu', '<cmd>Telescope undo<CR>' } }, config = function ()
-		require'telescope'.load_extension'undo'
-	end },
-	{ 'nvim-telescope/telescope-symbols.nvim', event = 'VeryLazy' },
+	{
+		'debugloop/telescope-undo.nvim',
+		keys = { { '<leader>fu', '<cmd>Telescope undo<CR>' } },
+		cmd = { 'Telescope undo', 'Tel undo' },
+		config = function() require'telescope'.load_extension'undo' end,
+	},
+	-- { 'nvim-telescope/telescope-symbols.nvim', event = 'VeryLazy' },
 	{ 'stevearc/dressing.nvim', event = 'VeryLazy' },
 	{
 		'kevinhwang91/nvim-ufo',
@@ -854,7 +863,7 @@ require'lazy'.setup({
 		cmd = 'Startup',
 		opts = { theme = 'dragon' },
 	},
-	{ 'folke/todo-comments.nvim', event = { 'BufReadPost', 'BufNewFile' }, config = true },
+	{ 'folke/todo-comments.nvim', event = 'VeryLazy', config = true },
 	{
 		'brenoprata10/nvim-highlight-colors',
 		event = 'VeryLazy',
