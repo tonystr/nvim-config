@@ -33,10 +33,11 @@ return function(colors)
 		['@lsp.typemod.property.defaultLibrary.vue'] = { fg = theme.syn.special1 },
 		IndentBlanklineContextChar = { fg='#4a4a58' },
 		IndentBlanklineChar = { fg='#2f2f3f' },
-		Comment = { fg='#666677', italic=true },
 		Folded = { bg='none' },
-
 		['VimwikiHeader1'] = { fg='#ffd282' },
+
+		Comment = { fg='#666677', italic=true },
+		NonText = { fg='#2f2f3f' },
 
 		-- LineNr = { bg='none', fg='#54546D' },
 		-- CursorLine = {},
@@ -75,10 +76,10 @@ return function(colors)
 		IlluminatedWordWrite = { bg='#363646', underline=false },
 
 		-- Diagnostics
-		DiagnosticUnderlineError = { sp='#e82424', underline=true },
-		DiagnosticUnderlineWarn =  { sp='#ff9e3b', underline=true },
-		DiagnosticUnderlineInfo =  { sp='#658594', underline=true },
-		DiagnosticUnderlineHint =  { sp='#659589', underline=true },
+		DiagnosticUnderlineError = { sp='#e82424', underline=true, undercurl=false },
+		DiagnosticUnderlineWarn =  { sp='#ff9e3b', underline=true, undercurl=false },
+		DiagnosticUnderlineInfo =  { sp='#658594', underline=true, undercurl=false },
+		DiagnosticUnderlineHint =  { sp='#659589', underline=true, undercurl=false },
 
 		DiagnosticError = { bg='#382b3e', fg='#e82424' },
 		DiagnosticWarn =  { bg='#373641', fg='#ffcb6b' },

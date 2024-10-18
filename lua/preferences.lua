@@ -9,14 +9,15 @@ if vim.g.neovide then
 	vim.g.neovide_confirm_quit = false
 	vim.g.neovide_floating_opacity = 1.0
 	vim.g.neovide_hide_mouse_when_typing = true
-	vim.g.neovide_cursor_animate_command_line = false
 	vim.g.neovide_floating_shadow = false
+	vim.g.neovide_cursor_animate_command_line = false
 	vim.g.neovide_scroll_animation_length = 0.14
 	vim.g.neovide_scroll_animation_far_lines = 50
 	vim.g.neovide_cursor_trail_size = 0.5
 	vim.g.neovide_window_blurred = false
 	vim.g.neovide_floating_blur_amount_x = 0.0
 	vim.g.neovide_floating_blur_amount_y = 0.0
+	vim.g.neovide_underline_stroke_scale = 2.0
 
 	vim.g.neovide_scale_factor = 1.0
 else
@@ -100,6 +101,14 @@ vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 vim.o.foldminlines = 4
 vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+
+vim.api.nvim_create_user_command(
+	'Delete',
+	function()
+		vim.cmd'call delete(@%) | BufferDelete!'
+	end,
+	{}
+)
 
 -- Hack for setting formatoptions
 vim.api.nvim_create_autocmd('FileType', {

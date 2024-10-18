@@ -142,7 +142,9 @@ local change_scale_factor = function(delta)
 end
 
 vim.keymap.set('n', '<C-=>', function() change_scale_factor(1.10) end)
+vim.keymap.set('n', '<C-ScrollWheelUp>', function() change_scale_factor(1.10) end)
 vim.keymap.set('n', '<C-->', function() change_scale_factor(1 / 1.10) end)
+vim.keymap.set('n', '<C-ScrollWheelDown>', function() change_scale_factor(1 / 1.10) end)
 
 vim.keymap.set('n', '<A-Enter>', function()
 	vim.g.neovide_fullscreen = not vim.g.neovide_fullscreen
@@ -194,7 +196,7 @@ vim.cmd'command -nargs=* K Dispatch git <args>'
 maps.n['<leader>lr'] = '<cmd>LspRestart<cr>'
 maps.n['gd'] = function() vim.lsp.buf.definition() end
 maps.n['gD'] = function() vim.lsp.buf.declaration() end
-maps.n['gi'] = function() vim.lsp.buf.implementation() end
+-- maps.n['gi'] = function() vim.lsp.buf.implementation() end
 -- maps.n['<leader>w'] = function() vim.lsp.buf.document_symbol() end
 -- maps.n['<leader>w'] = function() vim.lsp.buf.workspace_symbol() end
 maps.n['[d'] = function() vim.diagnostic.goto_prev() end

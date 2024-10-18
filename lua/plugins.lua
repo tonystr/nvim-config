@@ -35,54 +35,31 @@ require'lazy'.setup({
 
 	-- Misc
 	-- {
-	-- 	'mistweaverco/kulala.nvim',
-	-- 	config = true,
+	-- 	'jackMort/ChatGPT.nvim',
 	-- 	keys = {
-	-- 		{ '<leader>ka', function() require'kulala'.run() end },
-	-- 		{ '<leader>kt', function() require'kulala'.toggle_view() end },
-	-- 		{ '<leader>kn', function() require'kulala'.jump_next() end },
-	-- 		{ '<leader>kp', function() require'kulala'.jump_prev() end },
+	-- 		{ '--[[ <C-Space> ]]', '<cmd>ChatGPT<CR>' },
+	-- 		{ '<S-Space>', '<cmd>ChatGPT<CR>' },
+	-- 		{ '<leader><leader>', '<cmd>ChatGPT<CR>' },
 	-- 	},
+	-- 	cmd = {
+	-- 		'ChatGPT',
+	-- 		'ChatGPTActAs',
+	-- 		'ChatGPTCompleteCode',
+	-- 		'ChatGPTEditWithInstructions',
+	-- 		'ChatGPTRun',
+	-- 	},
+	-- 	opts = {
+	-- 		openai_params = {
+	-- 			model = 'gpt-4',
+	-- 		}
+	-- 	},
+	-- 	dependencies = {
+	-- 		'MunifTanjim/nui.nvim',
+	-- 		'nvim-lua/plenary.nvim',
+	-- 		'folke/trouble.nvim',
+	-- 		'nvim-telescope/telescope.nvim'
+	-- 	}
 	-- },
-	-- {
-	-- 	'kndndrj/nvim-dbee',
-	-- 	dependencies = { 'MunifTanjim/nui.nvim' },
-	-- 	build = function()
-	-- 		-- Install tries to automatically detect the install method.
-	-- 		-- if it fails, try calling it with one of these parameters:
-	-- 		--    "curl", "wget", "bitsadmin", "go"
-	-- 		require'dbee'.install("go")
-	-- 	end,
-	-- 	config = function()
-	-- 		require'dbee'.setup()
-	-- 	end
-	-- },
-	{
-		'jackMort/ChatGPT.nvim',
-		keys = {
-			{ '--[[ <C-Space> ]]', '<cmd>ChatGPT<CR>' },
-			{ '<S-Space>', '<cmd>ChatGPT<CR>' },
-			{ '<leader><leader>', '<cmd>ChatGPT<CR>' },
-		},
-		cmd = {
-			'ChatGPT',
-			'ChatGPTActAs',
-			'ChatGPTCompleteCode',
-			'ChatGPTEditWithInstructions',
-			'ChatGPTRun',
-		},
-		opts = {
-			openai_params = {
-				model = 'gpt-4',
-			}
-		},
-		dependencies = {
-			'MunifTanjim/nui.nvim',
-			'nvim-lua/plenary.nvim',
-			'folke/trouble.nvim',
-			'nvim-telescope/telescope.nvim'
-		}
-	},
 	{ 'LunarVim/bigfile.nvim', opts = {
 		filesize = 2, -- MiB
 		features = { -- features to disable
@@ -315,8 +292,18 @@ require'lazy'.setup({
 	},
 	{
 		'nvim-treesitter/nvim-treesitter-context',
-		cmd = { 'TSContextEnable', 'TSContextToggle', 'TSContextDisable' },
-		config = true,
+		event = 'VeryLazy',
+		-- cmd = { 'TSContextEnable', 'TSContextToggle', 'TSContextDisable' },
+		-- keys = { { '<leader>tc', function() require'nvim-treesitter-context'.toggle() end } },
+		config = function()
+			vim.keymap.set('n', '[C', function()
+				require'treesitter-context'.go_to_context(vim.v.count1)
+			end, { silent = true })
+			vim.keymap.set('n', '<leader>tc', function() require'treesitter-context'.toggle() end);
+			require'treesitter-context'.setup {
+				enable = false,
+			}
+		end
 	},
 	{
 		'numToStr/Comment.nvim',
@@ -366,9 +353,11 @@ require'lazy'.setup({
 				highlight = {
 					'IndentBlanklineChar',
 				},
+				char = '▏',
 			},
 			scope = {
 				show_start = false,
+				show_end = false,
 				highlight = {
 					'IndentBlanklineContextChar',
 				},
@@ -475,7 +464,7 @@ require'lazy'.setup({
 						}
 					}
 				},
-				tsserver = {
+				ts_ls = {
 					init_options = {
 						hostInfo = 'neovim',
 						typescript = {
@@ -544,8 +533,10 @@ require'lazy'.setup({
 			end
 
 			mlsp.setup({
-				ensure_installed = { 'tsserver', 'volar' },
-				handlers = { setup },
+				ensure_installed = { 'ts_ls', 'volar' },
+				handlers = {
+					setup,
+				},
 			})
 		end
 	},

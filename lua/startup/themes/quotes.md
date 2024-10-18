@@ -24,3 +24,6 @@ No soul likes to be robbed of truth
 
 To the cannon, all men are equal 
     - Napoleon Bonaparte
+
+Faith: 'that faculty which enables us to believe things which we know to be untrue.'
+	- Bram Stoker

@@ -22,7 +22,9 @@
 -- end, 0)
 
 vim.o.guicursor = 'n-v-c-ci-sm:block,i-ve:ver25,r-cr-o:hor20'
-vim.o.showbreak = '  󱞩 '
+-- vim.o.showbreak = '▏󱞩  ' -- 󱞩
+vim.o.showbreak = '󱞩   ' -- 󱞩
+-- vim.o.showbreak = '󰞘   ' -- 󱞩
 
 -- vim.g.formatprg = 'prettier --parser typescript --stdin-path %';
 
