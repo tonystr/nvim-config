@@ -79,6 +79,7 @@ if vim.g.neovide then
 
 	vim.api.nvim_set_hl(0, 'TerminalBackground', { bg = '#16161d' })
 
+	local is_linux = vim.uv.os_uname().sysname == 'Linux'
 else
 	vim.api.nvim_set_hl(0, 'Normal', { ctermbg='none', bg='none' })
 end
@@ -117,7 +118,6 @@ vim.g.polyglot_disabled = { 'vue' }
 vim.g.vimwiki_list = {
 	{ path = '~/OneDrive/vimwiki/',          syntax = 'markdown', ext = '.md' },
 	{ path = '~/OneDrive/work/',             syntax = 'markdown', ext = '.md' },
-	{ path = '~/OneDrive/entrepreneurship/', syntax = 'markdown', ext = '.md' },
 	{ path = '~/OneDrive/projects/',         syntax = 'markdown', ext = '.md' },
 }
 

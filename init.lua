@@ -1,18 +1,18 @@
+local is_windows = vim.uv.os_uname().sysname == 'Windows'
+local config_path = vim.fn.stdpath'config'
+
 -- Global variables
-vim.cmd([[
-let $MYVIMRC='~\AppData\Local\nvim\init.lua'
-let $INIT='~\AppData\Local\nvim\init.lua'
-let $COLORS='~\AppData\Local\nvim\lua\colors.lua'
-let $MAPPINGS='~\AppData\Local\nvim\lua\mappings.lua'
-let $PREFERENCES='~\AppData\Local\nvim\lua\preferences.lua'
-let $LUACONF='~\AppData\Local\nvim\lua\config.lua'
-let $ENV='~\AppData\Local\nvim\lua\env.lua'
-let $PLUGINS='~\AppData\Local\nvim\lua\plugins.lua'
-let $STARTUPTHEME='~\AppData\Local\nvim\lua\startup\themes\my_theme.lua'
-let $VIMWIKICONFIG='~\AppData\Local\nvim\ftplugin\vimwiki.vim'
-let $PWD='~\Documents\git\'
-let $QUOTES='~\AppData\Local\nvim\lua\startup\themes\quotes.md'
-]])
+vim.env.MYVIMRC       = config_path .. '/init.lua'
+vim.env.INIT          = config_path .. '/init.lua'
+vim.env.COLORS        = config_path .. '/lua/colors.lua'
+vim.env.MAPPINGS      = config_path .. '/lua/mappings.lua'
+vim.env.PREFERENCES   = config_path .. '/lua/preferences.lua'
+vim.env.LUACONF       = config_path .. '/lua/config.lua'
+vim.env.ENV           = config_path .. '/lua/env.lua'
+vim.env.PLUGINS       = config_path .. '/lua/plugins.lua'
+vim.env.STARTUPTHEME  = config_path .. '/lua/startup/themes/my_theme.lua'
+vim.env.VIMWIKICONFIG = config_path .. '/ftplugin/vimwiki.vim'
+vim.env.QUOTES        = config_path .. '/lua/startup/themes/quotes.md'
 
 require'preferences'
 
