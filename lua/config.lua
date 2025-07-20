@@ -219,8 +219,11 @@ vim.g.gitblame_date_format = '%r'
 -- Rooting
 local root_names = { '.git', 'package.json', 'node_modules', 'yarn.lock', '.rootfile' }
 local root_cache = {}
+_G.autoroot_enabled = true
 
 local set_root = function()
+	if not _G.autoroot_enabled then return end
+
 	local path = vim.api.nvim_buf_get_name(0)
 	if path == '' then return end
 	path = vim.fs.dirname(path)
@@ -236,8 +239,19 @@ local set_root = function()
 	vim.fn.chdir(root)
 end
 
+local toggle_rooting = function()
+	_G.autoroot_enabled = not _G.autoroot_enabled
+	if _G.autoroot_enabled then
+		vim.api.nvim_echo({ { 'Auto-rooting enabled', 'WarningMsg' } }, false, {})
+	else
+		vim.api.nvim_echo({ { 'Auto-rooting disabled', 'WarningMsg' } }, false, {})
+	end
+end
+
 local root_augroup = vim.api.nvim_create_augroup('CustomAutoRoot', {})
 vim.api.nvim_create_autocmd('BufEnter', { group = root_augroup, callback = set_root })
+vim.api.nvim_create_user_command('RootToggle', toggle_rooting, { desc = 'Toggle auto-rooting on/off' })
+
 -- Open explorer where current file is located
 vim.cmd([[
 func! File_manager() abort
@@ -261,6 +275,7 @@ autocmd BufNewFile ~/OneDrive/vimwiki/diary/[0-9\-]*.md :silent r ~/OneDrive/vim
 autocmd BufNewFile ~/OneDrive/vimwiki/diary/[0-9\-]*.md :norm jwv$
 autocmd BufNewFile ~/OneDrive/vimwiki/startups/[a-zA-Z0-9\-_]*.md :silent 0!echo \# %:t:r
 autocmd BufNewFile ~/OneDrive/vimwiki/startups/[a-zA-Z0-9\-_]*.md :silent r ~/OneDrive/vimwiki/startups/template.md
+autocmd BufNewFile ~/OneDrive/vimwiki/year/[a-zA-Z0-9\-_]*.md :silent 0!echo \# AD %:t:r
 
 " vimwiki work template
 autocmd BufNewFile ~/OneDrive/work/diary/[0-9\-]*.md :silent 0!echo \# %:t:r

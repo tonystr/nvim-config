@@ -27,3 +27,6 @@ To the cannon, all men are equal
 
 Faith: 'that faculty which enables us to believe things which we know to be untrue.'
 	- Bram Stoker
+
+We know that for a fact? Yes. Because? Because the alternative is unthinkable.
+    - Awakenings, 1990

@@ -10,8 +10,12 @@ maps.n['<C-t>'] = '<cmd>tabnew<CR>'
 maps.n['gt'] = '<cmd>tabn<CR>'
 maps.n['gT'] = '<cmd>tabp<CR>'
 maps.n['<C-l>'] = '<cmd>nohlsearch<CR>'
-maps.n['<Esc>'] = '<cmd>nohlsearch<CR>'
-maps.n['<C-z>'] = '<Nop>'
+-- maps.n['<C-z>'] = { '<Nop>', noremap = true }
+
+maps.t['<S-Esc>'] = '<C-\\><C-n>'
+maps.t['<C-Backspace>'] = '<C-w>'
+maps.t['<C-S-v>'] = '<C-\\><C-n>"+pi'
+maps.t['<C-v>'] = '<C-\\><C-n>"+pi'
 
 maps.n['<C-Up>']     = '<C-y>'
 maps.n['<C-Down>']   = '<C-e>'
@@ -21,21 +25,60 @@ maps.n['<C-S-Up>']   = '3<C-y>'
 maps.n['<C-S-Down>'] = '3<C-e>'
 maps.n['<C-S-y>']    = '3<C-y>'
 maps.n['<C-S-e>']    = '3<C-e>'
+maps.i['<S-Down>']   = '<C-o>3<C-e>'
+maps.i['<S-Up>']     = '<C-o>3<C-y>'
+
+maps.v['<RightMouse>'] = '"+y'
 
 maps.n['<A-Up>'] = '<cmd>resize +1<CR>'
 maps.n['<A-Down>'] = '<cmd>resize -1<CR>'
 maps.n['<S-A-Up>'] = '<cmd>resize +3<CR>'
 maps.n['<S-A-Down>'] = '<cmd>resize -3<CR>'
 
+maps.n['<leader>ns'] = '<cmd>Neogit<CR>'
+maps.n['<leader>ng'] = '<cmd>Neogit<CR>'
+maps.n['<leader>nc'] = '<cmd>Neogit commit<CR>'
+maps.n['<leader>np'] = '<cmd>Neogit pull<CR>'
+maps.n['<leader>nP'] = '<cmd>Neogit push<CR>'
+
 maps.n['digv'] = 'gvd'
 maps.n['yigv'] = 'gvy'
 maps.n['cigv'] = 'gvc'
 
+maps.c['<C-.>'] = '\\.';
+maps.c['<C-/>'] = '\\/';
+
+local diagnostics_hidden = false
+function toggle_diagnostics_hidden()
+	if diagnostics_hidden then
+		vim.diagnostic.show()
+		diagnostics_hidden = false
+	else
+		vim.diagnostic.hide()
+		diagnostics_hidden = true
+	end
+end
+maps.n['<C-0>'] = function() vim.cmd'nohlsearch'; vim.diagnostic.hide() end
+maps.i['<C-0>'] = function() vim.cmd'nohlsearch'; vim.diagnostic.hide() end
+maps.n['<Esc>'] = function() vim.cmd'nohlsearch'; vim.diagnostic.hide() end
+maps.n['<C-9>'] = function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end
+maps.i['<C-9>'] = function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end
+
+maps.n['glc'] = function() require('timber.actions').toggle_comment_log_statements({ global = false }) end
+maps.n['gld'] = function() require('timber.actions').clear_log_statements({ global = false }) end
+
+vim.keymap.set("n", "gll", function()
+	return require("timber.actions").insert_log({ position = "below", operator = true }) .. "_"
+end, {
+	desc = "[G]o [L]og: Insert below log statements the current line",
+	expr = true,
+})
+
 -- ↓ does not work due to relative file paths and rooting
 -- maps.n['gf'] = '<cmd>e <cfile><CR>'
 
-maps.n['<C-s>'] = '<cmd>w<CR>'
-maps.i['<C-s>'] = '<Esc><cmd>w<CR>'
+maps.n['<C-s>'] = '<cmd>sil w<CR>'
+maps.i['<C-s>'] = '<Esc><cmd>sil w<CR>'
 
 vim.keymap.set({ 'i', 'c' }, '<C-Backspace>', '<C-w>')
 -- maps.i['<C-Backspace>'] = '<C-w>'
@@ -44,9 +87,9 @@ maps.i['<S-Enter>'] = '<Enter><Up>'
 maps.n['<C-c>'] = '<Esc>'
 -- maps.n['/'] = '<Esc>/\\v'
 maps.n['<C-/>'] = '<Esc>/'
-maps.n['<leader>fm'] = '<cmd>%!prettierd %<CR>' -- vim.lsp.buf.format
-maps.n['<leader>S'] = ':%so<CR>' -- vim.lsp.buf.format
-maps.t['<Esc>'] = '<C-\\><C-n>'
+maps.n['<leader>fm'] = function() vim.lsp.buf.format() end
+maps.n['<leader>YY'] = function() vim.lsp.buf.format() end
+maps.n['<leader>S'] = ':%so<CR>'
 maps.n['{'] = { '<cmd>keepjump normal! {<CR>', noremap = true }
 maps.n['}'] = { '<cmd>keepjump normal! }<CR>', noremap = true }
 maps.n['<leader>br'] = '<cmd>echo "test"<CR>'
@@ -60,7 +103,15 @@ maps.n['<leader>gp'] = '<cmd>Dispatch! git push<CR>';
 
 maps.n['<leader>wp'] = '<cmd>e ~/OneDrive/projects/<CR>';
 
-maps.n['<leader>ai'] = function() vim.lsp.buf.code_action({ filter = function(action) return action.command.title:find("import") end, apply = true }) end
+maps.n['<leader>ai'] = function()
+	vim.lsp.buf.code_action({
+		filter = function(action)
+			return action.title:lower():find("import")
+				-- action.command.title:find("Import")
+		end,
+		apply = true,
+	})
+end
 
 -- I think this is fixed now?
 -- -- Fixes a bug where neovide hangs when deleting many lines in visual mode.
@@ -267,6 +318,14 @@ maps.n['<A-e>'] = '<Cmd>BufferDelete #<CR>'
 maps.n['<A-r>'] = '<Cmd>BufferRestore<CR>'
 maps.n['<A-s>'] = '<C-w>s'
 
+maps.n['<F11>'] = function()
+	if vim.g.neovide_fullscreen then
+		vim.g.neovide_fullscreen = false
+	else
+		vim.g.neovide_fullscreen = true
+	end
+end
+
 -- Sort automatically by...
 -- maps.n['<leader>bb'] = '<Cmd>BufferOrderByBufferNumber<CR>'
 -- maps.n['<leader>bd'] = '<Cmd>BufferOrderByDirectory<CR>'
@@ -325,7 +384,7 @@ vim.keymap.set('n', '<C-v>', '', {
 
 maps.n['<leader><C-v>'] = '<cmd>-1pu +<CR>=\'[\']^'
 maps.v['<C-v>'] = '"+p=\'[\']^'
-maps.i['<C-v>'] = '<C-r>+'
+maps.i['<C-v>'] = '<cmd>set noai<CR><C-r>+<cmd>set ai<CR>'
 maps.c['<C-v>'] = '<C-r>+'
 -- maps['']['""y'] = '""y'
 -- maps['']['""yy'] = '""yy'
@@ -335,7 +394,11 @@ maps.c['<C-v>'] = '<C-r>+'
 -- Yank to system clipboard
 vim.keymap.set('n', 'y', '', {
 	callback = function()
-		return vim.v.register == '"' and '"+y' or 'y'
+		-- return vim.v.register == '"' and '"+y' or 'y'
+		if vim.v.register == '"' then
+			return '"+y'
+		end
+		return 'y'
 	end,
 	expr = true,
 })
@@ -356,6 +419,15 @@ vim.keymap.set('n', 'yy', '', {
 	end,
 	expr = true,
 })
+
+maps.n['<leader>yf'] = function() 
+	vim.cmd'let @+ = expand("%:p")'
+	vim.cmd'echo "Copied to clipboard: " . @+'
+end
+maps.n['<leader>yF'] = function() 
+	vim.cmd'let @+ = expand("%:p:h")'
+	vim.cmd'echo "Copied to clipboard: " . @+'
+end
 
 vim.keymap.set('v', 'y', '', {
     callback = function()

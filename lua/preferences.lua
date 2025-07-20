@@ -1,3 +1,7 @@
+
+local term_buf = nil
+local term_buf_was_insert = true
+
 -- Neovide settings ===> !== ====== ---------
 if vim.g.neovide then
 	vim.o.guifont='CaskaydiaCove Nerd Font:h11.4:#e-subpixelantialias'
@@ -20,6 +24,61 @@ if vim.g.neovide then
 	vim.g.neovide_underline_stroke_scale = 2.0
 
 	vim.g.neovide_scale_factor = 1.0
+	vim.g.neovide_title_background_color = string.format(
+		"%x",
+		vim.api.nvim_get_hl(0, {id=vim.api.nvim_get_hl_id_by_name("Normal")}).bg
+	)
+
+	vim.keymap.set('t', '<C-z>', function() 
+		vim.cmd'b#'
+		term_buf_was_insert = true
+	end, { noremap = true });
+
+	vim.keymap.set('t', '<M-w>', function() 
+		vim.cmd'bd!'
+	end, { noremap = true });
+
+	vim.keymap.set('n', '<C-z>', function() 
+		if 
+			term_buf ~= nil and 
+			vim.api.nvim_buf_is_valid(term_buf) and
+			vim.api.nvim_get_current_buf() == term_buf
+		then
+			term_buf_was_insert = false
+			vim.cmd'b#'
+		else 
+			if term_buf == nil or not vim.api.nvim_buf_is_valid(term_buf) then
+				term_buf = vim.api.nvim_create_buf(false, true) -- no file, scratch buffer
+
+				vim.api.nvim_set_current_buf(term_buf)
+				vim.cmd.terminal'nu'
+
+				-- Focus input
+				vim.cmd'norm i'
+			else
+				vim.api.nvim_set_current_buf(term_buf)
+
+				if term_buf_was_insert then
+					-- Focus input
+					vim.cmd'norm i'
+				end
+			end
+		end
+	end, { noremap = true });
+
+	vim.api.nvim_create_autocmd('TermOpen', {
+		pattern = "*",
+		callback = function() 
+			vim.opt_local.winhighlight = 'Normal:TerminalBackground'
+			vim.opt_local.filetype = 'nvim-terminal'
+
+			vim.opt_local.number = false
+			vim.opt_local.relativenumber = false
+		end
+	})
+
+	vim.api.nvim_set_hl(0, 'TerminalBackground', { bg = '#16161d' })
+
 else
 	vim.api.nvim_set_hl(0, 'Normal', { ctermbg='none', bg='none' })
 end

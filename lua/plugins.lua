@@ -24,42 +24,46 @@ require'lazy'.setup({
 		config = function (_, opts)
 			require'kanagawa'.setup(opts)
 			vim.cmd'colors kanagawa'
+			
+			if not vim.g.neovide then
+				vim.api.nvim_set_hl(0, 'Normal', { ctermbg='none', bg='none' })
+			end
 		end,
 		priority = 1000,
 	},
 	-- { 'catppuccin/nvim', name = 'catppuccin', lazy = false },
 	{
-		"folke/tokyonight.nvim",
+		'folke/tokyonight.nvim',
+		lazy = true,
 		opts = {},
 	},
 
 	-- Misc
-	-- {
-	-- 	'jackMort/ChatGPT.nvim',
-	-- 	keys = {
-	-- 		{ '--[[ <C-Space> ]]', '<cmd>ChatGPT<CR>' },
-	-- 		{ '<S-Space>', '<cmd>ChatGPT<CR>' },
-	-- 		{ '<leader><leader>', '<cmd>ChatGPT<CR>' },
-	-- 	},
-	-- 	cmd = {
-	-- 		'ChatGPT',
-	-- 		'ChatGPTActAs',
-	-- 		'ChatGPTCompleteCode',
-	-- 		'ChatGPTEditWithInstructions',
-	-- 		'ChatGPTRun',
-	-- 	},
-	-- 	opts = {
-	-- 		openai_params = {
-	-- 			model = 'gpt-4',
-	-- 		}
-	-- 	},
-	-- 	dependencies = {
-	-- 		'MunifTanjim/nui.nvim',
-	-- 		'nvim-lua/plenary.nvim',
-	-- 		'folke/trouble.nvim',
-	-- 		'nvim-telescope/telescope.nvim'
-	-- 	}
-	-- },
+	{
+		'Goose97/timber.nvim',
+		keys = { 'gl' },
+		opts = {
+			watcher = {
+				sources = {
+					enabled = true,
+					javascript_log = {
+						type = 'filesystem',
+						name = 'Log file',
+						path = '/tmp/debug.log',
+						buffer = {
+							syntax = 'javascript',
+						}
+					}
+				}
+			},
+			log_templates = {
+				default = {
+					lua = [[print("%log_marker %log_target: " .. %log_target)]],
+					rust = [[println!("%log_marker %log_target: {:#?}", %log_target);]],
+				},
+			},
+		}
+	},
 	{ 'LunarVim/bigfile.nvim', opts = {
 		filesize = 2, -- MiB
 		features = { -- features to disable
@@ -72,7 +76,18 @@ require'lazy'.setup({
 			'filetype',
 		},
 	} },
-	{ 'tpope/vim-dispatch', event = 'VeryLazy' --[[ , cmd = 'Dispatch'  ]] },
+	{
+		'tpope/vim-dispatch',
+		event = 'VeryLazy',
+		-- cmd = {
+		-- 	'Dispatch',
+		-- 	'Push',
+		-- 	'Pull',
+		-- 	'Cam',
+		-- 	'Commit',
+		-- 	'K',
+		-- },
+	},
 	{
 		'Wansmer/sibling-swap.nvim',
 		requires = { 'nvim-treesitter' },
@@ -410,15 +425,20 @@ require'lazy'.setup({
 		keys = {
 			{ '<Plug>(emmet-expand-abbr)', mode = { 'i', 'n' } },
 			{ '<Plug>(emmet-expand-yank)', mode = { 'i', 'n' } },
-			{ '<C-z>', mode = { 'i', 'n' } },
+			-- { '<C-z>', mode = { 'i', 'n' } },
 		},
 		config = function()
-			vim.g.user_emmet_leader_key = '<C-z>'
+			-- vim.g.user_emmet_leader_key = '<C-z>'
 		end,
 	},
 	{ 'vimwiki/vimwiki', keys = { '<leader>w' }, cmd = { 'VimwikiMakeDiaryNote' } },
 
 	-- Lsp
+	-- {
+	-- 	'mrcjkb/rustaceanvim',
+	-- 	version = '^5', -- Recommended
+	-- 	lazy = false, -- This plugin is already lazy
+	-- },
 	{
 		'williamboman/mason.nvim',
 		config = true,
@@ -435,129 +455,235 @@ require'lazy'.setup({
 	-- 		},
 	-- 	},
 	-- },
-	{ 'williamboman/mason-lspconfig.nvim', lazy = true },
+
 	{
-		'neovim/nvim-lspconfig',
-		event = 'VeryLazy',
-		-- dependencies = { 'VidocqH/lsp-lens.nvim' },
-		opts = {
-			servers = {
-				lua_ls = {
-					settings = {
-						Lua = {
-							completion = {
-								callSnippet = 'Replace'
-							},
-							runtime = {
-								version = 'LuaJIT',
-							},
-							diagnostics = {
-								globals = {
-									'vim',
-									'describe',
-									'it',
-								}
-							},
-							telemetry = {
-								enable = false,
-							}
-						}
-					}
-				},
-				ts_ls = {
-					init_options = {
-						hostInfo = 'neovim',
-						typescript = {
-							tsdk = require'env'.tsdk
-						},
-						plugins = {
-							{
-								name = '@vue/typescript-plugin',
-								location = require'env'.vue_plugin,
-								-- location = 'C:\\Program Files\\nodejs\\node_modules\\@vue\\typescript-plugin',
-								languages = { 'javascript', 'typescript', 'vue' },
-							},
-						},
-					},
-					filetypes = {
-						'vue',
-						'javascript',
-						'typescript',
-						'javascriptreact',
-						'javascript.jsx',
-						'typescriptreact',
-						'typescript.tsx',
-					},
-				},
-			},
-			setup = {},
+		"mason-org/mason-lspconfig.nvim",
+		opts = {},
+		dependencies = {
+			{ "mason-org/mason.nvim", opts = {} },
+			"neovim/nvim-lspconfig",
 		},
-		config = function (_, opts)
-			local mlsp = require'mason-lspconfig'
-
-			local servers = opts.servers
-			local capabilities = vim.tbl_deep_extend(
-				'force',
-				{
-					textDocument = {
-						foldingRange = {
-							dynamicRegistration = false,
-							lineFoldingOnly = true,
-						}
-					}
+		setup = function()
+			require'mason-lspconfig'.setup {
+				ensure_installed = {
+					'lua_ls',
+					'ts_ls',
+					'vtsls',
+					'vue_ls',
+					'rust_analyzer',
+					'html',
 				},
-				vim.lsp.protocol.make_client_capabilities(),
-				require'cmp_nvim_lsp'.default_capabilities(),
-				-- has_cmp and cmp_nvim_lsp.default_capabilities() or {},
-				opts.capabilities or {}
-			)
+			}
 
-			local function setup(server)
-				local server_opts = vim.tbl_deep_extend("force", {
-					capabilities = vim.deepcopy(capabilities),
-					-- on_attach = function (client, bufnr)
-					-- 	require'workspace-diagnostics'.populate_workspace_diagnostics(client, bufnr)
-					-- end
-				}, servers[server] or {})
-
-				if opts.setup[server] then
-					if opts.setup[server](server, server_opts) then
-						return
-					end
-				elseif opts.setup["*"] then
-					if opts.setup["*"](server, server_opts) then
-						return
-					end
-				end
-				require("lspconfig")[server].setup(server_opts)
-			end
-
-			mlsp.setup({
-				ensure_installed = { 'ts_ls', 'volar' },
-				handlers = {
-					setup,
+			local vue_language_server_path = vim.fn.stdpath('data') .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
+			local vue_plugin = {
+				name = '@vue/typescript-plugin',
+				location = vue_language_server_path,
+				languages = { 'vue' },
+				configNamespace = 'typescript',
+			}
+			local vtsls_config = {
+				init_options = {
+					plugins = {
+						vue_plugin,
+					},
 				},
-			})
+				filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+			}
+			local vue_ls_config = {
+				on_init = function(client)
+					client.handlers['tsserver/request'] = function(_, result, context)
+						local clients = vim.lsp.get_clients({ bufnr = context.bufnr, name = 'vtsls' })
+						if #clients == 0 then
+							vim.notify('Could not found `vtsls` lsp client, vue_lsp would not work without it.', vim.log.levels.ERROR)
+							return
+						end
+						local ts_client = clients[1]
+
+						local param = unpack(result)
+						local id, command, payload = unpack(param)
+						ts_client:exec_cmd({
+							command = 'typescript.tsserverRequest',
+							arguments = {
+								command,
+								payload,
+							},
+						}, { bufnr = context.bufnr }, function(_, r)
+								local response_data = { { id, r.body } }
+								---@diagnostic disable-next-line: param-type-mismatch
+								client:notify('tsserver/response', response_data)
+							end)
+					end
+				end,
+			}
+			-- nvim 0.11 or above
+			vim.lsp.config('vtsls', vtsls_config)
+			vim.lsp.config('vue_ls', vue_ls_config)
+			vim.lsp.enable({'vtsls', 'vue_ls'})
 		end
 	},
+
+	-- { 'mason-org/mason-lspconfig.nvim', lazy = true },
+	-- {
+	-- 	'neovim/nvim-lspconfig',
+	-- 	event = 'VeryLazy',
+	-- 	dependencies = { 'mason-org/mason-lspconfig.nvim' },
+	-- 	opts = {
+	-- 		servers = {
+	-- 			lua_ls = {
+	-- 				settings = {
+	-- 					Lua = {
+	-- 						completion = {
+	-- 							callSnippet = 'Replace'
+	-- 						},
+	-- 						runtime = {
+	-- 							version = 'LuaJIT',
+	-- 						},
+	-- 						diagnostics = {
+	-- 							globals = {
+	-- 								'vim',
+	-- 								'describe',
+	-- 								'it',
+	-- 							}
+	-- 						},
+	-- 						telemetry = {
+	-- 							enable = false,
+	-- 						}
+	-- 					}
+	-- 				}
+	-- 			},
+	-- 			ts_ls = {
+	-- 				init_options = {
+	-- 					hostinfo = 'neovim',
+	-- 					typescript = {
+	-- 						tsdk = require'env'.tsdk
+	-- 					},
+	-- 					plugins = {
+	-- 						{
+	-- 							name = '@vue/typescript-plugin',
+	-- 							location = require'env'.vue_plugin,
+	-- 							-- location = 'c:\\program files\\nodejs\\node_modules\\@vue\\typescript-plugin',
+	-- 							languages = { 'javascript', 'typescript', 'vue' },
+	-- 						},
+	-- 					},
+	-- 				},
+	-- 				filetypes = {
+	-- 					'vue',
+	-- 					'javascript',
+	-- 					'typescript',
+	-- 					'javascriptreact',
+	-- 					'javascript.jsx',
+	-- 					'typescriptreact',
+	-- 					'typescript.tsx',
+	-- 				},
+	-- 			},
+	-- 			vue_ls = {
+	-- 				on_init = function(client)
+	-- 					client.handlers['tsserver/request'] = function(_, result, context)
+	-- 						local clients = vim.lsp.get_clients({ bufnr = context.bufnr, name = 'vtsls' })
+	-- 						if #clients == 0 then
+	-- 							vim.notify('could not found `vtsls` lsp client, vue_lsp would not work without it.', vim.log.levels.error)
+	-- 							return
+	-- 						end
+	-- 						local ts_client = clients[1]
+	--
+	-- 						local param = unpack(result)
+	-- 						local id, command, payload = unpack(param)
+	-- 						ts_client:exec_cmd({
+	-- 							command = 'typescript.tsserverrequest',
+	-- 							arguments = {
+	-- 								command,
+	-- 								payload,
+	-- 							},
+	-- 						}, { bufnr = context.bufnr }, function(_, r)
+	-- 								local response_data = { { id, r.body } }
+	-- 								---@diagnostic disable-next-line: param-type-mismatch
+	-- 								client:notify('tsserver/response', response_data)
+	-- 							end)
+	-- 					end
+	-- 				end,
+	-- 			},
+	-- 			vtsls_config = {
+	-- 				init_options = {
+	-- 					plugins = {
+	-- 						name = '@vue/typescript-plugin',
+	-- 						location = vim.fn.expand '$mason/packages' .. '/vue-language-server' .. '/node_modules/@vue/language-server',
+	-- 						languages = { 'vue' },
+	-- 						confignamespace = 'typescript',
+	-- 					},
+	-- 				},
+	-- 				filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+	-- 			}
+	-- 		},
+	-- 		setup = {},
+	-- 	},
+	-- 	config = function (_, opts)
+	-- 		local mlsp = require'mason-lspconfig'
+	--
+	-- 		local servers = opts.servers
+	-- 		local capabilities = vim.tbl_deep_extend(
+	-- 			'force',
+	-- 			{
+	-- 				textdocument = {
+	-- 					foldingrange = {
+	-- 						dynamicregistration = false,
+	-- 						linefoldingonly = true,
+	-- 					}
+	-- 				}
+	-- 			},
+	-- 			vim.lsp.protocol.make_client_capabilities(),
+	-- 			require'cmp_nvim_lsp'.default_capabilities(),
+	-- 			-- has_cmp and cmp_nvim_lsp.default_capabilities() or {},
+	-- 			opts.capabilities or {}
+	-- 		)
+	--
+	-- 		local function setup(server)
+	-- 			local server_opts = vim.tbl_deep_extend("force", {
+	-- 				capabilities = vim.deepcopy(capabilities),
+	-- 				-- on_attach = function (client, bufnr)
+	-- 				-- 	require'workspace-diagnostics'.populate_workspace_diagnostics(client, bufnr)
+	-- 				-- end
+	-- 			}, servers[server] or {})
+	--
+	-- 			if opts.setup[server] then
+	-- 				if opts.setup[server](server, server_opts) then
+	-- 					return
+	-- 				end
+	-- 			elseif opts.setup["*"] then
+	-- 				if opts.setup["*"](server, server_opts) then
+	-- 					return
+	-- 				end
+	-- 			end
+	-- 			require("lspconfig")[server].setup(server_opts)
+	-- 		end
+	--
+	-- 		mlsp.setup({
+	-- 			ensure_installed = { 'ts_ls', 'vue_ls' },
+	-- 			handlers = {
+	-- 				setup,
+	-- 			},
+	-- 		})
+	-- 	end
+	-- },
+
 	-- { 'folke/neodev.nvim', config = true },
-	{
-		'ray-x/lsp_signature.nvim',
-		event = 'VeryLazy',
-		opts = {},
-		config = true
-	},
+	-- {
+	-- 	'ray-x/lsp_signature.nvim',
+	-- 	event = 'VeryLazy',
+	-- 	opts = {},
+	-- 	config = true
+	-- },
 	{ -- NOTE: I don't really use this? I just use Telescope diagnostics
 		'folke/trouble.nvim',
 		cmd = { 'Trouble', 'TroubleToggle' },
 		opts = { use_diagnostic_signs = true }
 	},
-	{ 'jose-elias-alvarez/null-ls.nvim', keys = { '<leader>fm' }, config = function()
-		local null = require'null-ls'
-		null.setup {
-			sources = { null.builtins.formatting.prettierd },
-		}
-	end },
+	-- { 'jose-elias-alvarez/null-ls.nvim', keys = { '<leader>fm' }, config = function()
+	-- 	local null = require'null-ls'
+	-- 	null.setup {
+	-- 		sources = { null.builtins.formatting.prettierd },
+	-- 	}
+	-- end },
 	{ 'onsails/lspkind.nvim', lazy = true },
 	{ 'RRethy/vim-illuminate', event = 'VeryLazy', config = function ()
 		require'illuminate'.configure {
@@ -568,7 +694,6 @@ require'lazy'.setup({
 	end },
 	{ 'rafamadriz/friendly-snippets', lazy = true },
 	{
-		-- https://tonystr.net
 		'L3MON4D3/LuaSnip',
 		version = '2.*',
 		build = 'make install_jsregexp',
@@ -590,6 +715,9 @@ require'lazy'.setup({
 			-- require'tailwindcss-colorizer-cmp'.setup { color_square_width = 1 }
 
 			cmp.setup {
+				performance = {
+					max_view_entries = 20,
+				},
 				formatting = {
 					fields = { "kind", "abbr", },
 					format = function (entry, item)
@@ -630,12 +758,43 @@ require'lazy'.setup({
 	-- { 'jose-elias-alvarez/typescript.nvim', lazy = true },
 
 	-- Git
+	-- {
+	--
+	-- 	'SuperBo/fugit2.nvim',
+	-- 	opts = {
+	-- 		width = 100,
+	-- 		libgit2_path = 'C:/ProgramData/chocolatey/lib/libgit2/tools/libgit2.dll',
+	-- 	},
+	-- 	dependencies = {
+	-- 		'MunifTanjim/nui.nvim',
+	-- 		'nvim-tree/nvim-web-devicons',
+	-- 		'nvim-lua/plenary.nvim',
+	-- 		{
+	-- 			'chrisgrieser/nvim-tinygit', -- optional: for Github PR view
+	-- 			dependencies = { 'stevearc/dressing.nvim' }
+	-- 		},
+	-- 	},
+	-- 	cmd = { 'Fugit2', 'Fugit2Diff', 'Fugit2Graph' },
+	-- 	keys = {
+	-- 		{ '<leader>F', mode = 'n', '<cmd>Fugit2<cr>' }
+	-- 	}
+	-- },
 	{
 		'tpope/vim-fugitive',
 		cmd = { 'G', 'Gwrite', 'Git', 'Gdiffsplit', 'Gvdiffsplit' },
 		dependencies = { 'tpope/vim-rhubarb' }
 	},
-	{ 'tpope/vim-rhubarb', lazy = true },
+	{
+		'NeogitOrg/neogit',
+		cmd = { 'Neogit', 'NeogitCommit', 'NeogitResetState', 'NeogitLogCurrent' },
+		dependencies = {
+			'nvim-lua/plenary.nvim',
+			'sindrets/diffview.nvim',
+			'nvim-telescope/telescope.nvim', 
+		},
+		config = true
+	},
+	-- { 'tpope/vim-rhubarb', lazy = true },
 	-- { 'SuperBo/fugit2.nvim' }, -- Could not build libgit2
 	-- {
 	-- 	'chrisgrieser/nvim-tinygit',
@@ -687,7 +846,17 @@ require'lazy'.setup({
 	},
 	{ 'rbong/vim-flog', dependencies = { 'vim-fugitive' }, cmd = { 'Flog', 'Flogsplit', 'Floggit' } },
 
-	-- UI
+	-- GUI
+	-- {
+	-- 	'lewis6991/satellite.nvim',
+	-- 	event = 'VeryLazy',
+	-- 	opts = {
+	-- 		width = 2,
+	-- 	},
+	-- 	config = function(_, opts)
+	-- 		require'satellite'.setup(opts)
+	-- 	end
+	-- },
 	{
 		'folke/twilight.nvim',
 		cmd = { 'Twilight', 'TwilightEnable', 'TwilightDisable' }
@@ -723,9 +892,10 @@ require'lazy'.setup({
 	{
 		'romgrk/barbar.nvim',
 		dependencies = { 'nvim-web-devicons' },
-		-- event = { 'BufWinEnter', 'BufNewFile' },
+		-- event = 'VeryLazy',
+		init = function() vim.g.barbar_auto_setup = false end,
 		opts = {
-			exclude_ft = { 'fugitive', 'neo-tree', 'startup' },
+			exclude_ft = { '', 'nvim-terminal', 'fugitive', 'neo-tree', 'startup' },
 			auto_hide = true,
 			animation = false,
 			icons = {
@@ -741,9 +911,9 @@ require'lazy'.setup({
 					['neo-tree'] = { event = 'BufWipeout' }
 				},
 				gitsigns = {
-					added = {enabled = true, icon = ' '},
-					changed = {enabled = true, icon = '柳'},
-					deleted = {enabled = true, icon = ' '},
+					added = { enabled = true, icon = ' ' },
+					changed = { enabled = true, icon = '柳' },
+					deleted = { enabled = true, icon = ' ' },
 				}
 			},
 		},
@@ -753,8 +923,13 @@ require'lazy'.setup({
 		'nvim-telescope/telescope.nvim',
 		-- cmd = 'Telescope',
 		event = 'VeryLazy', -- We want this one opening smoothly the first time!
+		cmd = { 'Telescope' },
 		version = '0.1.4',
-		dependencies = { 'nvim-lua/plenary.nvim' },
+		dependencies = {
+			'nvim-lua/plenary.nvim',
+			-- 'nvim-telescope/telescope-fzf-native.nvim',
+			-- 'nvim-telescope/telescope-file-browser.nvim',
+		},
 		opts = {
 			defaults = {
 				preview = {
@@ -773,7 +948,13 @@ require'lazy'.setup({
 					i = {
 						["<Esc>"] = 'close',
 						["<C-v>"] = false,
-						["<C-Enter>"] = 'select_default',
+						-- ["<C-Enter>"] = 'select_default',
+						["<C-Enter>"] = function(prompt_bufnr)
+							local actions = require'telescope.actions'
+							-- Open the selected result in a new buffer
+							actions.file_edit(prompt_bufnr)
+							vim.cmd'sil! bd#';
+						end,
 						["<C-Down>"] = 'cycle_history_next',
 						["<C-Up>"] = 'cycle_history_prev',
 					},
@@ -785,6 +966,53 @@ require'lazy'.setup({
 				}
 			},
 		},
+	},
+	-- {
+	-- 	'nvim-telescope/telescope-file-browser.nvim',
+	-- 	-- cmd = 'Telescope file_browser',
+	-- 	lazy = true,
+	-- 	config = function()
+	-- 		require'telescope'.load_extension'file_browser'
+	-- 	end
+	-- },
+	{
+		'LinArcX/telescope-changes.nvim',
+		lazy = true,
+		keys = { { '<leader>fc', '<cmd>Telescope changes<CR>' } },
+		config = function()
+			require'telescope'.load_extension'changes'
+		end
+	},
+	-- {
+	-- 	'nvim-telescope/telescope-fzf-native.nvim',
+	-- 	lazy = true,
+	-- 	setup = function()
+	-- 		require'telescope'.load_extension'fzf'
+	-- 	end
+	-- },
+	-- {
+	-- 	'otavioschwanck/telescope-cmdline-word.nvim',
+	-- 	keys = { {
+	-- 		'<tab>',
+	-- 		function() require'telescope-cmdline-word.picker'.find_word() end,
+	-- 		mode = 'c',
+	-- 	} },
+	-- 	opts = {
+	-- 		add_mappings = true, -- add <tab> mapping automatically
+	-- 	}
+	-- },
+	{
+		'luckasRanarison/nvim-devdocs',
+		dependencies = {
+			'nvim-lua/plenary.nvim',
+			'nvim-telescope/telescope.nvim',
+			'nvim-treesitter/nvim-treesitter',
+		},
+		keys = { {
+			'<leader>od',
+			'<cmd>DevdocsOpen<CR>'
+		} },
+		opts = {}
 	},
 	{
 		'debugloop/telescope-undo.nvim',
@@ -880,6 +1108,15 @@ require'lazy'.setup({
 		opts = { disable_netrw = false }
 	},
 	{
+		-- run nvim <file> in terminal to open in this instance
+		'willothy/flatten.nvim',
+		config = true,
+		event = 'TermEnter',
+		-- -- Ensure that it runs first to minimize delay when opening file from terminal
+		-- lazy = false,
+		-- priority = 1001,
+	},
+	{
 		'nvim-lualine/lualine.nvim',
 		event = 'VeryLazy',
 		dependencies = { 'f-person/git-blame.nvim' },
@@ -942,13 +1179,19 @@ require'lazy'.setup({
 					lualine_z = {},
 				},
 				options = {
+					disabled_filetypes = { '', 'nvim-terminal' },
 					section_separators = { left = '', right = '' },
 					component_separators = { left = '', right = '' },
 				},
 			}
 
-			vim.api.nvim_set_hl(0, 'lualine_c_normal', { fg='#666677', bg='#1d1d26' })
-			vim.api.nvim_set_hl(0, 'lualine_c_inactive', { fg='#666677', bg='#1d1d26' })
+			if not vim.g.neovide then
+				vim.api.nvim_set_hl(0, 'lualine_c_normal', { fg='#666677', bg='#1d1d26' })
+				vim.api.nvim_set_hl(0, 'lualine_c_inactive', { fg='#666677', bg='#1d1d26' })
+			else
+				vim.api.nvim_set_hl(0, 'lualine_c_normal', { fg='#666677', bg='none' })
+				vim.api.nvim_set_hl(0, 'lualine_c_inactive', { fg='#666677', bg='none' })
+			end
 		end
 	},
 	-- NOTE: use :Telescope keymaps instead

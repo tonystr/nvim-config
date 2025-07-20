@@ -93,5 +93,8 @@ return function(colors)
 		BufferInactiveMod = { fg='#888888', bg='#16161d' },
 		BufferVisibleMod = { fg='#888888', bg='#2a2a37' },
 		BufferTabpageFill = { bg='#16161d' },
+
+		-- Terminal
+		TerminalBackground = { bg='#16161d' },
 	}
 end
