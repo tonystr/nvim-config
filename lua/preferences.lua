@@ -20,6 +20,8 @@ if vim.g.neovide then
 	vim.g.neovide_underline_stroke_scale = 2.0
 
 	vim.g.neovide_scale_factor = 1.0
+
+	local is_linux = vim.uv.os_uname().sysname == 'Linux'
 else
 	vim.api.nvim_set_hl(0, 'Normal', { ctermbg='none', bg='none' })
 end
@@ -58,7 +60,6 @@ vim.g.polyglot_disabled = { 'vue' }
 vim.g.vimwiki_list = {
 	{ path = '~/OneDrive/vimwiki/',          syntax = 'markdown', ext = '.md' },
 	{ path = '~/OneDrive/work/',             syntax = 'markdown', ext = '.md' },
-	{ path = '~/OneDrive/entrepreneurship/', syntax = 'markdown', ext = '.md' },
 	{ path = '~/OneDrive/projects/',         syntax = 'markdown', ext = '.md' },
 }
 

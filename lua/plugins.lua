@@ -533,7 +533,7 @@ require'lazy'.setup({
 			end
 
 			mlsp.setup({
-				ensure_installed = { 'ts_ls', 'volar' },
+				-- ensure_installed = { 'ts_ls', 'volar' },
 				handlers = {
 					setup,
 				},
