@@ -339,15 +339,15 @@ require'lazy'.setup({
 		}
 	},
 	{ 'tpope/vim-repeat', keys = { '.' } },
-	{
-		'zbirenbaum/copilot.lua',
-		event = 'InsertEnter',
-		opts = {
-			suggestion = {
-				auto_trigger = true,
-			},
-		}
-	},
+	-- {
+	-- 	'zbirenbaum/copilot.lua',
+	-- 	event = 'InsertEnter',
+	-- 	opts = {
+	-- 		suggestion = {
+	-- 			auto_trigger = true,
+	-- 		},
+	-- 	}
+	-- },
 	{ 'junegunn/vim-easy-align', keys = {
 		{ 'ga', '<Plug>(EasyAlign)', mode = { 'n', 'v' } },
 	}},
@@ -439,251 +439,11 @@ require'lazy'.setup({
 	-- 	version = '^5', -- Recommended
 	-- 	lazy = false, -- This plugin is already lazy
 	-- },
-	{
-		'williamboman/mason.nvim',
-		config = true,
-		cmd = { 'Mason', 'LspInfo', 'MasonLog' },
-	},
-	-- {
-	-- 	'VidocqH/lsp-lens.nvim',
-	-- 	lazy = true,
-	-- 	opts = {
-	-- 		sections = {
-	-- 			definition = false,
-	-- 			implements = false,
-	-- 			git_authors = true,
-	-- 		},
-	-- 	},
-	-- },
-
-	{
-		"mason-org/mason-lspconfig.nvim",
-		opts = {},
-		dependencies = {
-			{ "mason-org/mason.nvim", opts = {} },
-			"neovim/nvim-lspconfig",
-		},
-		setup = function()
-			require'mason-lspconfig'.setup {
-				ensure_installed = {
-					'lua_ls',
-					'ts_ls',
-					'vtsls',
-					'vue_ls',
-					'rust_analyzer',
-					'html',
-				},
-			}
-
-			local vue_language_server_path = vim.fn.stdpath('data') .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
-			local vue_plugin = {
-				name = '@vue/typescript-plugin',
-				location = vue_language_server_path,
-				languages = { 'vue' },
-				configNamespace = 'typescript',
-			}
-			local vtsls_config = {
-				init_options = {
-					plugins = {
-						vue_plugin,
-					},
-				},
-				filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
-			}
-			local vue_ls_config = {
-				on_init = function(client)
-					client.handlers['tsserver/request'] = function(_, result, context)
-						local clients = vim.lsp.get_clients({ bufnr = context.bufnr, name = 'vtsls' })
-						if #clients == 0 then
-							vim.notify('Could not found `vtsls` lsp client, vue_lsp would not work without it.', vim.log.levels.ERROR)
-							return
-						end
-						local ts_client = clients[1]
-
-						local param = unpack(result)
-						local id, command, payload = unpack(param)
-						ts_client:exec_cmd({
-							command = 'typescript.tsserverRequest',
-							arguments = {
-								command,
-								payload,
-							},
-						}, { bufnr = context.bufnr }, function(_, r)
-								local response_data = { { id, r.body } }
-								---@diagnostic disable-next-line: param-type-mismatch
-								client:notify('tsserver/response', response_data)
-							end)
-					end
-				end,
-			}
-			-- nvim 0.11 or above
-			vim.lsp.config('vtsls', vtsls_config)
-			vim.lsp.config('vue_ls', vue_ls_config)
-			vim.lsp.enable({'vtsls', 'vue_ls'})
-		end
-	},
-
-	-- { 'mason-org/mason-lspconfig.nvim', lazy = true },
-	-- {
-	-- 	'neovim/nvim-lspconfig',
-	-- 	event = 'VeryLazy',
-	-- 	dependencies = { 'mason-org/mason-lspconfig.nvim' },
-	-- 	opts = {
-	-- 		servers = {
-	-- 			lua_ls = {
-	-- 				settings = {
-	-- 					Lua = {
-	-- 						completion = {
-	-- 							callSnippet = 'Replace'
-	-- 						},
-	-- 						runtime = {
-	-- 							version = 'LuaJIT',
-	-- 						},
-	-- 						diagnostics = {
-	-- 							globals = {
-	-- 								'vim',
-	-- 								'describe',
-	-- 								'it',
-	-- 							}
-	-- 						},
-	-- 						telemetry = {
-	-- 							enable = false,
-	-- 						}
-	-- 					}
-	-- 				}
-	-- 			},
-	-- 			ts_ls = {
-	-- 				init_options = {
-	-- 					hostinfo = 'neovim',
-	-- 					typescript = {
-	-- 						tsdk = require'env'.tsdk
-	-- 					},
-	-- 					plugins = {
-	-- 						{
-	-- 							name = '@vue/typescript-plugin',
-	-- 							location = require'env'.vue_plugin,
-	-- 							-- location = 'c:\\program files\\nodejs\\node_modules\\@vue\\typescript-plugin',
-	-- 							languages = { 'javascript', 'typescript', 'vue' },
-	-- 						},
-	-- 					},
-	-- 				},
-	-- 				filetypes = {
-	-- 					'vue',
-	-- 					'javascript',
-	-- 					'typescript',
-	-- 					'javascriptreact',
-	-- 					'javascript.jsx',
-	-- 					'typescriptreact',
-	-- 					'typescript.tsx',
-	-- 				},
-	-- 			},
-	-- 			vue_ls = {
-	-- 				on_init = function(client)
-	-- 					client.handlers['tsserver/request'] = function(_, result, context)
-	-- 						local clients = vim.lsp.get_clients({ bufnr = context.bufnr, name = 'vtsls' })
-	-- 						if #clients == 0 then
-	-- 							vim.notify('could not found `vtsls` lsp client, vue_lsp would not work without it.', vim.log.levels.error)
-	-- 							return
-	-- 						end
-	-- 						local ts_client = clients[1]
-	--
-	-- 						local param = unpack(result)
-	-- 						local id, command, payload = unpack(param)
-	-- 						ts_client:exec_cmd({
-	-- 							command = 'typescript.tsserverrequest',
-	-- 							arguments = {
-	-- 								command,
-	-- 								payload,
-	-- 							},
-	-- 						}, { bufnr = context.bufnr }, function(_, r)
-	-- 								local response_data = { { id, r.body } }
-	-- 								---@diagnostic disable-next-line: param-type-mismatch
-	-- 								client:notify('tsserver/response', response_data)
-	-- 							end)
-	-- 					end
-	-- 				end,
-	-- 			},
-	-- 			vtsls_config = {
-	-- 				init_options = {
-	-- 					plugins = {
-	-- 						name = '@vue/typescript-plugin',
-	-- 						location = vim.fn.expand '$mason/packages' .. '/vue-language-server' .. '/node_modules/@vue/language-server',
-	-- 						languages = { 'vue' },
-	-- 						confignamespace = 'typescript',
-	-- 					},
-	-- 				},
-	-- 				filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
-	-- 			}
-	-- 		},
-	-- 		setup = {},
-	-- 	},
-	-- 	config = function (_, opts)
-	-- 		local mlsp = require'mason-lspconfig'
-	--
-	-- 		local servers = opts.servers
-	-- 		local capabilities = vim.tbl_deep_extend(
-	-- 			'force',
-	-- 			{
-	-- 				textdocument = {
-	-- 					foldingrange = {
-	-- 						dynamicregistration = false,
-	-- 						linefoldingonly = true,
-	-- 					}
-	-- 				}
-	-- 			},
-	-- 			vim.lsp.protocol.make_client_capabilities(),
-	-- 			require'cmp_nvim_lsp'.default_capabilities(),
-	-- 			-- has_cmp and cmp_nvim_lsp.default_capabilities() or {},
-	-- 			opts.capabilities or {}
-	-- 		)
-	--
-	-- 		local function setup(server)
-	-- 			local server_opts = vim.tbl_deep_extend("force", {
-	-- 				capabilities = vim.deepcopy(capabilities),
-	-- 				-- on_attach = function (client, bufnr)
-	-- 				-- 	require'workspace-diagnostics'.populate_workspace_diagnostics(client, bufnr)
-	-- 				-- end
-	-- 			}, servers[server] or {})
-	--
-	-- 			if opts.setup[server] then
-	-- 				if opts.setup[server](server, server_opts) then
-	-- 					return
-	-- 				end
-	-- 			elseif opts.setup["*"] then
-	-- 				if opts.setup["*"](server, server_opts) then
-	-- 					return
-	-- 				end
-	-- 			end
-	-- 			require("lspconfig")[server].setup(server_opts)
-	-- 		end
-	--
-	-- 		mlsp.setup({
-	-- 			ensure_installed = { 'ts_ls', 'vue_ls' },
-	-- 			handlers = {
-	-- 				setup,
-	-- 			},
-	-- 		})
-	-- 	end
-	-- },
-
-	-- { 'folke/neodev.nvim', config = true },
-	-- {
-	-- 	'ray-x/lsp_signature.nvim',
-	-- 	event = 'VeryLazy',
-	-- 	opts = {},
-	-- 	config = true
-	-- },
 	{ -- NOTE: I don't really use this? I just use Telescope diagnostics
 		'folke/trouble.nvim',
 		cmd = { 'Trouble', 'TroubleToggle' },
 		opts = { use_diagnostic_signs = true }
 	},
-	-- { 'jose-elias-alvarez/null-ls.nvim', keys = { '<leader>fm' }, config = function()
-	-- 	local null = require'null-ls'
-	-- 	null.setup {
-	-- 		sources = { null.builtins.formatting.prettierd },
-	-- 	}
-	-- end },
 	{ 'onsails/lspkind.nvim', lazy = true },
 	{ 'RRethy/vim-illuminate', event = 'VeryLazy', config = function ()
 		require'illuminate'.configure {
@@ -726,7 +486,7 @@ require'lazy'.setup({
 							mode = 'symbol', -- show only symbol annotations
 							-- preset = 'codicons',
 							maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-							show_labelDetails = true, 
+							show_labelDetails = true,
 						})(entry, item)
 						-- return require'tailwindcss-colorizer-cmp'.formatter(entry, item)
 					end
@@ -755,30 +515,6 @@ require'lazy'.setup({
 			}
 		end
 	},
-	-- { 'jose-elias-alvarez/typescript.nvim', lazy = true },
-
-	-- Git
-	-- {
-	--
-	-- 	'SuperBo/fugit2.nvim',
-	-- 	opts = {
-	-- 		width = 100,
-	-- 		libgit2_path = 'C:/ProgramData/chocolatey/lib/libgit2/tools/libgit2.dll',
-	-- 	},
-	-- 	dependencies = {
-	-- 		'MunifTanjim/nui.nvim',
-	-- 		'nvim-tree/nvim-web-devicons',
-	-- 		'nvim-lua/plenary.nvim',
-	-- 		{
-	-- 			'chrisgrieser/nvim-tinygit', -- optional: for Github PR view
-	-- 			dependencies = { 'stevearc/dressing.nvim' }
-	-- 		},
-	-- 	},
-	-- 	cmd = { 'Fugit2', 'Fugit2Diff', 'Fugit2Graph' },
-	-- 	keys = {
-	-- 		{ '<leader>F', mode = 'n', '<cmd>Fugit2<cr>' }
-	-- 	}
-	-- },
 	{
 		'tpope/vim-fugitive',
 		cmd = { 'G', 'Gwrite', 'Git', 'Gdiffsplit', 'Gvdiffsplit' },
@@ -794,18 +530,6 @@ require'lazy'.setup({
 		},
 		config = true
 	},
-	-- { 'tpope/vim-rhubarb', lazy = true },
-	-- { 'SuperBo/fugit2.nvim' }, -- Could not build libgit2
-	-- {
-	-- 	'chrisgrieser/nvim-tinygit',
-	-- 	ft = { 'gitrebase', 'gitcommit' }, -- so ftplugins are loaded
-	-- 	dependencies = {
-	-- 		'stevearc/dressing.nvim',
-	-- 		'nvim-telescope/telescope.nvim',
-	-- 		'rcarriga/nvim-notify',
-	-- 	},
-	-- },
-	-- { 'akinsho/git-conflict.nvim', version = "v1.1.2", opts = { disable_diagnostics = true } },
 	{ 'lewis6991/gitsigns.nvim', event = 'VeryLazy', config = function()
 		local gitsigns = require'gitsigns'
 		gitsigns.setup{
@@ -884,11 +608,12 @@ require'lazy'.setup({
 	{ 'nvim-tree/nvim-web-devicons', lazy = true },
 	{ 'stevearc/oil.nvim', config = {
 		skip_confirm_for_simple_edits = true,
+		default_file_explorer = true,
 		float = {
 			padding = 4,
 			max_height = 24,
 		}
-	}, cmd = 'Oil' },
+	} },
 	{
 		'romgrk/barbar.nvim',
 		dependencies = { 'nvim-web-devicons' },
@@ -921,10 +646,9 @@ require'lazy'.setup({
 
 	{
 		'nvim-telescope/telescope.nvim',
-		-- cmd = 'Telescope',
 		event = 'VeryLazy', -- We want this one opening smoothly the first time!
 		cmd = { 'Telescope' },
-		version = '0.1.4',
+		-- version = '0.1.8',
 		dependencies = {
 			'nvim-lua/plenary.nvim',
 			-- 'nvim-telescope/telescope-fzf-native.nvim',
@@ -1022,61 +746,61 @@ require'lazy'.setup({
 	},
 	-- { 'nvim-telescope/telescope-symbols.nvim', event = 'VeryLazy' },
 	{ 'stevearc/dressing.nvim', event = 'VeryLazy' },
-	{
-		'kevinhwang91/nvim-ufo',
-		keys = { 'zR', 'zM', 'zr', 'zm', 'zK', 'zf' },
-		ft = { 'vue', 'javascript', 'typescript', 'typescriptreact', 'javascriptreact', 'svelte' },
-		dependencies = 'kevinhwang91/promise-async',
-		config = function ()
-			local ufo = require'ufo'
-			local handler = function(virtText, lnum, endLnum, width, truncate)
-				local newVirtText = {}
-				local suffix = ('  %d '):format(endLnum - lnum)
-				local sufWidth = vim.fn.strdisplaywidth(suffix)
-				local targetWidth = width - sufWidth
-				local curWidth = 0
-				for _, chunk in ipairs(virtText) do
-					local chunkText = chunk[1]
-					local chunkWidth = vim.fn.strdisplaywidth(chunkText)
-					if targetWidth > curWidth + chunkWidth then
-						table.insert(newVirtText, chunk)
-					else
-						chunkText = truncate(chunkText, targetWidth - curWidth)
-						local hlGroup = chunk[2]
-						table.insert(newVirtText, {chunkText, hlGroup})
-						chunkWidth = vim.fn.strdisplaywidth(chunkText)
-						-- str width returned from truncate() may less than 2nd argument, need padding
-						if curWidth + chunkWidth < targetWidth then
-							suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
-						end
-						break
-					end
-					curWidth = curWidth + chunkWidth
-				end
-				table.insert(newVirtText, {suffix, 'MoreMsg'})
-				return newVirtText
-			end
-			ufo.setup{
-				fold_virt_text_handler = handler,
-				close_fold_kinds_for_ft = {
-					vue = {'imports', 'comment'},
-					typescript = {'imports', 'comment'},
-					javascript = {'imports', 'comment'},
-				},
-
-			}
-			vim.keymap.set('n', 'zR', ufo.openAllFolds)
-			vim.keymap.set('n', 'zM', ufo.closeAllFolds)
-			vim.keymap.set('n', 'zr', ufo.openFoldsExceptKinds)
-			vim.keymap.set('n', 'zm', ufo.closeFoldsWith)
-			vim.keymap.set('n', 'zK', function()
-				local winid = require'ufo'.peekFoldedLinesUnderCursor()
-				if not winid then
-					vim.lsp.buf.hover()
-				end
-			end)
-		end
-	},
+	-- {
+	-- 	'kevinhwang91/nvim-ufo',
+	-- 	keys = { 'zR', 'zM', 'zr', 'zm', 'zK', 'zf' },
+	-- 	ft = { 'vue', 'javascript', 'typescript', 'typescriptreact', 'javascriptreact', 'svelte' },
+	-- 	dependencies = 'kevinhwang91/promise-async',
+	-- 	config = function ()
+	-- 		local ufo = require'ufo'
+	-- 		local handler = function(virtText, lnum, endLnum, width, truncate)
+	-- 			local newVirtText = {}
+	-- 			local suffix = ('  %d '):format(endLnum - lnum)
+	-- 			local sufWidth = vim.fn.strdisplaywidth(suffix)
+	-- 			local targetWidth = width - sufWidth
+	-- 			local curWidth = 0
+	-- 			for _, chunk in ipairs(virtText) do
+	-- 				local chunkText = chunk[1]
+	-- 				local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+	-- 				if targetWidth > curWidth + chunkWidth then
+	-- 					table.insert(newVirtText, chunk)
+	-- 				else
+	-- 					chunkText = truncate(chunkText, targetWidth - curWidth)
+	-- 					local hlGroup = chunk[2]
+	-- 					table.insert(newVirtText, {chunkText, hlGroup})
+	-- 					chunkWidth = vim.fn.strdisplaywidth(chunkText)
+	-- 					-- str width returned from truncate() may less than 2nd argument, need padding
+	-- 					if curWidth + chunkWidth < targetWidth then
+	-- 						suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
+	-- 					end
+	-- 					break
+	-- 				end
+	-- 				curWidth = curWidth + chunkWidth
+	-- 			end
+	-- 			table.insert(newVirtText, {suffix, 'MoreMsg'})
+	-- 			return newVirtText
+	-- 		end
+	-- 		ufo.setup{
+	-- 			fold_virt_text_handler = handler,
+	-- 			close_fold_kinds_for_ft = {
+	-- 				vue = {'imports', 'comment'},
+	-- 				typescript = {'imports', 'comment'},
+	-- 				javascript = {'imports', 'comment'},
+	-- 			},
+	--
+	-- 		}
+	-- 		vim.keymap.set('n', 'zR', ufo.openAllFolds)
+	-- 		vim.keymap.set('n', 'zM', ufo.closeAllFolds)
+	-- 		vim.keymap.set('n', 'zr', ufo.openFoldsExceptKinds)
+	-- 		vim.keymap.set('n', 'zm', ufo.closeFoldsWith)
+	-- 		vim.keymap.set('n', 'zK', function()
+	-- 			local winid = require'ufo'.peekFoldedLinesUnderCursor()
+	-- 			if not winid then
+	-- 				vim.lsp.buf.hover()
+	-- 			end
+	-- 		end)
+	-- 	end
+	-- },
 	{
 		'startup-nvim/startup.nvim',
 		cmd = 'Startup',

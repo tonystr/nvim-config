@@ -21,23 +21,168 @@
 -- 	return key
 -- end, 0)
 
+---------------- LSP Configuration ----------------
+
+vim.lsp.config('*', {
+	root_markers = { '.git' },
+})
+
+-- https://github.com/vuejs/language-tools/wiki/Neovim
+-- https://github.com/neovim/nvim-lspconfig/blob/master/lsp/vue_ls.lua
+-- https://github.com/neovim/nvim-lspconfig/blob/master/lsp/vtsls.lua
+
+local vue_language_server_path = '/usr/lib/node_modules/@vue/language-server'
+local vue_plugin = {
+	name = '@vue/typescript-plugin',
+	location = vue_language_server_path,
+	languages = { 'vue' },
+	configNamespace = 'typescript',
+}
+
+vim.lsp.config['vtsls'] = {
+	cmd = { 'vtsls', '--stdio' },
+	filetypes = {
+		'javascript',
+		'javascriptreact',
+		'javascript.jsx',
+		'typescript',
+		'typescriptreact',
+		'typescript.tsx',
+		'vue',
+	},
+	root_markers = { 'tsconfig.json', 'package.json', 'jsconfig.json', '.git' },
+	settings = {
+		vtsls = {
+			tsserver = {
+				globalPlugins = {
+					vue_plugin,
+				},
+			},
+		},
+	},
+}
+
+vim.lsp.config['vue_ls'] = {
+	cmd = { 'vue-language-server', '--stdio' },
+	filetypes = { 'vue' },
+	root_markers = { 'package.json' },
+	on_init = function(client)
+		client.handlers['tsserver/request'] = function(_, result, context)
+			local clients = vim.lsp.get_clients({ bufnr = context.bufnr, name = 'vtsls' })
+			if #clients == 0 then
+				vim.notify('Could not find `vtsls` lsp client, required by `vue_ls`.', vim.log.levels.ERROR)
+				return
+			end
+			local ts_client = clients[1]
+
+			local param = unpack(result)
+			local id, command, payload = unpack(param)
+			ts_client:exec_cmd(
+				{
+					title = 'vue_request_forward', -- You can give title anything as it's used to represent a command in the UI, `:h Client:exec_cmd`
+					command = 'typescript.tsserverRequest',
+					arguments = {
+						command,
+						payload,
+					},
+				},
+				{ bufnr = context.bufnr },
+				function(_, r)
+					local response_data = { { id, r.body } }
+					---@diagnostic disable-next-line: param-type-mismatch
+					client:notify('tsserver/response', response_data)
+				end
+			)
+		end
+	end,
+}
+
+vim.lsp.enable('vtsls')
+vim.lsp.enable('vue_ls')
+
+-- Lua LS
+vim.lsp.config['lua_ls'] = {
+	cmd = { 'lua-language-server', '--stdio' },
+	filetypes = { 'lua' },
+	root_markers = { { '.luarc.json', '.luarc.jsonc' }, '.git' },
+	settings = {
+		Lua = {
+			runtime = {
+				version = 'LuaJIT',
+			},
+			diagnostics = {
+				enable = true,
+			},
+			workspace = {
+				checkThirdParty = false,
+				library = {
+					vim.env.VIMRUNTIME,
+				},
+			},
+			telemetry = { enable = false },
+		}
+	},
+}
+
+vim.lsp.enable('lua_ls')
+
+-- TS LS
+vim.lsp.config['ts_ls'] = {
+	cmd = { 'typescript-language-server', '--stdio' },
+	filetypes = { 'vue', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
+}
+
+vim.lsp.enable('ts_ls')
+
+-- clang
+
+vim.lsp.config['clang'] = {
+	cmd = { 'clangd' },
+	filetypes = { 'c', 'h', 'cpp', 'cc', 'cxx', 'hpp', 'hh', 'hxx' }
+}
+
+vim.lsp.enable('clang')
+
+-- GDScript LS
+local port = os.getenv 'GDScript_Port' or '6005'
+local cmd = vim.lsp.rpc.connect('127.0.0.1', tonumber(port))
+
+vim.lsp.config['gdscript_ls'] = {
+	cmd = cmd,
+	filetypes = { 'gd', 'gdscript', 'gdscript3' },
+	root_markers = { 'project.godot', '.git' },
+}
+vim.lsp.enable('gdscript_ls')
+
+-- Diagnostics
+vim.diagnostic.config({
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = "",
+			[vim.diagnostic.severity.WARN]  = "",
+			[vim.diagnostic.severity.INFO]  = "",
+			[vim.diagnostic.severity.HINT]  = "",
+		},
+	},
+})
+
+-- local Signse = {
+-- 	Error = "",
+-- 	Warn = "",
+-- 	Hint = "󰌵",
+-- 	Info = "󰆈",
+-- }
+
+-----------------------------------------------------
+
+
+
 vim.o.guicursor = 'n-v-c-ci-sm:block,i-ve:ver25,r-cr-o:hor20'
 -- vim.o.showbreak = '▏󱞩  ' -- 󱞩
 vim.o.showbreak = '󱞩   ' -- 󱞩
 -- vim.o.showbreak = '󰞘   ' -- 󱞩
 
 -- vim.g.formatprg = 'prettier --parser typescript --stdin-path %';
-
-local Signse = {
-	Error = "",
-	Warn = "",
-	Hint = "󰌵",
-	Info = "󰆈",
-}
-for type, icon in pairs(Signse) do
-	local hl = "DiagnosticSign" .. type
-	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
 
 vim.o.completeopt = 'menuone,noselect'
 
@@ -251,6 +396,14 @@ end
 local root_augroup = vim.api.nvim_create_augroup('CustomAutoRoot', {})
 vim.api.nvim_create_autocmd('BufEnter', { group = root_augroup, callback = set_root })
 vim.api.nvim_create_user_command('RootToggle', toggle_rooting, { desc = 'Toggle auto-rooting on/off' })
+vim.api.nvim_create_user_command('RootDisable', function() 
+	_G.autoroot_enabled = false
+	vim.api.nvim_echo({ { 'Auto-rooting disabled', 'WarningMsg' } }, false, {})
+end, { desc = 'Disable auto-rooting' })
+vim.api.nvim_create_user_command('RootEnable', function()
+	_G.autoroot_enabled = true
+	vim.api.nvim_echo({ { 'Auto-rooting enabled', 'WarningMsg' } }, false, {})
+end, { desc = 'Enable auto-rooting' })
 
 -- Open explorer where current file is located
 vim.cmd([[
@@ -275,7 +428,7 @@ autocmd BufNewFile ~/OneDrive/vimwiki/diary/[0-9\-]*.md :silent r ~/OneDrive/vim
 autocmd BufNewFile ~/OneDrive/vimwiki/diary/[0-9\-]*.md :norm jwv$
 autocmd BufNewFile ~/OneDrive/vimwiki/startups/[a-zA-Z0-9\-_]*.md :silent 0!echo "\#" %:t:r
 autocmd BufNewFile ~/OneDrive/vimwiki/startups/[a-zA-Z0-9\-_]*.md :silent r ~/OneDrive/vimwiki/startups/template.md
-autocmd BufNewFile ~/OneDrive/vimwiki/year/[a-zA-Z0-9\-_]*.md :silent 0!echo \# AD %:t:r
+autocmd BufNewFile ~/OneDrive/vimwiki/year/[a-zA-Z0-9\-_]*.md :silent 0!echo "\#" AD %:t:r
 
 " vimwiki work template
 autocmd BufNewFile ~/OneDrive/work/diary/[0-9\-]*.md :silent 0!echo "\#" %:t:r

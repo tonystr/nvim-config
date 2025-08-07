@@ -250,8 +250,10 @@ maps.n['gD'] = function() vim.lsp.buf.declaration() end
 -- maps.n['gi'] = function() vim.lsp.buf.implementation() end
 -- maps.n['<leader>w'] = function() vim.lsp.buf.document_symbol() end
 -- maps.n['<leader>w'] = function() vim.lsp.buf.workspace_symbol() end
-maps.n['[d'] = function() vim.diagnostic.goto_prev() end
-maps.n[']d'] = function() vim.diagnostic.goto_next() end
+-- maps.n['[d'] = function() vim.diagnostic.goto_prev() end
+-- maps.n[']d'] = function() vim.diagnostic.goto_next() end
+maps.n['[d'] = function() vim.diagnostic.jump{ count = -1, float = true } end
+maps.n[']d'] = function() vim.diagnostic.jump{ count = 1, float = true } end
 maps.n['<leader>d'] = function() vim.diagnostic.open_float() end
 maps.n['gt'] = function() vim.lsp.buf.type_definition() end
 maps.n['K'] = function() vim.lsp.buf.hover() end
