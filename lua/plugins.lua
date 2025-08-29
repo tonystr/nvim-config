@@ -24,7 +24,7 @@ require'lazy'.setup({
 		config = function (_, opts)
 			require'kanagawa'.setup(opts)
 			vim.cmd'colors kanagawa'
-			
+
 			if not vim.g.neovide then
 				vim.api.nvim_set_hl(0, 'Normal', { ctermbg='none', bg='none' })
 			end
@@ -39,6 +39,19 @@ require'lazy'.setup({
 	},
 
 	-- Misc
+	{
+		'kawre/leetcode.nvim',
+		build = ':TSUpdate html', -- if you have `nvim-treesitter` installed
+		cmd = { 'Leet' },
+		dependencies = {
+			-- include a picker of your choice, see picker section for more details
+			'nvim-lua/plenary.nvim',
+			'MunifTanjim/nui.nvim',
+		},
+		opts = {
+			-- configuration goes here
+		},
+	},
 	{
 		'Goose97/timber.nvim',
 		keys = { 'gl' },
@@ -452,6 +465,47 @@ require'lazy'.setup({
 			min_count_to_highlight = 2,
 		}
 	end },
+	{
+		'Bekaboo/dropbar.nvim',
+		event = "VeryLazy",
+		-- dependencies = {
+		-- 	'nvim-telescope/telescope-fzf-native.nvim',
+		-- 	build = 'make'
+		-- },
+		opts = {
+			bar = {
+				sources = function(buf, _)
+					local sources = require('dropbar.sources')
+					local utils = require('dropbar.utils')
+					if vim.bo[buf].ft == 'markdown' then
+						return {
+							sources.path,
+							sources.markdown,
+						}
+					end
+					if vim.bo[buf].buftype == 'terminal' then
+						return {
+							sources.terminal,
+						}
+					end
+					return {
+						-- sources.path,
+						utils.source.fallback({
+							sources.lsp,
+							sources.treesitter,
+						}),
+					}
+				end,
+			}
+		},
+		config = function(_, opts)
+			require'dropbar'.setup(opts)
+			local dropbar_api = require('dropbar.api')
+			vim.keymap.set('n', '<Leader>;', dropbar_api.pick, { desc = 'Pick symbols in winbar' })
+			vim.keymap.set('n', '[;', dropbar_api.goto_context_start, { desc = 'Go to start of current context' })
+			vim.keymap.set('n', '];', dropbar_api.select_next_context, { desc = 'Select next context' })
+		end
+	},
 	{ 'rafamadriz/friendly-snippets', lazy = true },
 	{
 		'L3MON4D3/LuaSnip',
@@ -606,14 +660,15 @@ require'lazy'.setup({
 	-- 	end
 	-- },
 	{ 'nvim-tree/nvim-web-devicons', lazy = true },
-	{ 'stevearc/oil.nvim', config = {
-		skip_confirm_for_simple_edits = true,
-		default_file_explorer = true,
-		float = {
-			padding = 4,
-			max_height = 24,
-		}
-	} },
+	{
+		'stevearc/oil.nvim',
+		keys = { { '<leader>oi', function() require'oil'.open_float() end } },
+		config = {
+			skip_confirm_for_simple_edits = true,
+			default_file_explorer = true,
+			float = { padding = 4, max_height = 24 },
+		},
+	},
 	{
 		'romgrk/barbar.nvim',
 		dependencies = { 'nvim-web-devicons' },
@@ -632,8 +687,8 @@ require'lazy'.setup({
 					button = ' ',
 				},
 				sidebar_filetypes = {
-					NvimTree = true,
-					['neo-tree'] = { event = 'BufWipeout' }
+					['neo-tree'] = true,
+					['leetcode.nvim'] = true,
 				},
 				gitsigns = {
 					added = { enabled = true, icon = ' ' },
@@ -865,11 +920,11 @@ require'lazy'.setup({
 				ignore_focus = { 'NvimTree', 'startup', 'neo-tree' },
 				sections = {
 					lualine_b = {
-						{
-							'filename',
-							file_status = false,
-							newfile_status = true,
-						}
+						-- {
+						-- 	'filename',
+						-- 	file_status = false,
+						-- 	newfile_status = true,
+						-- }
 					},
 					lualine_c = {
 						{
@@ -910,9 +965,11 @@ require'lazy'.setup({
 			}
 
 			if not vim.g.neovide then
-				vim.api.nvim_set_hl(0, 'lualine_c_normal', { fg='#666677', bg='#1d1d26' })
-				vim.api.nvim_set_hl(0, 'lualine_c_inactive', { fg='#666677', bg='#1d1d26' })
+				vim.api.nvim_set_hl(0, 'StatusLine', { fg='#666677', bg='none' })
+				vim.api.nvim_set_hl(0, 'lualine_c_normal', { fg='#666677', bg='none' })
+				vim.api.nvim_set_hl(0, 'lualine_c_inactive', { fg='#666677', bg='none' })
 			else
+				vim.api.nvim_set_hl(0, 'StatusLine', { fg='#666677', bg='none' })
 				vim.api.nvim_set_hl(0, 'lualine_c_normal', { fg='#666677', bg='none' })
 				vim.api.nvim_set_hl(0, 'lualine_c_inactive', { fg='#666677', bg='none' })
 			end

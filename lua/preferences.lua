@@ -4,7 +4,7 @@ local term_buf_was_insert = true
 
 -- Neovide settings ===> !== ====== ---------
 if vim.g.neovide then
-	vim.o.guifont='CaskaydiaCove Nerd Font:h11.4:#e-subpixelantialias'
+	vim.o.guifont='CaskaydiaCove Nerd Font:h11.8:#e-subpixelantialias'
 	-- vim.o.guifont='RecMonoLinear Nerd Font:h11.6:#e-subpixelantialias'
 	vim.api.nvim_set_hl(0, 'Normal', { bg = '#1f1f28' })
 	vim.g.neovide_refresh_rate = 90
@@ -15,8 +15,11 @@ if vim.g.neovide then
 	vim.g.neovide_hide_mouse_when_typing = true
 	vim.g.neovide_floating_shadow = false
 	vim.g.neovide_cursor_animate_command_line = false
+
 	vim.g.neovide_scroll_animation_length = 0.14
 	vim.g.neovide_scroll_animation_far_lines = 50
+	vim.g.neovide_position_animation_length = 0
+
 	vim.g.neovide_cursor_trail_size = 0.5
 	vim.g.neovide_window_blurred = false
 	vim.g.neovide_floating_blur_amount_x = 0.0
@@ -29,24 +32,28 @@ if vim.g.neovide then
 		vim.api.nvim_get_hl(0, {id=vim.api.nvim_get_hl_id_by_name("Normal")}).bg
 	)
 
-	vim.keymap.set('t', '<C-z>', function() 
+	-- Show file path in window decoration title
+	vim.o.titlestring = "%f"
+	vim.o.title = true
+
+	vim.keymap.set('t', '<C-z>', function()
 		vim.cmd'b#'
 		term_buf_was_insert = true
 	end, { noremap = true });
 
-	vim.keymap.set('t', '<M-w>', function() 
+	vim.keymap.set('t', '<M-w>', function()
 		vim.cmd'bd!'
 	end, { noremap = true });
 
-	vim.keymap.set('n', '<C-z>', function() 
-		if 
-			term_buf ~= nil and 
+	vim.keymap.set('n', '<C-z>', function()
+		if
+			term_buf ~= nil and
 			vim.api.nvim_buf_is_valid(term_buf) and
 			vim.api.nvim_get_current_buf() == term_buf
 		then
 			term_buf_was_insert = false
 			vim.cmd'b#'
-		else 
+		else
 			if term_buf == nil or not vim.api.nvim_buf_is_valid(term_buf) then
 				term_buf = vim.api.nvim_create_buf(false, true) -- no file, scratch buffer
 
@@ -68,7 +75,7 @@ if vim.g.neovide then
 
 	vim.api.nvim_create_autocmd('TermOpen', {
 		pattern = "*",
-		callback = function() 
+		callback = function()
 			vim.opt_local.winhighlight = 'Normal:TerminalBackground'
 			vim.opt_local.filetype = 'nvim-terminal'
 
@@ -196,24 +203,55 @@ vim.api.nvim_create_autocmd({'BufLeave'}, {
 	end,
 })
 
+vim.api.nvim_create_autocmd({'BufWinLeave'}, {
+	pattern = '*',
+	callback = function(_)
+		-- vim.g.neovide_scroll_animation_length = 0.0
+		vim.g.neovide_cursor_animation_length = 0.0
+		vim.g.neovide_position_animation_length = 0.0
+		-- vim.g.neovide_scroll_animation_far_lines = 0
+	end,
+})
+
 vim.api.nvim_create_autocmd({'BufWinEnter'}, {
 	pattern = '*',
-	callback = function()
-		vim.g.neovide_scroll_animation_length = 0.0
-		vim.g.neovide_cursor_animation_length = 0.0
-		vim.g.neovide_scroll_animation_far_lines = 0
-
-		if 
+	callback = function(_)
+		if
 			vim.fn.bufname('%') ~= '' and
 			vim.fn.filereadable(vim.fn.expand('%'))
 		then
 			local success, err = pcall(function() vim.cmd('silent loadview') end)
 		end
-
 		vim.defer_fn(function()
-			vim.g.neovide_scroll_animation_length = 0.14
+			-- vim.g.neovide_scroll_animation_length = 0.14
 			vim.g.neovide_cursor_animation_length = 0.06
-			vim.g.neovide_scroll_animation_far_lines = 50 
-		end, 100)
+			vim.g.neovide_position_animation_length = 0.15
+			-- vim.g.neovide_scroll_animation_far_lines = 50
+		end, 200)
 	end,
 })
+
+vim.api.nvim_create_autocmd({'WinLeave'}, {
+	pattern = '*',
+	callback = function(args)
+		if 
+			vim.fn.bufname('%') ~= '' and
+			vim.fn.filereadable(vim.fn.expand('%'))
+		then
+			vim.api.nvim_set_option_value('relativenumber', false, { win = args.win })
+		end
+	end
+})
+
+vim.api.nvim_create_autocmd({'WinEnter'}, {
+	pattern = '*',
+	callback = function(args)
+		if 
+			vim.fn.bufname('%') ~= '' and
+			vim.fn.filereadable(vim.fn.expand('%'))
+		then
+			vim.api.nvim_set_option_value('relativenumber', true, { win = args.win })
+		end
+	end
+})
+

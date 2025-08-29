@@ -133,7 +133,6 @@ vim.lsp.config['ts_ls'] = {
 }
 
 vim.lsp.enable('ts_ls')
-
 -- clang
 
 vim.lsp.config['clang'] = {
@@ -153,6 +152,37 @@ vim.lsp.config['gdscript_ls'] = {
 	root_markers = { 'project.godot', '.git' },
 }
 vim.lsp.enable('gdscript_ls')
+
+-- Rust analyzer
+vim.lsp.config['rust_analyzer'] = {
+	cmd = { 'rust-analyzer' },
+	filetypes = { 'rust' },
+	root_markers = { 'Cargo.toml', 'Cargo.lock' },
+	settings = {
+		['rust-analyzer'] = {
+			files = {
+				standalone = true,
+			},
+		},
+	},
+	capabilities = {
+		experimental = {
+			serverStatusNotification = true,
+		},
+	},
+	before_init = function(init_params, config)
+		-- See https://github.com/rust-lang/rust-analyzer/blob/eb5da56d839ae0a9e9f50774fa3eb78eb0964550/docs/dev/lsp-extensions.md?plain=1#L26
+		if config.settings and config.settings['rust-analyzer'] then
+			init_params.initializationOptions = config.settings['rust-analyzer']
+		end
+	end,
+	on_attach = function(_, bufnr)
+		vim.api.nvim_buf_create_user_command(bufnr, 'LspCargoReload', function()
+			reload_workspace(bufnr)
+		end, { desc = 'Reload current cargo workspace' })
+	end,
+}
+vim.lsp.enable'rust_analyzer'
 
 -- Diagnostics
 vim.diagnostic.config({
@@ -404,6 +434,43 @@ vim.api.nvim_create_user_command('RootEnable', function()
 	_G.autoroot_enabled = true
 	vim.api.nvim_echo({ { 'Auto-rooting enabled', 'WarningMsg' } }, false, {})
 end, { desc = 'Enable auto-rooting' })
+
+
+-- helper to select word under cursor with underscores as separators
+local function inner_underscore()
+	local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+	local line = vim.api.nvim_get_current_line()
+
+	-- find start
+	local s = col
+	while s > 0 and line:sub(s, s):match("[%w_]") do
+		s = s - 1
+	end
+	s = s + 1
+
+	-- find end
+	local e = col + 1
+	while e <= #line and line:sub(e, e):match("[%w_]") do
+		e = e + 1
+	end
+	e = e - 1
+	return s, e, col
+end
+
+-- map `a_` as a text object for operators
+vim.keymap.set({"x", "o"}, "a_", function()
+	local s, e, col = inner_underscore()
+	vim.fn.setpos("'<", {0, col, s, 0})
+	vim.fn.setpos("'>", {0, col, e, 0})
+end)
+
+-- map `i_` as a text object for operators
+vim.keymap.set({"x", "o"}, "i_", function()
+	local s, e, col = inner_underscore()
+	vim.fn.setpos("'<", {0, col, s, 0})
+	vim.fn.setpos("'>", {0, col, e, 0})
+end)
+
 
 -- Open explorer where current file is located
 vim.cmd([[

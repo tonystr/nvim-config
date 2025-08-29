@@ -5,9 +5,11 @@ setlocal linebreak
 
 setlocal statuscolumn=""
 
-if getcwd() == 'C:\Program Files\Neovide'
-	execute 'cd ~/Documents/git'
-endif
+" Errors for some reason when trying to cd
+" if getcwd() == 'C:\Program Files\Neovide'
+" 	" execute 'cd ' . expand('~/Documents/git')
+" 	" cd ~/Documents/git
+" endif
 
 nmap <buffer> v <NOP>
 nmap <buffer> V <NOP>
