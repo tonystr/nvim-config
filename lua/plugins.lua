@@ -24,7 +24,7 @@ require'lazy'.setup({
 		config = function (_, opts)
 			require'kanagawa'.setup(opts)
 			vim.cmd'colors kanagawa'
-			
+
 			if not vim.g.neovide then
 				vim.api.nvim_set_hl(0, 'Normal', { ctermbg='none', bg='none' })
 			end
@@ -536,7 +536,8 @@ require'lazy'.setup({
 			diff_opts = { vertical = false },
 			signs = { untracked = { text = '│' } }
 		}
-		vim.keymap.set('n', '<leader>bl', function() gitsigns.blame_line{ full = true } end)
+		vim.keymap.set('n', '<leader>bl', function() gitsigns.blame() end)
+		vim.keymap.set('n', '<leader>bL', function() gitsigns.blame_line{ full = true } end)
 		vim.keymap.set('n', ']c', gitsigns.next_hunk)
 		vim.keymap.set('n', '[c', gitsigns.prev_hunk)
 		vim.keymap.set('n', '<leader>bh', gitsigns.preview_hunk)
