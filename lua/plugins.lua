@@ -32,11 +32,12 @@ require'lazy'.setup({
 		priority = 1000,
 	},
 	-- { 'catppuccin/nvim', name = 'catppuccin', lazy = false },
-	{
-		'folke/tokyonight.nvim',
-		lazy = true,
-		opts = {},
-	},
+	-- { 'folke/tokyonight.nvim', name = 'tokyonight', lazy = false },
+	-- {
+	-- 	'folke/tokyonight.nvim',
+	-- 	lazy = true,
+	-- 	opts = {},
+	-- },
 
 	-- Misc
 	{

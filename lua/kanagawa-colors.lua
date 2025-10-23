@@ -101,10 +101,10 @@ return function(colors)
 		-- diffAdd =  { bg='#103420' },
 		-- diffText = { bg='#363646' },
 		diffAdded = { bg='#003232', fg='#80cf9f' },
-		diffRemoved = { bg='#321210', fg='#f27687' },
+		diffRemoved = { bg='#4a1926', fg='#f27687' },
 		fugitiveHunk = { fg='#aab0c0' },
-		diffSubname = { bg='#322a6a', fg='#e77f58' },
-		diffLine = { bg='#322a6a', fg='#977ff8' },
+		diffLine = { bg='#322a6a', fg='#776fa8' },
+		diffSubname = { bg='#322a6a', fg='#f27687' },
 
 		-- Barbar
 		BufferCurrentMod = { fg='#cfcfd0', bg='#2a2a37'  },
