@@ -465,47 +465,47 @@ require'lazy'.setup({
 			min_count_to_highlight = 2,
 		}
 	end },
-	{
-		'Bekaboo/dropbar.nvim',
-		event = "VeryLazy",
-		-- dependencies = {
-		-- 	'nvim-telescope/telescope-fzf-native.nvim',
-		-- 	build = 'make'
-		-- },
-		opts = {
-			bar = {
-				sources = function(buf, _)
-					local sources = require('dropbar.sources')
-					local utils = require('dropbar.utils')
-					if vim.bo[buf].ft == 'markdown' then
-						return {
-							sources.path,
-							sources.markdown,
-						}
-					end
-					if vim.bo[buf].buftype == 'terminal' then
-						return {
-							sources.terminal,
-						}
-					end
-					return {
-						-- sources.path,
-						utils.source.fallback({
-							sources.lsp,
-							sources.treesitter,
-						}),
-					}
-				end,
-			}
-		},
-		config = function(_, opts)
-			require'dropbar'.setup(opts)
-			local dropbar_api = require('dropbar.api')
-			vim.keymap.set('n', '<Leader>;', dropbar_api.pick, { desc = 'Pick symbols in winbar' })
-			vim.keymap.set('n', '[;', dropbar_api.goto_context_start, { desc = 'Go to start of current context' })
-			vim.keymap.set('n', '];', dropbar_api.select_next_context, { desc = 'Select next context' })
-		end
-	},
+	-- {
+	-- 	'Bekaboo/dropbar.nvim',
+	-- 	event = "VeryLazy",
+	-- 	-- dependencies = {
+	-- 	-- 	'nvim-telescope/telescope-fzf-native.nvim',
+	-- 	-- 	build = 'make'
+	-- 	-- },
+	-- 	opts = {
+	-- 		bar = {
+	-- 			sources = function(buf, _)
+	-- 				local sources = require('dropbar.sources')
+	-- 				local utils = require('dropbar.utils')
+	-- 				if vim.bo[buf].ft == 'markdown' then
+	-- 					return {
+	-- 						sources.path,
+	-- 						sources.markdown,
+	-- 					}
+	-- 				end
+	-- 				if vim.bo[buf].buftype == 'terminal' then
+	-- 					return {
+	-- 						sources.terminal,
+	-- 					}
+	-- 				end
+	-- 				return {
+	-- 					-- sources.path,
+	-- 					utils.source.fallback({
+	-- 						sources.lsp,
+	-- 						sources.treesitter,
+	-- 					}),
+	-- 				}
+	-- 			end,
+	-- 		}
+	-- 	},
+	-- 	config = function(_, opts)
+	-- 		require'dropbar'.setup(opts)
+	-- 		local dropbar_api = require('dropbar.api')
+	-- 		vim.keymap.set('n', '<Leader>;', dropbar_api.pick, { desc = 'Pick symbols in winbar' })
+	-- 		vim.keymap.set('n', '[;', dropbar_api.goto_context_start, { desc = 'Go to start of current context' })
+	-- 		vim.keymap.set('n', '];', dropbar_api.select_next_context, { desc = 'Select next context' })
+	-- 	end
+	-- },
 	{ 'rafamadriz/friendly-snippets', lazy = true },
 	{
 		'L3MON4D3/LuaSnip',
@@ -622,7 +622,21 @@ require'lazy'.setup({
 		},
 		cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewToggleFiles', 'DiffviewFileHistory', 'DiffviewFocusFiles', 'DiffviewLog', 'DiffviewRefresh', },
 	},
-	{ 'rbong/vim-flog', dependencies = { 'vim-fugitive' }, cmd = { 'Flog', 'Flogsplit', 'Floggit' } },
+	{
+		'rbong/vim-flog',
+		dependencies = { 'vim-fugitive' },
+		cmd = { 'Flog', 'Flogsplit', 'Floggit' },
+		config = function()
+			vim.g.flog_enable_dynamic_commit_hl = true
+			vim.g.flog_enable_dynamic_branch_hl = true
+			vim.g.flog_enable_extended_chars = false
+			vim.g.flog_enable_extra_padding = false
+			
+			vim.g.flog_permanent_default_opts = {
+				format = '%d %s  %an', -- %ad for date
+			}
+		end,
+	},
 
 	-- GUI
 	-- {
@@ -667,6 +681,28 @@ require'lazy'.setup({
 			skip_confirm_for_simple_edits = true,
 			default_file_explorer = true,
 			float = { padding = 4, max_height = 24 },
+			keymaps = {
+				['<leader>fg'] = {
+					function()
+						require'telescope.builtin'.live_grep{
+							cwd = require'oil'.get_current_dir()
+						}
+					end,
+					mode = 'n',
+					nowait = true,
+					desc = "Find files in the current directory"
+				},
+				['<C-p>'] = {
+					function()
+						require'telescope.builtin'.find_files{
+							cwd = require'oil'.get_current_dir()
+						}
+					end,
+					mode = 'n',
+					nowait = true,
+					desc = "Find files in the current directory"
+				}
+			},
 		},
 	},
 	{

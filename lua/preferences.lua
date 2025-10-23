@@ -210,6 +210,13 @@ vim.api.nvim_create_autocmd({'BufWinLeave'}, {
 		vim.g.neovide_cursor_animation_length = 0.0
 		vim.g.neovide_position_animation_length = 0.0
 		-- vim.g.neovide_scroll_animation_far_lines = 0
+
+		vim.defer_fn(function()
+			-- vim.g.neovide_scroll_animation_length = 0.14
+			vim.g.neovide_cursor_animation_length = 0.06
+			vim.g.neovide_position_animation_length = 0.15
+			-- vim.g.neovide_scroll_animation_far_lines = 50
+		end, 200)
 	end,
 })
 
@@ -222,12 +229,6 @@ vim.api.nvim_create_autocmd({'BufWinEnter'}, {
 		then
 			local success, err = pcall(function() vim.cmd('silent loadview') end)
 		end
-		vim.defer_fn(function()
-			-- vim.g.neovide_scroll_animation_length = 0.14
-			vim.g.neovide_cursor_animation_length = 0.06
-			vim.g.neovide_position_animation_length = 0.15
-			-- vim.g.neovide_scroll_animation_far_lines = 50
-		end, 200)
 	end,
 })
 

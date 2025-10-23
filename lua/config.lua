@@ -31,7 +31,13 @@ vim.lsp.config('*', {
 -- https://github.com/neovim/nvim-lspconfig/blob/master/lsp/vue_ls.lua
 -- https://github.com/neovim/nvim-lspconfig/blob/master/lsp/vtsls.lua
 
+local is_linux = vim.uv.os_uname().sysname == 'Linux'
 local vue_language_server_path = '/usr/lib/node_modules/@vue/language-server'
+
+if not is_linux then
+	vue_language_server_path = 'C:\\Users\\tonys\\AppData\\Roaming\\npm\\node_modules\\@vue\\language-server'
+end
+
 local vue_plugin = {
 	name = '@vue/typescript-plugin',
 	location = vue_language_server_path,

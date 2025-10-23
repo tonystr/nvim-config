@@ -31,6 +31,9 @@ return function(colors)
 		['@variable.member.typescript'] = { fg = theme.syn.identifier },
 		['@lsp.typemod.variable.local.vue'] = { fg = theme.ui.fg },
 		['@lsp.typemod.property.defaultLibrary.vue'] = { fg = theme.syn.special1 },
+
+		['@lsp.type.namespace.rust'] = { link = 'Special' },
+
 		IndentBlanklineContextChar = { fg='#4a4a58' },
 		IndentBlanklineChar = { fg='#2f2f3f' },
 		Folded = { bg='none' },
@@ -45,6 +48,7 @@ return function(colors)
 		Whitespace = { fg='#4a4a58' },
 		VertSplit = { ctermbg='none', bg='none', fg='#4a4a58' },
 		TelescopeSelection = { bg='none', fg='#ffffff' },
+		TelescopeBorder = { bg='none'--[[ , fg='#ffffff' ]] },
 		MoreMsg = { bg='none', fg='#ffd282' },
 		-- Pmenu = { bg='#2a2a37' },
 		-- PmenuSel = { bg='#c0a36e', fg='#000000' },
@@ -94,8 +98,13 @@ return function(colors)
 		FlogBranch4 =  { fg='#957fb8' },
 		FlogBranch5 =  { fg='#c8c093' },
 
-		DiffAdd =  { bg='#103420' },
-		DiffText = { bg='#363646' },
+		-- diffAdd =  { bg='#103420' },
+		-- diffText = { bg='#363646' },
+		diffAdded = { bg='#003232', fg='#80cf9f' },
+		diffRemoved = { bg='#321210', fg='#f27687' },
+		fugitiveHunk = { fg='#aab0c0' },
+		diffSubname = { bg='#322a6a', fg='#e77f58' },
+		diffLine = { bg='#322a6a', fg='#977ff8' },
 
 		-- Barbar
 		BufferCurrentMod = { fg='#cfcfd0', bg='#2a2a37'  },
