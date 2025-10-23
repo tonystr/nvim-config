@@ -30,3 +30,6 @@ Faith: 'that faculty which enables us to believe things which we know to be untr
 
 We know that for a fact? Yes. Because? Because the alternative is unthinkable.
     - Awakenings, 1990
+
+I have loved justice and hated iniquity; therefore, I die in exile.
+	- Pope Gregory VII, 1085
