@@ -26,7 +26,14 @@ require'lazy'.setup({
 			vim.cmd'colors kanagawa'
 
 			if not vim.g.neovide then
-				vim.api.nvim_set_hl(0, 'Normal', { ctermbg='none', bg='none' })
+				vim.api.nvim_set_hl(0, 'Normal', { fg='#dcd7ba', ctermbg='none', bg='none' })
+			else
+				vim.api.nvim_set_hl(0, 'Normal', { fg='#dcd7ba', ctermbg='none', bg='#131315' })
+	
+				vim.g.neovide_title_background_color = string.format(
+					"%x",
+					vim.api.nvim_get_hl(0, {id=vim.api.nvim_get_hl_id_by_name("Normal")}).bg
+				)
 			end
 		end,
 		priority = 1000,
@@ -445,7 +452,12 @@ require'lazy'.setup({
 			-- vim.g.user_emmet_leader_key = '<C-z>'
 		end,
 	},
-	{ 'vimwiki/vimwiki', keys = { '<leader>w' }, cmd = { 'VimwikiMakeDiaryNote' } },
+	{
+		'vimwiki/vimwiki',
+		keys = { '<leader>w' },
+		ft = { 'markdown', 'vimwiki', 'vimwiki_markdown_custom' },
+		cmd = { 'VimwikiMakeDiaryNote' },
+	},
 
 	-- Lsp
 	-- {
@@ -453,7 +465,16 @@ require'lazy'.setup({
 	-- 	version = '^5', -- Recommended
 	-- 	lazy = false, -- This plugin is already lazy
 	-- },
-	{ -- NOTE: I don't really use this? I just use Telescope diagnostics
+	-- {
+	-- 	"williamboman/mason.nvim",
+	-- 	opts = {
+	-- 		registries = {
+	-- 			"github:mason-org/mason-registry",
+	-- 			"github:Crashdummyy/mason-registry",
+	-- 		},
+	-- 	},
+	-- },
+	{
 		'folke/trouble.nvim',
 		cmd = { 'Trouble', 'TroubleToggle' },
 		opts = { use_diagnostic_signs = true }
@@ -466,6 +487,27 @@ require'lazy'.setup({
 			min_count_to_highlight = 2,
 		}
 	end },
+	{
+		'seblyng/roslyn.nvim',
+		---@module 'roslyn.config'
+		---@type RoslynNvimConfig
+		opts = {},
+		-- config = function()
+		-- 	local cmd = {
+		-- 		"roslyn",
+		-- 		"--stdio",
+		-- 		"--logLevel=Information",
+		-- 		"--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
+		-- 		"--razorSourceGenerator=" .. vim.fs.joinpath(rzls_path, "Microsoft.CodeAnalysis.Razor.Compiler.dll"),
+		-- 		"--razorDesignTimePath="
+		-- 			.. vim.fs.joinpath(rzls_path, "Targets", "Microsoft.NET.Sdk.Razor.DesignTime.targets"),
+		-- 		"--extension=" .. vim.fs.joinpath(rzls_path, "Microsoft.VisualStudioCode.RazorExtension.dll"),
+		-- 	}
+		-- 	vim.lsp.config("roslyn", {
+		-- 		cmd = cmd,
+		-- 	})
+		-- end
+	},
 	-- {
 	-- 	'Bekaboo/dropbar.nvim',
 	-- 	event = "VeryLazy",
@@ -990,8 +1032,22 @@ require'lazy'.setup({
 						}
 					},
 					lualine_y = {
-						'branch',
-						{ 'diff', symbols = { added = ' ', modified = '柳', removed = ' ' } }
+						{ 'b:gitsigns_head', icon = '' },
+						-- Default diff is super slow on CORP pc
+						{
+							'diff',
+							symbols = { added = ' ', modified = '柳', removed = ' ' },
+							source = function()
+								local gitsigns = vim.b.gitsigns_status_dict
+								if gitsigns then
+									return {
+										added = gitsigns.added,
+										modified = gitsigns.changed,
+										removed = gitsigns.removed
+									}
+								end
+							end
+						}
 					},
 					lualine_z = {},
 				},
@@ -1013,12 +1069,13 @@ require'lazy'.setup({
 			end
 		end
 	},
-	-- NOTE: use :Telescope keymaps instead
+	-- -- NOTE: use :Telescope keymaps instead
 	-- { 'folke/which-key.nvim', cmd = 'WhichKey' },
 }, {
 	install = {
 		colorscheme = { 'kanagawa' }
-	}
+	},
+	concurrency = 4,
 })
 
 -- Below you'll find the land of the lost

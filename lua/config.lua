@@ -103,8 +103,75 @@ vim.lsp.config['vue_ls'] = {
 	end,
 }
 
-vim.lsp.enable('vtsls')
-vim.lsp.enable('vue_ls')
+vim.lsp.enable'vtsls'
+vim.lsp.enable'vue_ls'
+
+-- -- Omnisharp (C#)
+-- vim.lsp.config['omnisharp'] = {
+-- 	cmd = {
+-- 		'omnisharp',
+-- 		'-z',
+-- 		'--hostPID',
+-- 		tostring(vim.fn.getpid()),
+-- 		'DotNet:enablePackageRestore=false',
+-- 		'--encoding',
+-- 		'utf-8',
+-- 		'--languageserver',
+-- 	},
+-- 	filetypes = { 'cs', 'vb' },
+-- 	root_markers = { '*.sln', '*.csproj', 'omnisharp.json', 'function.json', '.git' },
+-- 	capabilities = {
+-- 		workspace = {
+-- 			workspaceFolders = false, -- https://github.com/OmniSharp/omnisharp-roslyn/issues/909
+-- 		},
+-- 	},
+-- 	settings = {
+-- 		FormattingOptions = {
+-- 			-- Enables support for reading code style, naming convention and analyzer
+-- 			-- settings from .editorconfig.
+-- 			EnableEditorConfigSupport = true,
+-- 			-- Specifies whether 'using' directives should be grouped and sorted during
+-- 			-- document formatting.
+-- 			OrganizeImports = nil,
+-- 		},
+-- 		MsBuild = {
+-- 			-- If true, MSBuild project system will only load projects for files that
+-- 			-- were opened in the editor. This setting is useful for big C# codebases
+-- 			-- and allows for faster initialization of code navigation features only
+-- 			-- for projects that are relevant to code that is being edited. With this
+-- 			-- setting enabled OmniSharp may load fewer projects and may thus display
+-- 			-- incomplete reference lists for symbols.
+-- 			LoadProjectsOnDemand = nil,
+-- 		},
+-- 		RoslynExtensionsOptions = {
+-- 			-- Enables support for roslyn analyzers, code fixes and rulesets.
+-- 			EnableAnalyzersSupport = nil,
+-- 			-- Enables support for showing unimported types and unimported extension
+-- 			-- methods in completion lists. When committed, the appropriate using
+-- 			-- directive will be added at the top of the current file. This option can
+-- 			-- have a negative impact on initial completion responsiveness,
+-- 			-- particularly for the first few completion sessions after opening a
+-- 			-- solution.
+-- 			EnableImportCompletion = nil,
+-- 			-- Only run analyzers against open files when 'enableRoslynAnalyzers' is
+-- 			-- true
+-- 			AnalyzeOpenDocumentsOnly = nil,
+-- 			-- Enables the possibility to see the code in external nuget dependencies
+-- 			EnableDecompilationSupport = nil,
+-- 		},
+-- 		RenameOptions = {
+-- 			RenameInComments = nil,
+-- 			RenameOverloads = nil,
+-- 			RenameInStrings = nil,
+-- 		},
+-- 		Sdk = {
+-- 			-- Specifies whether to include preview versions of the .NET SDK when
+-- 			-- determining which version to use for project loading.
+-- 			IncludePrereleases = true,
+-- 		},
+-- 	},
+-- }
+-- vim.lsp.enable'omnisharp'
 
 -- Lua LS
 vim.lsp.config['lua_ls'] = {
@@ -130,7 +197,244 @@ vim.lsp.config['lua_ls'] = {
 	},
 }
 
-vim.lsp.enable('lua_ls')
+vim.lsp.enable'lua_ls'
+
+-- Roslyn
+
+local roslyn_group = vim.api.nvim_create_augroup('lspconfig.roslyn_ls', { clear = true })
+
+---@param client vim.lsp.Client
+---@param target string
+local function on_init_sln(client, target)
+	vim.notify('Initializing: ' .. target, vim.log.levels.TRACE, { title = 'roslyn_ls' })
+	---@diagnostic disable-next-line: param-type-mismatch
+	client:notify('solution/open', {
+		solution = vim.uri_from_fname(target),
+	})
+end
+
+---@param client vim.lsp.Client
+---@param project_files string[]
+local function on_init_project(client, project_files)
+	vim.notify('Initializing: projects', vim.log.levels.TRACE, { title = 'roslyn_ls' })
+	---@diagnostic disable-next-line: param-type-mismatch
+	client:notify('project/open', {
+		projects = vim.tbl_map(function(file)
+			return vim.uri_from_fname(file)
+		end, project_files),
+	})
+end
+
+---@param client vim.lsp.Client
+local function refresh_diagnostics(client)
+  for buf, _ in pairs(vim.lsp.get_client_by_id(client.id).attached_buffers) do
+    if vim.api.nvim_buf_is_loaded(buf) then
+      client:request(
+        vim.lsp.protocol.Methods.textDocument_diagnostic,
+        { textDocument = vim.lsp.util.make_text_document_params(buf) },
+        nil,
+        buf
+      )
+    end
+  end
+end
+
+vim.lsp.config['roslyn_ls'] = {
+	name = 'roslyn_ls',
+	offset_encoding = 'utf-8',
+	cmd = {
+		'C:/Users/Tstromsn/bin/roslyn/content/LanguageServer/win-x64/Microsoft.CodeAnalysis.LanguageServer',
+		'--logLevel',
+		'Information',
+		'--extensionLogDirectory',
+		vim.fs.joinpath(vim.uv.os_tmpdir(), 'roslyn_ls/logs'),
+		'--stdio',
+	},
+	filetypes = { 'cs', 'sln', 'csproj', 'cshtml', 'razor', 'blazor' },
+	handlers = {
+		['workspace/projectInitializationComplete'] = function(_, _, ctx)
+			vim.notify('Roslyn project initialization complete', vim.log.levels.INFO, { title = 'roslyn_ls' })
+			local client = assert(vim.lsp.get_client_by_id(ctx.client_id))
+			refresh_diagnostics(client)
+			return vim.NIL
+		end,
+		['workspace/_roslyn_projectNeedsRestore'] = function(_, result, ctx)
+			local client = assert(vim.lsp.get_client_by_id(ctx.client_id))
+
+			---@diagnostic disable-next-line: param-type-mismatch
+			client:request('workspace/_roslyn_restore', result, function(err, response)
+				if err then
+					vim.notify(err.message, vim.log.levels.ERROR, { title = 'roslyn_ls' })
+				end
+				if response then
+					for _, v in ipairs(response) do
+						vim.notify(v.message, vim.log.levels.INFO, { title = 'roslyn_ls' })
+					end
+				end
+			end)
+
+			return vim.NIL
+		end,
+		['razor/provideDynamicFileInfo'] = function(_, _, _)
+			vim.notify(
+				'Razor is not supported.\nPlease use https://github.com/tris203/rzls.nvim',
+				vim.log.levels.WARN,
+				{ title = 'roslyn_ls' }
+			)
+			return vim.NIL
+		end,
+	},
+
+	----------------------------------------------------------------------------------
+	commands = {
+		['roslyn.client.completionComplexEdit'] = function(command, ctx)
+			local client = assert(vim.lsp.get_client_by_id(ctx.client_id))
+			local args = command.arguments or {}
+			local uri, edit = args[1], args[2]
+
+			---@diagnostic disable: undefined-field
+			if uri and edit and edit.newText and edit.range then
+				local workspace_edit = {
+					changes = {
+						[uri.uri] = {
+							{
+								range = edit.range,
+								newText = edit.newText,
+							},
+						},
+					},
+				}
+				vim.lsp.util.apply_workspace_edit(workspace_edit, client.offset_encoding)
+				---@diagnostic enable: undefined-field
+			else
+				vim.notify('roslyn_ls: completionComplexEdit args not understood: ' .. vim.inspect(args), vim.log.levels.WARN)
+			end
+		end,
+	},
+
+	root_dir = function(bufnr, cb)
+		local bufname = vim.api.nvim_buf_get_name(bufnr)
+		-- don't try to find sln or csproj for files from libraries
+		-- outside of the project
+		if not bufname:match('^' .. vim.fs.joinpath('/tmp/MetadataAsSource/')) then
+			-- try find solutions root first
+			local root_dir = vim.fs.root(bufnr, function(fname, _)
+				return fname:match('%.sln[x]?$') ~= nil
+			end)
+
+			if not root_dir then
+				-- try find projects root
+				root_dir = vim.fs.root(bufnr, function(fname, _)
+					return fname:match('%.csproj$') ~= nil
+				end)
+			end
+
+			if root_dir then
+				cb(root_dir)
+			end
+		end
+	end,
+
+	on_init = {
+		function(client)
+			local root_dir = client.config.root_dir
+
+			-- try load first solution we find
+			for entry, type in vim.fs.dir(root_dir) do
+				if type == 'file' and (vim.endswith(entry, '.sln') or vim.endswith(entry, '.slnx')) then
+					on_init_sln(client, vim.fs.joinpath(root_dir, entry))
+					return
+				end
+			end
+
+			-- if no solution is found load project
+			for entry, type in vim.fs.dir(root_dir) do
+				if type == 'file' and vim.endswith(entry, '.csproj') then
+					on_init_project(client, { vim.fs.joinpath(root_dir, entry) })
+				end
+			end
+		end,
+	},
+
+	on_attach = function(client, bufnr)
+		-- avoid duplicate autocmds for same buffer
+		if vim.api.nvim_get_autocmds({ buffer = bufnr, group = roslyn_group })[1] then
+			return
+		end
+
+		vim.api.nvim_create_autocmd({ 'BufWritePost', 'InsertLeave' }, {
+			group = roslyn_group,
+			buffer = bufnr,
+			callback = function()
+				refresh_diagnostics(client)
+			end,
+			desc = 'roslyn_ls: refresh diagnostics',
+		})
+	end,
+
+	capabilities = {
+		-- HACK: Doesn't show any diagnostics if we do not set this to true
+		textDocument = {
+			diagnostic = {
+				dynamicRegistration = true,
+			},
+		},
+	},
+	settings = {
+		['csharp|background_analysis'] = {
+			dotnet_analyzer_diagnostics_scope = 'fullSolution',
+			dotnet_compiler_diagnostics_scope = 'fullSolution',
+		},
+		['csharp|inlay_hints'] = {
+			csharp_enable_inlay_hints_for_implicit_object_creation = true,
+			csharp_enable_inlay_hints_for_implicit_variable_types = true,
+			csharp_enable_inlay_hints_for_lambda_parameter_types = true,
+			csharp_enable_inlay_hints_for_types = true,
+			dotnet_enable_inlay_hints_for_indexer_parameters = true,
+			dotnet_enable_inlay_hints_for_literal_parameters = true,
+			dotnet_enable_inlay_hints_for_object_creation_parameters = true,
+			dotnet_enable_inlay_hints_for_other_parameters = true,
+			dotnet_enable_inlay_hints_for_parameters = true,
+			dotnet_suppress_inlay_hints_for_parameters_that_differ_only_by_suffix = true,
+			dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name = true,
+			dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent = true,
+		},
+		['csharp|symbol_search'] = {
+			dotnet_search_reference_assemblies = true,
+		},
+		['csharp|completion'] = {
+			dotnet_show_name_completion_suggestions = true,
+			dotnet_show_completion_items_from_unimported_namespaces = true,
+			dotnet_provide_regex_completions = true,
+		},
+		['csharp|code_lens'] = {
+			dotnet_enable_references_code_lens = true,
+		},
+	},
+}
+
+-- vim.lsp.enable'roslyn_ls'
+
+vim.lsp.config("roslyn", {
+	on_attach = function()
+		print("Roslyn attached")
+	end,
+	settings = {
+		["csharp|inlay_hints"] = {
+			csharp_enable_inlay_hints_for_implicit_object_creation = true,
+			csharp_enable_inlay_hints_for_implicit_variable_types = true,
+		},
+		["csharp|code_lens"] = {
+			dotnet_enable_references_code_lens = true,
+		},
+	},
+})
+vim.filetype.add({
+	extension = {
+		razor = "razor",
+		cshtml = "razor",
+	},
+})
 
 -- TS LS
 vim.lsp.config['ts_ls'] = {
@@ -138,7 +442,7 @@ vim.lsp.config['ts_ls'] = {
 	filetypes = { 'vue', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
 }
 
-vim.lsp.enable('ts_ls')
+vim.lsp.enable'ts_ls'
 -- clang
 
 vim.lsp.config['clang'] = {
@@ -146,7 +450,7 @@ vim.lsp.config['clang'] = {
 	filetypes = { 'c', 'h', 'cpp', 'cc', 'cxx', 'hpp', 'hh', 'hxx' }
 }
 
-vim.lsp.enable('clang')
+vim.lsp.enable'clang'
 
 -- GDScript LS
 local port = os.getenv 'GDScript_Port' or '6005'
@@ -496,24 +800,24 @@ func! File_manager() abort
 endfunc
 
 " vimwiki diary template
-autocmd BufNewFile ~/OneDrive/vimwiki/diary/[0-9\-]*.md :silent 0!echo "\#" %:t:r
+autocmd BufNewFile ~/OneDrive/vimwiki/diary/[0-9\-]*.md :silent 0!echo \# %:t:r
 autocmd BufNewFile ~/OneDrive/vimwiki/diary/[0-9\-]*.md :silent r ~/OneDrive/vimwiki/diary/template.md
 autocmd BufNewFile ~/OneDrive/vimwiki/diary/[0-9\-]*.md :norm jwv$
-autocmd BufNewFile ~/OneDrive/vimwiki/startups/[a-zA-Z0-9\-_]*.md :silent 0!echo "\#" %:t:r
+autocmd BufNewFile ~/OneDrive/vimwiki/startups/[a-zA-Z0-9\-_]*.md :silent 0!echo \# %:t:r
 autocmd BufNewFile ~/OneDrive/vimwiki/startups/[a-zA-Z0-9\-_]*.md :silent r ~/OneDrive/vimwiki/startups/template.md
-autocmd BufNewFile ~/OneDrive/vimwiki/year/[a-zA-Z0-9\-_]*.md :silent 0!echo "\#" AD %:t:r
+autocmd BufNewFile ~/OneDrive/vimwiki/year/[a-zA-Z0-9\-_]*.md :silent 0!echo \# AD %:t:r
 
 " vimwiki work template
-autocmd BufNewFile ~/OneDrive/work/diary/[0-9\-]*.md :silent 0!echo "\#" %:t:r
+autocmd BufNewFile ~/OneDrive/work/diary/[0-9\-]*.md :silent 0!echo \# %:t:r
 autocmd BufNewFile ~/OneDrive/work/diary/[0-9\-]*.md :silent r ~/OneDrive/work/diary/template.md
 
 " vimwiki entrepreneurship template
-autocmd BufNewFile ~/OneDrive/entrepreneurship/diary/[0-9\-]*.md :silent 0!echo "\#" %:t:r
+autocmd BufNewFile ~/OneDrive/entrepreneurship/diary/[0-9\-]*.md :silent 0!echo \# %:t:r
 autocmd BufNewFile ~/OneDrive/entrepreneurship/diary/[0-9\-]*.md :silent r ~/OneDrive/entrepreneurship/diary/template.md
 
 autocmd User TelescopePreviewerLoaded setlocal number
 
-autocmd BufEnter * lua if vim.bo.filetype == '' then vim.cmd'Startup | norm j' end
+autocmd BufEnter * lua if vim.bo.filetype == '' and vim.fn.argc() == 0 and vim.fn.line('$') == 1 and vim.fn.getline(1) == '' then vim.cmd'Startup | norm j' end
 
 autocmd InsertEnter * :set nohlsearch
 autocmd InsertLeave * :set hlsearch

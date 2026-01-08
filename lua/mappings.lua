@@ -16,6 +16,7 @@ maps.t['<S-Esc>'] = '<C-\\><C-n>'
 maps.t['<C-Backspace>'] = '<C-w>'
 maps.t['<C-S-v>'] = '<C-\\><C-n>"+pi'
 maps.t['<C-v>'] = '<C-\\><C-n>"+pi'
+maps.t['<Up>'] = 'i<Up>'
 
 maps.n['<C-Up>']     = '<C-y>'
 maps.n['<C-Down>']   = '<C-e>'
@@ -296,8 +297,8 @@ maps.n['<A-l>'] = '<Cmd>wincmd l<CR>'
 
 -- Barbar keybindings
 -- Move to previous/next
-maps.n['<A-,>'] = '<Cmd>BufferPrevious<CR>'
-maps.n['<A-.>'] = '<Cmd>BufferNext<CR>'
+-- maps.n['<A-,>'] = '<Cmd>BufferPrevious<CR>'
+-- maps.n['<A-.>'] = '<Cmd>BufferNext<CR>'
 maps.n['<A-Left>'] = '<Cmd>BufferPrevious<CR>'
 maps.n['<A-Right>'] = '<Cmd>BufferNext<CR>'
 -- Re-order to previous/next

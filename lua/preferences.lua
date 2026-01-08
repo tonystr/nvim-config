@@ -6,9 +6,9 @@ local term_buf_was_insert = true
 if vim.g.neovide then
 	vim.o.guifont='CaskaydiaCove Nerd Font:h11.8:#e-subpixelantialias'
 	-- vim.o.guifont='RecMonoLinear Nerd Font:h11.6:#e-subpixelantialias'
-	vim.api.nvim_set_hl(0, 'Normal', { bg = '#1f1f28' })
-	vim.g.neovide_refresh_rate = 90
-	vim.g.neovide_refresh_rate_idle = 90
+	-- vim.api.nvim_set_hl(0, 'Normal', { bg = '#1f1f28' })
+	vim.g.neovide_refresh_rate = 60
+	vim.g.neovide_refresh_rate_idle = 30
 	vim.g.neovide_remember_window_size = true
 	vim.g.neovide_confirm_quit = false
 	vim.g.neovide_floating_opacity = 1.0
@@ -58,7 +58,9 @@ if vim.g.neovide then
 				term_buf = vim.api.nvim_create_buf(false, true) -- no file, scratch buffer
 
 				vim.api.nvim_set_current_buf(term_buf)
-				vim.cmd.terminal'nu'
+				-- disable nushell
+				-- vim.cmd.terminal'nu'
+				vim.cmd.terminal'cmd'
 
 				-- Focus input
 				vim.cmd'norm i'
@@ -219,6 +221,23 @@ vim.api.nvim_create_autocmd({'BufWinLeave'}, {
 		end, 200)
 	end,
 })
+
+
+vim.keymap.set('n', '<A-,>', function()
+	vim.g.neovide_scroll_animation_length = 0.0
+	vim.cmd.BufferPrevious();
+	vim.defer_fn(function()
+		vim.g.neovide_scroll_animation_length = 0.14
+	end, 200)
+end)
+vim.keymap.set('n', '<A-.>', function()
+	vim.g.neovide_scroll_animation_length = 0.0
+	vim.cmd.BufferNext();
+	vim.defer_fn(function()
+		vim.g.neovide_scroll_animation_length = 0.14
+	end, 200)
+end)
+
 
 vim.api.nvim_create_autocmd({'BufWinEnter'}, {
 	pattern = '*',
