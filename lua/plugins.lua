@@ -600,6 +600,7 @@ require'lazy'.setup({
 		vim.keymap.set('n', '<leader>bD', function() gitsigns.diffthis('~') end)
 		vim.keymap.set('n', '<leader>td', gitsigns.toggle_deleted)
 		vim.keymap.set('n', '<leader>th', gitsigns.preview_hunk_inline)
+		vim.keymap.set('n', '<leader>hp', gitsigns.preview_hunk_inline)
 		vim.keymap.set('n', '<leader>hr', gitsigns.reset_hunk)
 		vim.keymap.set('v', '<leader>hr', function() gitsigns.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
 		vim.keymap.set('n', '<leader>hR', gitsigns.reset_buffer)
