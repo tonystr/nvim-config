@@ -254,8 +254,9 @@ vim.api.nvim_create_autocmd({'BufWinEnter'}, {
 vim.api.nvim_create_autocmd({'WinLeave'}, {
 	pattern = '*',
 	callback = function(args)
-		if 
+		if
 			vim.fn.bufname('%') ~= '' and
+			-- vim.fn.filetype('%') ~= 'NeogitLogView' and
 			vim.fn.filereadable(vim.fn.expand('%'))
 		then
 			vim.api.nvim_set_option_value('relativenumber', false, { win = args.win })
@@ -266,8 +267,9 @@ vim.api.nvim_create_autocmd({'WinLeave'}, {
 vim.api.nvim_create_autocmd({'WinEnter'}, {
 	pattern = '*',
 	callback = function(args)
-		if 
+		if
 			vim.fn.bufname('%') ~= '' and
+			-- vim.fn.filetype('%') ~= 'NeogitLogView' and
 			vim.fn.filereadable(vim.fn.expand('%'))
 		then
 			vim.api.nvim_set_option_value('relativenumber', true, { win = args.win })

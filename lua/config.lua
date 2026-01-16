@@ -33,9 +33,11 @@ vim.lsp.config('*', {
 
 local is_linux = vim.uv.os_uname().sysname == 'Linux'
 local vue_language_server_path = '/usr/lib/node_modules/@vue/language-server'
+local ghactions_language_server_path = '/usr/lib/node_modules/@actions/languageserver/bin/actions-languageserver'
 
 if not is_linux then
 	vue_language_server_path = 'C:\\Users\\tonys\\AppData\\Roaming\\npm\\node_modules\\@vue\\language-server'
+	ghactions_language_server_path = 'actions-languageserver'
 end
 
 local vue_plugin = {
@@ -105,6 +107,48 @@ vim.lsp.config['vue_ls'] = {
 
 vim.lsp.enable'vtsls'
 vim.lsp.enable'vue_ls'
+
+-- Github actions (yaml)
+vim.lsp.config['gh_actions_ls'] = {
+	cmd = { ghactions_language_server_path, '--stdio' },
+	filetypes = { 'yaml' },
+	-- root_dir = function(bufnr, on_dir)
+	-- 	local parent = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr))
+	-- 	if
+	-- 		vim.endswith(parent, '/.github/workflows')
+	-- 		or vim.endswith(parent, '/.forgejo/workflows')
+	-- 		or vim.endswith(parent, '/.gitea/workflows')
+	-- 	then
+	-- 		on_dir(parent)
+	-- 	end
+	-- end,
+	handlers = {
+		['actions/readFile'] = function(_, result)
+			if type(result.path) ~= 'string' then
+				return nil, nil
+			end
+			local file_path = vim.uri_to_fname(result.path)
+			if vim.fn.filereadable(file_path) == 1 then
+				local f = assert(io.open(file_path, 'r'))
+				local text = f:read('*a')
+				f:close()
+
+				return text, nil
+			end
+			return nil, nil
+		end,
+	},
+	init_options = {}, -- needs to be present https://github.com/neovim/nvim-lspconfig/pull/3713#issuecomment-2857394868
+	capabilities = {
+		workspace = {
+			didChangeWorkspaceFolders = {
+				dynamicRegistration = true,
+			},
+		},
+	},
+}
+
+vim.lsp.enable'gh_actions_ls'
 
 -- -- Omnisharp (C#)
 -- vim.lsp.config['omnisharp'] = {
@@ -701,6 +745,49 @@ vim.g.gitblame_message_when_not_tracked = ' Not tracked yet'
 vim.g.gitblame_message_when_no_repo = ' No git repository found'
 vim.g.gitblame_date_format = '%r'
 
+
+function get_all_buffer_paths()
+	local bufs = vim.api.nvim_list_bufs()
+	local paths = {}
+
+	for _, buf in ipairs(bufs) do
+		if vim.api.nvim_buf_is_loaded(buf)
+			and vim.bo[buf].buflisted
+			and vim.bo[buf].buftype == ""
+		then
+			local p = vim.api.nvim_buf_get_name(buf)
+			if p ~= "" then
+				table.insert(paths, p)
+			end
+		end
+	end
+
+	return paths
+end
+
+
+vim.api.nvim_create_user_command('Neovide', function()
+	local path = vim.fn.expand('%:p')
+	local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+
+	local jobargs = {
+		'neovide',
+		('+"call cursor(%d,%d)"'):format(row, col + 1),
+		path,
+	}
+
+	-- local paths = get_all_buffer_paths()
+	-- for	_, p in ipairs(paths) do
+	-- 	table.insert(jobargs, p)
+	-- end
+
+	vim.fn.jobstart(jobargs, { detach = true })
+
+	vim.defer_fn(function()
+		vim.cmd'quit'
+	end, 1000)
+end, { desc = 'Move current nvim instance to Neovide' })
+
 -- Rooting
 local root_names = { '.git', 'package.json', 'node_modules', 'yarn.lock', '.rootfile' }
 local root_cache = {}
@@ -736,7 +823,7 @@ end
 local root_augroup = vim.api.nvim_create_augroup('CustomAutoRoot', {})
 vim.api.nvim_create_autocmd('BufEnter', { group = root_augroup, callback = set_root })
 vim.api.nvim_create_user_command('RootToggle', toggle_rooting, { desc = 'Toggle auto-rooting on/off' })
-vim.api.nvim_create_user_command('RootDisable', function() 
+vim.api.nvim_create_user_command('RootDisable', function()
 	_G.autoroot_enabled = false
 	vim.api.nvim_echo({ { 'Auto-rooting disabled', 'WarningMsg' } }, false, {})
 end, { desc = 'Disable auto-rooting' })

@@ -41,6 +41,7 @@ maps.n['<leader>ng'] = '<cmd>Neogit<CR>'
 maps.n['<leader>nc'] = '<cmd>Neogit commit<CR>'
 maps.n['<leader>np'] = '<cmd>Neogit pull<CR>'
 maps.n['<leader>nP'] = '<cmd>Neogit push<CR>'
+maps.n['<leader>nl'] = '<cmd>NeogitLogCurrent<CR>'
 
 maps.n['digv'] = 'gvd'
 maps.n['yigv'] = 'gvy'
@@ -241,6 +242,12 @@ maps.n['<leader>gc'] = '<cmd>Telescope git_commits<cr>'
 maps.n['<leader>gC'] = '<cmd>Telescope git_bcommits<cr>' -- current buffer commits
 maps.n['<leader>gb'] = '<cmd>Telescope git_branches<cr>'
 maps.n['<leader>gB'] = '<cmd>GitBlameToggle<cr>'
+
+maps.n['<leader>co'] = '<cmd>GitConflictChooseOurs<cr>'
+maps.n['<leader>ct'] = '<cmd>GitConflictChooseTheirs<cr>'
+maps.n['<leader>cb'] = '<cmd>GitConflictChooseBoth<cr>'
+maps.n['<leader>cB'] = '<cmd>GitConflictChooseBase<cr>'
+maps.n['<leader>cn'] = '<cmd>GitConflictChooseNone<cr>'
 
 vim.cmd'command Push Dispatch! git push'
 vim.cmd'command Pull Dispatch! git pull'

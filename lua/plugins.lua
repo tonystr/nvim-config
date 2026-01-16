@@ -613,6 +613,16 @@ require'lazy'.setup({
 		end
 	},
 	{
+		'akinsho/git-conflict.nvim',
+		version = "*",
+		config = {
+			highlights = { -- They must have background color, otherwise the default color will be used
+				incoming = 'DiffAdd',
+				current = 'DiffText',
+			}
+		}
+	},
+	{
 		'tpope/vim-fugitive',
 		cmd = { 'G', 'Gwrite', 'Git', 'Gdiffsplit', 'Gvdiffsplit' },
 		dependencies = { 'tpope/vim-rhubarb' }
@@ -623,9 +633,14 @@ require'lazy'.setup({
 		dependencies = {
 			'nvim-lua/plenary.nvim',
 			'sindrets/diffview.nvim',
-			'nvim-telescope/telescope.nvim', 
+			'nvim-telescope/telescope.nvim',
 		},
 		config = true
+		-- config = {
+		-- 	integrations = {
+		-- 		diffview = true
+		-- 	}
+		-- }
 	},
 	{ 'lewis6991/gitsigns.nvim', event = 'VeryLazy', config = function()
 		local gitsigns = require'gitsigns'
@@ -664,7 +679,15 @@ require'lazy'.setup({
 				},
 			},
 		},
-		cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewToggleFiles', 'DiffviewFileHistory', 'DiffviewFocusFiles', 'DiffviewLog', 'DiffviewRefresh', },
+		cmd = {
+			'DiffviewOpen',
+			'DiffviewClose',
+			'DiffviewToggleFiles',
+			'DiffviewFileHistory',
+			'DiffviewFocusFiles',
+			'DiffviewLog',
+			'DiffviewRefresh',
+		},
 	},
 	{
 		'rbong/vim-flog',
