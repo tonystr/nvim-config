@@ -572,10 +572,15 @@ require'lazy'.setup({
 		end
 	},
 	{
-		'tpope/vim-fugitive',
-		cmd = { 'G', 'Gwrite', 'Git', 'Gdiffsplit', 'Gvdiffsplit' },
+		dir = '~/git/vim-fugitive',
+		-- cmd = { 'G', 'Gwrite', 'Git', 'Gdiffsplit', 'Gvdiffsplit', 'Gedit', 'Gclog' },
 		dependencies = { 'tpope/vim-rhubarb' }
 	},
+	-- {
+	-- 	'tpope/vim-fugitive',
+	-- 	-- cmd = { 'G', 'Gwrite', 'Git', 'Gdiffsplit', 'Gvdiffsplit', 'Gedit', 'Gclog' },
+	-- 	dependencies = { 'tpope/vim-rhubarb' }
+	-- },
 	{
 		'NeogitOrg/neogit',
 		cmd = { 'Neogit', 'NeogitCommit', 'NeogitResetState', 'NeogitLogCurrent' },
