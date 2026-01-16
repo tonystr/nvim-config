@@ -594,12 +594,27 @@ require'lazy'.setup({
 		}
 		vim.keymap.set('n', '<leader>bl', function() gitsigns.blame() end)
 		vim.keymap.set('n', '<leader>bL', function() gitsigns.blame_line{ full = true } end)
-		vim.keymap.set('n', ']c', gitsigns.next_hunk)
-		vim.keymap.set('n', '[c', gitsigns.prev_hunk)
+
+		vim.keymap.set('n', ']c', function() gitsigns.nav_hunk('next', { target = 'all' }) end)
+		vim.keymap.set('n', '[c', function() gitsigns.nav_hunk('prev', { target = 'all' }) end)
+		vim.keymap.set('n', ']C', function() gitsigns.nav_hunk('last', { target = 'all' }) end)
+		vim.keymap.set('n', '[C', function() gitsigns.nav_hunk('first', { target = 'all' }) end)
+		vim.keymap.set('n', ']h', function() gitsigns.nav_hunk('next', { target = 'staged' }) end)
+		vim.keymap.set('n', '[h', function() gitsigns.nav_hunk('prev', { target = 'staged' }) end)
+		vim.keymap.set('n', ']H', function() gitsigns.nav_hunk('last', { target = 'staged' }) end)
+		vim.keymap.set('n', '[H', function() gitsigns.nav_hunk('first', { target = 'staged' }) end)
+		vim.keymap.set('n', ']u', function() gitsigns.nav_hunk('next', { target = 'unstaged' }) end)
+		vim.keymap.set('n', '[u', function() gitsigns.nav_hunk('prev', { target = 'unstaged' }) end)
+		vim.keymap.set('n', ']U', function() gitsigns.nav_hunk('last', { target = 'unstaged' }) end)
+		vim.keymap.set('n', '[U', function() gitsigns.nav_hunk('first', { target = 'unstaged' }) end)
+
 		vim.keymap.set('n', '<leader>bh', gitsigns.preview_hunk)
 		vim.keymap.set('n', '<leader>bd', gitsigns.diffthis)
 		vim.keymap.set('n', '<leader>bD', function() gitsigns.diffthis('~') end)
+		vim.keymap.set('n', '<leader>hd', gitsigns.diffthis)
+		vim.keymap.set('n', '<leader>hD', function() gitsigns.diffthis('~') end)
 		vim.keymap.set('n', '<leader>td', gitsigns.toggle_deleted)
+		vim.keymap.set('n', '<leader>tw', gitsigns.toggle_word_diff)
 		vim.keymap.set('n', '<leader>th', gitsigns.preview_hunk_inline)
 		vim.keymap.set('n', '<leader>hp', gitsigns.preview_hunk_inline)
 		vim.keymap.set('n', '<leader>hr', gitsigns.reset_hunk)
@@ -609,6 +624,8 @@ require'lazy'.setup({
 		vim.keymap.set('v', '<leader>hs', function() gitsigns.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
 		vim.keymap.set('n', '<leader>hS', gitsigns.stage_buffer)
 		vim.keymap.set('n', '<leader>hu', gitsigns.undo_stage_hunk)
+		vim.keymap.set('n', '<leader>hq', gitsigns.setqflist)
+		vim.keymap.set('n', '<leader>hQ', function() gitsigns.setqflist('all') end)
 	end },
 	{
 		'f-person/git-blame.nvim',
