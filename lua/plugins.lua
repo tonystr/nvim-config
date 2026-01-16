@@ -1,4 +1,5 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+---@diagnostic disable-next-line: undefined-field
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({
 		"git",
@@ -293,7 +294,7 @@ require'lazy'.setup({
 				ignore_install = { "markdown" }, -- F U Markdown developer!! it doesn't work
 				highlight = {
 					enable = true,
-					disable = function(lang, buf)
+					disable = function(_, buf)
 						local max_filesize = 1000 * 1024 -- 1000 KB
 						local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
 						if ok and stats and stats.size > max_filesize then
@@ -581,7 +582,7 @@ require'lazy'.setup({
 		dependencies = {
 			'nvim-lua/plenary.nvim',
 			'sindrets/diffview.nvim',
-			'nvim-telescope/telescope.nvim', 
+			'nvim-telescope/telescope.nvim',
 		},
 		config = true
 	},
@@ -634,7 +635,6 @@ require'lazy'.setup({
 			vim.g.flog_enable_dynamic_branch_hl = true
 			vim.g.flog_enable_extended_chars = false
 			vim.g.flog_enable_extra_padding = false
-			
 			vim.g.flog_permanent_default_opts = {
 				format = '%d %s  %an', -- %ad for date
 			}
