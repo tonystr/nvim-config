@@ -614,15 +614,36 @@ require'lazy'.setup({
 		end
 	},
 	{
-		'akinsho/git-conflict.nvim',
-		version = "*",
-		config = {
-			highlights = { -- They must have background color, otherwise the default color will be used
-				incoming = 'DiffAdd',
-				current = 'DiffText',
+		'tronikelis/conflict-marker.nvim',
+		lazy = false,
+		config = function()
+			require'conflict-marker'.setup{
+				on_attach = function(conflict)
+					local MID = '^=======$'
+					vim.keymap.set('n', '[x', function()
+						vim.cmd('?' .. MID)
+					end, { buffer = conflict.bufnr })
+					vim.keymap.set('n', ']x', function()
+						vim.cmd('/' .. MID)
+					end, { buffer = conflict.bufnr })
+					vim.keymap.set('n', 'co', function() conflict:choose_ours() end)
+					vim.keymap.set('n', 'ct', function() conflict:choose_theirs() end)
+					vim.keymap.set('n', 'cb', function() conflict:choose_both() end)
+					vim.keymap.set('n', 'cN', function() conflict:choose_none() end)
+				end
 			}
-		}
+		end
 	},
+	-- {
+	-- 	'akinsho/git-conflict.nvim',
+	-- 	version = "*",
+	-- 	config = {
+	-- 		highlights = { -- They must have background color, otherwise the default color will be used
+	-- 			incoming = 'DiffAdd',
+	-- 			current = 'DiffText',
+	-- 		}
+	-- 	}
+	-- },
 	{
 		'tpope/vim-fugitive',
 		cmd = { 'G', 'Gwrite', 'Git', 'Gdiffsplit', 'Gvdiffsplit' },
