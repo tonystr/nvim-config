@@ -632,6 +632,14 @@ require'lazy'.setup({
 					vim.keymap.set('n', 'cN', function() conflict:choose_none() end)
 				end
 			}
+
+			vim.api.nvim_set_hl(0, 'ConflictTheirs',       { bg = '#192e26' })
+			vim.api.nvim_set_hl(0, 'ConflictTheirsMarker', { bg = '#203a30', fg = '#89bb99' })
+			vim.api.nvim_set_hl(0, 'ConflictMid',          { bg = '#373a40', fg = '#a3a4aa' })
+			vim.api.nvim_set_hl(0, 'ConflictBase',         { bg = '#2a2a32' })
+			vim.api.nvim_set_hl(0, 'ConflictBaseMarker',   { bg = '#373a40', fg = '#a3a4aa' })
+			vim.api.nvim_set_hl(0, 'ConflictOurs',         { bg = '#252a55' })
+			vim.api.nvim_set_hl(0, 'ConflictOursMarker',   { bg = '#2a3760', fg = '#8490ea' })
 		end
 	},
 	-- {
