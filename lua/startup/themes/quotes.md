@@ -36,3 +36,6 @@ I have loved justice and hated iniquity; therefore, I die in exile.
 
 Slow is smooth, smooth is fast.
 	- Navy Seals
+	
+The best security for the fidelity of men is to make interest coincide with duty.
+	- Alexander Hamilton

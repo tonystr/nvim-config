@@ -239,11 +239,21 @@ vim.keymap.set('n', '<A-.>', function()
 end)
 
 
+local excluded_files = { 'fugitive', 'git', '', 'neo-tree' }
+function table.contains(table, string)
+	for _, value in ipairs(table) do
+		if value == string then
+			return true
+		end
+	end
+	return false
+end
 vim.api.nvim_create_autocmd({'BufWinEnter'}, {
 	pattern = '*',
-	callback = function(_)
+	callback = function(args)
 		if
 			vim.fn.bufname('%') ~= '' and
+			not table.contains(excluded_files, vim.api.nvim_get_option_value('filetype', { buf = args.buf })) and
 			vim.fn.filereadable(vim.fn.expand('%'))
 		then
 			local success, err = pcall(function() vim.cmd('silent loadview') end)

@@ -98,6 +98,8 @@ maps.n['<leader>br'] = '<cmd>echo "test"<CR>'
 maps.o['{'] = 'V{'
 maps.o['}'] = 'V}'
 maps.n['<leader>G'] = '<cmd>Git<CR>';
+maps.n['<leader>gg'] = '<cmd>Git<CR>';
+maps.n['<M-g>'] = '<cmd>Git<CR>';
 
 maps.n['<leader>cc'] = function () require'tinygit'.smartCommit() end
 -- maps.n['<leader>gp'] = function () require'tinygit'.push() end
@@ -166,8 +168,8 @@ maps.n['[L'] = '<cmd>llast<CR>';
 -- Repeat over multiple lines
 maps.v['.'] = { ':norm .<CR>', noremap = true }
 
-maps.n['zR'] = function() require'ufo'.openAllFolds() end
-maps.n['zM'] = function() require'ufo'.closeAllFolds() end
+-- maps.n['zR'] = function() require'ufo'.openAllFolds() end
+-- maps.n['zM'] = function() require'ufo'.closeAllFolds() end
 
 -- Vue navigation
 
