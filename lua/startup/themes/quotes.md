@@ -34,6 +34,9 @@ We know that for a fact? Yes. Because? Because the alternative is unthinkable.
 I have loved justice and hated iniquity; therefore, I die in exile.
 	- Pope Gregory VII, 1085
 
+Slow is smooth, smooth is fast.
+	- Navy Seals
+	
 The best security for the fidelity of men is to make interest coincide with duty.
 	- Alexander Hamilton
 

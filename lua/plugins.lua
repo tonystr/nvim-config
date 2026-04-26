@@ -27,7 +27,14 @@ require'lazy'.setup({
 			vim.cmd'colors kanagawa'
 
 			if not vim.g.neovide then
-				vim.api.nvim_set_hl(0, 'Normal', { ctermbg='none', bg='none' })
+				vim.api.nvim_set_hl(0, 'Normal', { fg='#dcd7ba', ctermbg='none', bg='none' })
+			else
+				vim.api.nvim_set_hl(0, 'Normal', { fg='#dcd7ba', ctermbg='none', bg='#131315' })
+	
+				vim.g.neovide_title_background_color = string.format(
+					"%x",
+					vim.api.nvim_get_hl(0, {id=vim.api.nvim_get_hl_id_by_name("Normal")}).bg
+				)
 			end
 		end,
 		priority = 1000,
@@ -446,7 +453,12 @@ require'lazy'.setup({
 			-- vim.g.user_emmet_leader_key = '<C-z>'
 		end,
 	},
-	{ 'vimwiki/vimwiki', keys = { '<leader>w' }, cmd = { 'VimwikiMakeDiaryNote' } },
+	{
+		'vimwiki/vimwiki',
+		keys = { '<leader>w' },
+		ft = { 'markdown', 'vimwiki', 'vimwiki_markdown_custom' },
+		cmd = { 'VimwikiMakeDiaryNote' },
+	},
 
 	-- Lsp
 	-- {
@@ -454,7 +466,16 @@ require'lazy'.setup({
 	-- 	version = '^5', -- Recommended
 	-- 	lazy = false, -- This plugin is already lazy
 	-- },
-	{ -- NOTE: I don't really use this? I just use Telescope diagnostics
+	-- {
+	-- 	"williamboman/mason.nvim",
+	-- 	opts = {
+	-- 		registries = {
+	-- 			"github:mason-org/mason-registry",
+	-- 			"github:Crashdummyy/mason-registry",
+	-- 		},
+	-- 	},
+	-- },
+	{
 		'folke/trouble.nvim',
 		cmd = { 'Trouble', 'TroubleToggle' },
 		opts = { use_diagnostic_signs = true }
@@ -468,6 +489,27 @@ require'lazy'.setup({
 			large_file_cutoff = 2000,
 		}
 	end },
+	{
+		'seblyng/roslyn.nvim',
+		---@module 'roslyn.config'
+		---@type RoslynNvimConfig
+		opts = {},
+		-- config = function()
+		-- 	local cmd = {
+		-- 		"roslyn",
+		-- 		"--stdio",
+		-- 		"--logLevel=Information",
+		-- 		"--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
+		-- 		"--razorSourceGenerator=" .. vim.fs.joinpath(rzls_path, "Microsoft.CodeAnalysis.Razor.Compiler.dll"),
+		-- 		"--razorDesignTimePath="
+		-- 			.. vim.fs.joinpath(rzls_path, "Targets", "Microsoft.NET.Sdk.Razor.DesignTime.targets"),
+		-- 		"--extension=" .. vim.fs.joinpath(rzls_path, "Microsoft.VisualStudioCode.RazorExtension.dll"),
+		-- 	}
+		-- 	vim.lsp.config("roslyn", {
+		-- 		cmd = cmd,
+		-- 	})
+		-- end
+	},
 	-- {
 	-- 	'Bekaboo/dropbar.nvim',
 	-- 	event = "VeryLazy",
@@ -572,6 +614,50 @@ require'lazy'.setup({
 			}
 		end
 	},
+	{
+		'tpope/vim-fugitive',
+		cmd = { 'G', 'Gwrite', 'Git', 'Gdiffsplit', 'Gvdiffsplit' },
+		dependencies = { 'tpope/vim-rhubarb' }
+	},
+	{
+		'tronikelis/conflict-marker.nvim',
+		lazy = false,
+		config = function()
+			require'conflict-marker'.setup{
+				on_attach = function(conflict)
+					local MID = '^=======$'
+					vim.keymap.set('n', '[x', function()
+						vim.cmd('?' .. MID)
+					end, { buffer = conflict.bufnr })
+					vim.keymap.set('n', ']x', function()
+						vim.cmd('/' .. MID)
+					end, { buffer = conflict.bufnr })
+					vim.keymap.set('n', 'co', function() conflict:choose_ours() end)
+					vim.keymap.set('n', 'ct', function() conflict:choose_theirs() end)
+					vim.keymap.set('n', 'cb', function() conflict:choose_both() end)
+					vim.keymap.set('n', 'cN', function() conflict:choose_none() end)
+				end
+			}
+
+			vim.api.nvim_set_hl(0, 'ConflictTheirs',       { bg = '#192e26' })
+			vim.api.nvim_set_hl(0, 'ConflictTheirsMarker', { bg = '#203a30', fg = '#89bb99' })
+			vim.api.nvim_set_hl(0, 'ConflictMid',          { bg = '#373a40', fg = '#a3a4aa' })
+			vim.api.nvim_set_hl(0, 'ConflictBase',         { bg = '#2a2a32' })
+			vim.api.nvim_set_hl(0, 'ConflictBaseMarker',   { bg = '#373a40', fg = '#a3a4aa' })
+			vim.api.nvim_set_hl(0, 'ConflictOurs',         { bg = '#252a55' })
+			vim.api.nvim_set_hl(0, 'ConflictOursMarker',   { bg = '#2a3760', fg = '#8490ea' })
+		end
+	},
+	-- {
+	-- 	'akinsho/git-conflict.nvim',
+	-- 	version = "*",
+	-- 	config = {
+	-- 		highlights = { -- They must have background color, otherwise the default color will be used
+	-- 			incoming = 'DiffAdd',
+	-- 			current = 'DiffText',
+	-- 		}
+	-- 	}
+	-- },
 	-- {
 	-- 	dir = '~/git/vim-fugitive',
 	-- 	-- cmd = { 'G', 'Gwrite', 'Git', 'Gdiffsplit', 'Gvdiffsplit', 'Gedit', 'Gclog' },
@@ -591,6 +677,11 @@ require'lazy'.setup({
 			'nvim-telescope/telescope.nvim',
 		},
 		config = true
+		-- config = {
+		-- 	integrations = {
+		-- 		diffview = true
+		-- 	}
+		-- }
 	},
 	{ 'lewis6991/gitsigns.nvim', event = 'VeryLazy', config = function()
 		local gitsigns = require'gitsigns'
@@ -647,7 +738,15 @@ require'lazy'.setup({
 				},
 			},
 		},
-		cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewToggleFiles', 'DiffviewFileHistory', 'DiffviewFocusFiles', 'DiffviewLog', 'DiffviewRefresh', },
+		cmd = {
+			'DiffviewOpen',
+			'DiffviewClose',
+			'DiffviewToggleFiles',
+			'DiffviewFileHistory',
+			'DiffviewFocusFiles',
+			'DiffviewLog',
+			'DiffviewRefresh',
+		},
 	},
 	{
 		'rbong/vim-flog',
@@ -1014,8 +1113,22 @@ require'lazy'.setup({
 						}
 					},
 					lualine_y = {
-						'branch',
-						{ 'diff', symbols = { added = ' ', modified = '柳', removed = ' ' } }
+						{ 'b:gitsigns_head', icon = '' },
+						-- Default diff is super slow on CORP pc
+						{
+							'diff',
+							symbols = { added = ' ', modified = '柳', removed = ' ' },
+							source = function()
+								local gitsigns = vim.b.gitsigns_status_dict
+								if gitsigns then
+									return {
+										added = gitsigns.added,
+										modified = gitsigns.changed,
+										removed = gitsigns.removed
+									}
+								end
+							end
+						}
 					},
 					lualine_z = {},
 				},
@@ -1037,12 +1150,13 @@ require'lazy'.setup({
 			end
 		end
 	},
-	-- NOTE: use :Telescope keymaps instead
+	-- -- NOTE: use :Telescope keymaps instead
 	-- { 'folke/which-key.nvim', cmd = 'WhichKey' },
 }, {
 	install = {
 		colorscheme = { 'kanagawa' }
-	}
+	},
+	concurrency = 4,
 })
 
 -- Below you'll find the land of the lost

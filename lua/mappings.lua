@@ -16,6 +16,7 @@ maps.t['<S-Esc>'] = '<C-\\><C-n>'
 maps.t['<C-Backspace>'] = '<C-w>'
 maps.t['<C-S-v>'] = '<C-\\><C-n>"+pi'
 maps.t['<C-v>'] = '<C-\\><C-n>"+pi'
+maps.t['<Up>'] = 'i<Up>'
 
 maps.n['<C-Up>']     = '<C-y>'
 maps.n['<C-Down>']   = '<C-e>'
@@ -40,6 +41,7 @@ maps.n['<leader>ng'] = '<cmd>Neogit<CR>'
 maps.n['<leader>nc'] = '<cmd>Neogit commit<CR>'
 maps.n['<leader>np'] = '<cmd>Neogit pull<CR>'
 maps.n['<leader>nP'] = '<cmd>Neogit push<CR>'
+maps.n['<leader>nl'] = '<cmd>NeogitLogCurrent<CR>'
 
 maps.n['digv'] = 'gvd'
 maps.n['yigv'] = 'gvy'
@@ -243,6 +245,15 @@ maps.n['<leader>gC'] = '<cmd>Telescope git_bcommits<cr>' -- current buffer commi
 maps.n['<leader>gb'] = '<cmd>Telescope git_branches<cr>'
 maps.n['<leader>gB'] = '<cmd>GitBlameToggle<cr>'
 
+maps.n['<leader>co'] = '<cmd>GitConflictChooseOurs<cr>'
+maps.n['<leader>ct'] = '<cmd>GitConflictChooseTheirs<cr>'
+maps.n['<leader>cb'] = '<cmd>GitConflictChooseBoth<cr>'
+maps.n['<leader>cB'] = '<cmd>GitConflictChooseBase<cr>'
+maps.n['<leader>cN'] = '<cmd>GitConflictChooseNone<cr>'
+maps.n['<leader>c]'] = '<cmd>GitConflictNextConflict<cr>'
+maps.n['<leader>c['] = '<cmd>GitConflictPrevConflict<cr>'
+maps.n['<leader>cq'] = '<cmd>GitConflictListQf<cr>'
+
 vim.cmd'command Push Dispatch! git push'
 vim.cmd'command Pull Dispatch! git pull'
 vim.cmd'command -nargs=1 Cam Dispatch! git cam <f-args>'
@@ -298,8 +309,8 @@ maps.n['<A-l>'] = '<Cmd>wincmd l<CR>'
 
 -- Barbar keybindings
 -- Move to previous/next
-maps.n['<A-,>'] = '<Cmd>BufferPrevious<CR>'
-maps.n['<A-.>'] = '<Cmd>BufferNext<CR>'
+-- maps.n['<A-,>'] = '<Cmd>BufferPrevious<CR>'
+-- maps.n['<A-.>'] = '<Cmd>BufferNext<CR>'
 maps.n['<A-Left>'] = '<Cmd>BufferPrevious<CR>'
 maps.n['<A-Right>'] = '<Cmd>BufferNext<CR>'
 -- Re-order to previous/next
