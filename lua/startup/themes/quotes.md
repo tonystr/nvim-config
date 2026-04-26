@@ -36,3 +36,6 @@ I have loved justice and hated iniquity; therefore, I die in exile.
 
 The best security for the fidelity of men is to make interest coincide with duty.
 	- Alexander Hamilton
+
+When you stand before god, you cannot say "But I was told by others to do thus". This will not suffice.
+    - Baldwin IV, Kingdom of Heaven

@@ -432,7 +432,7 @@ end
 local root_augroup = vim.api.nvim_create_augroup('CustomAutoRoot', {})
 vim.api.nvim_create_autocmd('BufEnter', { group = root_augroup, callback = set_root })
 vim.api.nvim_create_user_command('RootToggle', toggle_rooting, { desc = 'Toggle auto-rooting on/off' })
-vim.api.nvim_create_user_command('RootDisable', function() 
+vim.api.nvim_create_user_command('RootDisable', function()
 	_G.autoroot_enabled = false
 	vim.api.nvim_echo({ { 'Auto-rooting disabled', 'WarningMsg' } }, false, {})
 end, { desc = 'Disable auto-rooting' })

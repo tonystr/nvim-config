@@ -176,7 +176,7 @@ maps.n['<leader>M'] = '<cmd>silent! g/^<template/<CR>jzt<cmd>nohlsearch<CR>';
 maps.n['<leader>L'] = '<cmd>silent! g/^<style/<CR>jzt<cmd>nohlsearch<CR>';
 
 -- treesj splitjoin
-maps.n['<Enter>'] = function() require'treesj'.toggle() end
+-- maps.n['<Enter>'] = function() require'treesj'.toggle() end
 -- maps.n['gS'] = function() require'treesj'.split() end
 -- maps.n['gJ'] = function() require'treesj'.join() end
 
