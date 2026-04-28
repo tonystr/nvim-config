@@ -45,7 +45,7 @@ return {
 			colors = { theme = { all = { ui = { bg_gutter = 'none' }}}},
 			overrides = require'kanagawa-colors'
 		},
-		config = function()
+		config = function(_, opts)
 			require'kanagawa'.setup(opts)
 			vim.cmd'colorscheme kanagawa'
 
