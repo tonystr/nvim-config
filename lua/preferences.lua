@@ -99,24 +99,14 @@ vim.g.flog_permanent_default_opts = {
 -- vim.opt.statuscolumn = "%s%{foldlevel(v:lnum) <= foldlevel(v:lnum-1) ? ' ' : (foldclosed(v:lnum) == -1 ? '' : '')} %{v:relnum ? v:relnum : v:lnum} "
 
 local _border = "rounded"
-
--- 0.11+: a single global border for all floating windows (hover, signature help,
--- diagnostics, completion docs, etc). Replaces the deprecated vim.lsp.with()
--- handler-wrapping approach.
 vim.o.winborder = _border
-
-vim.diagnostic.config{
+vim.diagnostic.config {
 	float = { border = _border }
 }
 
 -- globals
 vim.g.mapleader = ' '
-vim.g.python3_host_prog = '~/AppData/Local/Programs/Python/Python37-32/python.EXE'
 vim.g.lsp_diagnostics_echo_cursor = 1
--- vim.g.indent_blankline_char_blankline = ':'
--- vim.g.indent_blankline_show_first_indent_level = false
-vim.g.indent_blankline_show_trailing_blankline_indent = false
-vim.g.polyglot_disabled = { 'vue' }
 vim.g.vimwiki_list = {
 	{ path = '~/OneDrive/vimwiki/',          syntax = 'markdown', ext = '.md' },
 	{ path = '~/OneDrive/work/',             syntax = 'markdown', ext = '.md' },

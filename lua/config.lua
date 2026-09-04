@@ -32,11 +32,20 @@ vim.lsp.config('*', {
 -- https://github.com/neovim/nvim-lspconfig/blob/master/lsp/vtsls.lua
 
 local is_linux = vim.uv.os_uname().sysname == 'Linux'
-local vue_language_server_path = '/usr/lib/node_modules/@vue/language-server'
+
+-- Resolve npm's global module dir at runtime so this works regardless of how
+-- Node is installed (system, nvm-windows, etc). nvm installs globals under the
+-- *active* version's dir (e.g. C:\nvm4w\nodejs\node_modules), NOT %APPDATA%\npm.
+local npm_global_root = vim.trim(vim.fn.system('npm root -g'))
+if vim.v.shell_error ~= 0 or npm_global_root == '' then
+	npm_global_root = is_linux and '/usr/lib/node_modules'
+		or (vim.env.APPDATA .. '\\npm\\node_modules')
+end
+
+local vue_language_server_path = npm_global_root .. (is_linux and '/' or '\\') .. '@vue/language-server'
 local ghactions_language_server_path = '/usr/lib/node_modules/@actions/languageserver/bin/actions-languageserver'
 
 if not is_linux then
-	vue_language_server_path = 'C:\\Users\\tonys\\AppData\\Roaming\\npm\\node_modules\\@vue\\language-server'
 	ghactions_language_server_path = 'actions-languageserver'
 end
 
@@ -71,7 +80,7 @@ vim.lsp.config['vtsls'] = {
 }
 
 vim.lsp.config['vue_ls'] = {
-	cmd = { 'vue-language-server', '--stdio' },
+	cmd = { vue_language_server_path, '--stdio' },
 	filetypes = { 'vue' },
 	root_markers = { 'package.json' },
 	on_init = function(client)
@@ -107,115 +116,6 @@ vim.lsp.config['vue_ls'] = {
 
 vim.lsp.enable'vtsls'
 vim.lsp.enable'vue_ls'
-
--- Github actions (yaml)
-vim.lsp.config['gh_actions_ls'] = {
-	cmd = { ghactions_language_server_path, '--stdio' },
-	filetypes = { 'yaml' },
-	-- root_dir = function(bufnr, on_dir)
-	-- 	local parent = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr))
-	-- 	if
-	-- 		vim.endswith(parent, '/.github/workflows')
-	-- 		or vim.endswith(parent, '/.forgejo/workflows')
-	-- 		or vim.endswith(parent, '/.gitea/workflows')
-	-- 	then
-	-- 		on_dir(parent)
-	-- 	end
-	-- end,
-	handlers = {
-		['actions/readFile'] = function(_, result)
-			if type(result.path) ~= 'string' then
-				return nil, nil
-			end
-			local file_path = vim.uri_to_fname(result.path)
-			if vim.fn.filereadable(file_path) == 1 then
-				local f = assert(io.open(file_path, 'r'))
-				local text = f:read('*a')
-				f:close()
-
-				return text, nil
-			end
-			return nil, nil
-		end,
-	},
-	init_options = {}, -- needs to be present https://github.com/neovim/nvim-lspconfig/pull/3713#issuecomment-2857394868
-	capabilities = {
-		workspace = {
-			didChangeWorkspaceFolders = {
-				dynamicRegistration = true,
-			},
-		},
-	},
-}
-
-vim.lsp.enable'gh_actions_ls'
-
--- -- Omnisharp (C#)
--- vim.lsp.config['omnisharp'] = {
--- 	cmd = {
--- 		'omnisharp',
--- 		'-z',
--- 		'--hostPID',
--- 		tostring(vim.fn.getpid()),
--- 		'DotNet:enablePackageRestore=false',
--- 		'--encoding',
--- 		'utf-8',
--- 		'--languageserver',
--- 	},
--- 	filetypes = { 'cs', 'vb' },
--- 	root_markers = { '*.sln', '*.csproj', 'omnisharp.json', 'function.json', '.git' },
--- 	capabilities = {
--- 		workspace = {
--- 			workspaceFolders = false, -- https://github.com/OmniSharp/omnisharp-roslyn/issues/909
--- 		},
--- 	},
--- 	settings = {
--- 		FormattingOptions = {
--- 			-- Enables support for reading code style, naming convention and analyzer
--- 			-- settings from .editorconfig.
--- 			EnableEditorConfigSupport = true,
--- 			-- Specifies whether 'using' directives should be grouped and sorted during
--- 			-- document formatting.
--- 			OrganizeImports = nil,
--- 		},
--- 		MsBuild = {
--- 			-- If true, MSBuild project system will only load projects for files that
--- 			-- were opened in the editor. This setting is useful for big C# codebases
--- 			-- and allows for faster initialization of code navigation features only
--- 			-- for projects that are relevant to code that is being edited. With this
--- 			-- setting enabled OmniSharp may load fewer projects and may thus display
--- 			-- incomplete reference lists for symbols.
--- 			LoadProjectsOnDemand = nil,
--- 		},
--- 		RoslynExtensionsOptions = {
--- 			-- Enables support for roslyn analyzers, code fixes and rulesets.
--- 			EnableAnalyzersSupport = nil,
--- 			-- Enables support for showing unimported types and unimported extension
--- 			-- methods in completion lists. When committed, the appropriate using
--- 			-- directive will be added at the top of the current file. This option can
--- 			-- have a negative impact on initial completion responsiveness,
--- 			-- particularly for the first few completion sessions after opening a
--- 			-- solution.
--- 			EnableImportCompletion = nil,
--- 			-- Only run analyzers against open files when 'enableRoslynAnalyzers' is
--- 			-- true
--- 			AnalyzeOpenDocumentsOnly = nil,
--- 			-- Enables the possibility to see the code in external nuget dependencies
--- 			EnableDecompilationSupport = nil,
--- 		},
--- 		RenameOptions = {
--- 			RenameInComments = nil,
--- 			RenameOverloads = nil,
--- 			RenameInStrings = nil,
--- 		},
--- 		Sdk = {
--- 			-- Specifies whether to include preview versions of the .NET SDK when
--- 			-- determining which version to use for project loading.
--- 			IncludePrereleases = true,
--- 		},
--- 	},
--- }
--- vim.lsp.enable'omnisharp'
 
 -- Lua LS
 vim.lsp.config['lua_ls'] = {
