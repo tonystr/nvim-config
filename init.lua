@@ -14,6 +14,12 @@ vim.env.STARTUPTHEME  = config_path .. '/lua/startup/themes/my_theme.lua'
 vim.env.VIMWIKICONFIG = config_path .. '/ftplugin/vimwiki.vim'
 vim.env.QUOTES        = config_path .. '/lua/startup/themes/quotes.md'
 
+-- spring-boot.nvim's launcher falls back to bare 'java' on PATH (Corretto 11 here)
+-- when JAVA_HOME is unset, and always passes -XX:+UseZGC, which JDK 11 rejects
+-- without -XX:+UnlockExperimentalVMOptions. Point JAVA_HOME at the JDK nvim-java
+-- already downloads, scoped to this process only (doesn't touch shell/system env).
+vim.env.JAVA_HOME = vim.fn.stdpath'data' .. '/nvim-java/packages/openjdk/25/jdk-25.0.4.1'
+
 require'preferences'
 
 require'mappings'

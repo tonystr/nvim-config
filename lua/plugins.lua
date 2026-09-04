@@ -1,6 +1,5 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
----@diagnostic disable-next-line: undefined-field
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
 	vim.fn.system({
 		"git",
 		"clone",
@@ -285,93 +284,74 @@ require'lazy'.setup({
 			},
 		},
 	},
-	{
-		'mistweaverco/kulala.nvim',
-		keys = {
-			{ '<leader>Rs', desc = 'Send request' },
-			{ '<leader>Ra', desc = 'Send all requests' },
-			{ '<leader>Rb', desc = 'Open scratchpad' },
-		},
-		ft = {'http', 'rest', 'javascript', 'lua'},
-		opts = {
-			global_keymaps = true,
-			global_keymaps_prefix = '<leader>R',
-			kulala_keymaps_prefix = '',
-			disable_news_popup = true,
-			response_format = {
-				indent = 2,
-			},
-			contenttypes = {
-				["xml"] = {
-					ft = "xml",
-					formatter = vim.fn.executable("xmllint") == 1 and { "xmllint", "--format", "-" },
-					pathresolver = vim.fn.executable("xmllint") == 1 and { "xmllint", "--xpath", "{{path}}", "-" },
-				},
-			},
-			lsp = {
-				keymaps = true
-			}
-		},
-	},
+	-- {
+	-- 	'mistweaverco/kulala.nvim',
+	-- 	keys = {
+	-- 		{ '<leader>Rs', desc = 'Send request' },
+	-- 		{ '<leader>Ra', desc = 'Send all requests' },
+	-- 		{ '<leader>Rb', desc = 'Open scratchpad' },
+	-- 	},
+	-- 	ft = {'http', 'rest', 'javascript', 'lua'},
+	-- 	opts = {
+	-- 		global_keymaps = true,
+	-- 		global_keymaps_prefix = '<leader>R',
+	-- 		kulala_keymaps_prefix = '',
+	-- 		disable_news_popup = true,
+	-- 		response_format = {
+	-- 			indent = 2,
+	-- 		},
+	-- 		contenttypes = {
+	-- 			["xml"] = {
+	-- 				ft = "xml",
+	-- 				formatter = vim.fn.executable("xmllint") == 1 and { "xmllint", "--format", "-" },
+	-- 				pathresolver = vim.fn.executable("xmllint") == 1 and { "xmllint", "--xpath", "{{path}}", "-" },
+	-- 			},
+	-- 		},
+	-- 		lsp = {
+	-- 			keymaps = true
+	-- 		}
+	-- 	},
+	-- },
 	{
 		'nvim-treesitter/nvim-treesitter',
-		branch = 'master',
+		branch = 'main',
 		-- event = 'VeryLazy',
 		lazy = false,
 		build = ':TSUpdate',
 		config = function ()
-			local tsi = require'nvim-treesitter.install'
-			tsi.compilers = { 'zig', 'clang', 'gcc' }
-			tsi.prefer_git = false
+			require'nvim-treesitter'.setup {}
 
-			require'nvim-treesitter.configs'.setup {
-				ensure_installed = {},
-				sync_install = false,
-				auto_install = true,
-				ignore_install = { "markdown" }, -- F U Markdown developer!! it doesn't work
-				highlight = {
-					enable = true,
-					disable = function(_, buf)
-						local max_filesize = 1000 * 1024 -- 1000 KB
-						local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-						if ok and stats and stats.size > max_filesize then
-							return true
-						end
-					end,
-					additional_vim_regex_highlighting = false,
-				},
-				indent = {
-					enable = true,
-				},
-				incremental_selection = {
-					enable = true,
-					keymaps = {
-						init_selection = '<C-n>',
-						node_incremental = '<C-n>',
-						scope_incremental = '<C-m>',
-						node_decremental = '<C-r>',
-					},
-				},
-			}
+			-- main branch no longer enables highlighting via setup(); it must be
+			-- started per-buffer (skips buffers whose parser isn't installed)
+			local max_filesize = 1000 * 1024 -- 1000 KB
+			vim.api.nvim_create_autocmd('FileType', {
+				callback = function(args)
+					local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(args.buf))
+					if ok and stats and stats.size > max_filesize then
+						return
+					end
+					pcall(vim.treesitter.start, args.buf)
+				end,
+			})
 
 			vim.api.nvim_set_hl(0, '@text.uri.vue', { underline = false })
 		end
 	},
-	{
-		'nvim-treesitter/nvim-treesitter-context',
-		event = 'VeryLazy',
-		-- cmd = { 'TSContextEnable', 'TSContextToggle', 'TSContextDisable' },
-		-- keys = { { '<leader>tc', function() require'nvim-treesitter-context'.toggle() end } },
-		config = function()
-			vim.keymap.set('n', '[C', function()
-				require'treesitter-context'.go_to_context(vim.v.count1)
-			end, { silent = true })
-			vim.keymap.set('n', '<leader>tc', function() require'treesitter-context'.toggle() end);
-			require'treesitter-context'.setup {
-				enable = false,
-			}
-		end
-	},
+	-- {
+	-- 	'nvim-treesitter/nvim-treesitter-context',
+	-- 	event = 'VeryLazy',
+	-- 	-- cmd = { 'TSContextEnable', 'TSContextToggle', 'TSContextDisable' },
+	-- 	-- keys = { { '<leader>tc', function() require'nvim-treesitter-context'.toggle() end } },
+	-- 	config = function()
+	-- 		vim.keymap.set('n', '[C', function()
+	-- 			require'treesitter-context'.go_to_context(vim.v.count1)
+	-- 		end, { silent = true })
+	-- 		vim.keymap.set('n', '<leader>tc', function() require'treesitter-context'.toggle() end);
+	-- 		require'treesitter-context'.setup {
+	-- 			enable = false,
+	-- 		}
+	-- 	end
+	-- },
 	{
 		'numToStr/Comment.nvim',
 		keys = { 'gc', 'gb', { 'gc', mode = 'x' }, { 'gb', mode = 'x' } },
@@ -410,7 +390,6 @@ require'lazy'.setup({
 	-- 	event = { 'BufReadPost', 'BufNewFile' },
 	-- 	opts = { show_current_context = true },
 	-- },
-	-- Fascinating...
 	{
 		'lukas-reineke/indent-blankline.nvim',
 		main = 'ibl',
@@ -491,20 +470,6 @@ require'lazy'.setup({
 	},
 
 	-- Lsp
-	-- {
-	-- 	'mrcjkb/rustaceanvim',
-	-- 	version = '^5', -- Recommended
-	-- 	lazy = false, -- This plugin is already lazy
-	-- },
-	-- {
-	-- 	"williamboman/mason.nvim",
-	-- 	opts = {
-	-- 		registries = {
-	-- 			"github:mason-org/mason-registry",
-	-- 			"github:Crashdummyy/mason-registry",
-	-- 		},
-	-- 	},
-	-- },
 	{
 		'folke/trouble.nvim',
 		cmd = { 'Trouble', 'TroubleToggle' },
@@ -521,8 +486,6 @@ require'lazy'.setup({
 	end },
 	{
 		'seblyng/roslyn.nvim',
-		---@module 'roslyn.config'
-		---@type RoslynNvimConfig
 		opts = {},
 		-- config = function()
 		-- 	local cmd = {
@@ -540,47 +503,13 @@ require'lazy'.setup({
 		-- 	})
 		-- end
 	},
-	-- {
-	-- 	'Bekaboo/dropbar.nvim',
-	-- 	event = "VeryLazy",
-	-- 	-- dependencies = {
-	-- 	-- 	'nvim-telescope/telescope-fzf-native.nvim',
-	-- 	-- 	build = 'make'
-	-- 	-- },
-	-- 	opts = {
-	-- 		bar = {
-	-- 			sources = function(buf, _)
-	-- 				local sources = require('dropbar.sources')
-	-- 				local utils = require('dropbar.utils')
-	-- 				if vim.bo[buf].ft == 'markdown' then
-	-- 					return {
-	-- 						sources.path,
-	-- 						sources.markdown,
-	-- 					}
-	-- 				end
-	-- 				if vim.bo[buf].buftype == 'terminal' then
-	-- 					return {
-	-- 						sources.terminal,
-	-- 					}
-	-- 				end
-	-- 				return {
-	-- 					-- sources.path,
-	-- 					utils.source.fallback({
-	-- 						sources.lsp,
-	-- 						sources.treesitter,
-	-- 					}),
-	-- 				}
-	-- 			end,
-	-- 		}
-	-- 	},
-	-- 	config = function(_, opts)
-	-- 		require'dropbar'.setup(opts)
-	-- 		local dropbar_api = require('dropbar.api')
-	-- 		vim.keymap.set('n', '<Leader>;', dropbar_api.pick, { desc = 'Pick symbols in winbar' })
-	-- 		vim.keymap.set('n', '[;', dropbar_api.goto_context_start, { desc = 'Go to start of current context' })
-	-- 		vim.keymap.set('n', '];', dropbar_api.select_next_context, { desc = 'Select next context' })
-	-- 	end
-	-- },
+	{
+		'nvim-java/nvim-java',
+		config = function()
+			require'java'.setup()
+			vim.lsp.enable'jdtls'
+		end
+	},
 	{ 'rafamadriz/friendly-snippets', lazy = true },
 	{
 		'L3MON4D3/LuaSnip',
@@ -971,19 +900,19 @@ require'lazy'.setup({
 	-- 		add_mappings = true, -- add <tab> mapping automatically
 	-- 	}
 	-- },
-	{
-		'luckasRanarison/nvim-devdocs',
-		dependencies = {
-			'nvim-lua/plenary.nvim',
-			'nvim-telescope/telescope.nvim',
-			'nvim-treesitter/nvim-treesitter',
-		},
-		keys = { {
-			'<leader>od',
-			'<cmd>DevdocsOpen<CR>'
-		} },
-		opts = {}
-	},
+	-- {
+	-- 	'luckasRanarison/nvim-devdocs',
+	-- 	dependencies = {
+	-- 		'nvim-lua/plenary.nvim',
+	-- 		'nvim-telescope/telescope.nvim',
+	-- 		'nvim-treesitter/nvim-treesitter',
+	-- 	},
+	-- 	keys = { {
+	-- 		'<leader>od',
+	-- 		'<cmd>DevdocsOpen<CR>'
+	-- 	} },
+	-- 	opts = {}
+	-- },
 	{
 		'debugloop/telescope-undo.nvim',
 		keys = { { '<leader>fu', '<cmd>Telescope undo<CR>' } },
@@ -1186,7 +1115,7 @@ require'lazy'.setup({
 	install = {
 		colorscheme = { 'kanagawa' }
 	},
-	concurrency = 4,
+	concurrency = 8,
 })
 
 -- Below you'll find the land of the lost
