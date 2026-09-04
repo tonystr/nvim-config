@@ -12,6 +12,7 @@ return function(colors)
 		['@string.regex'] = { fg = theme.syn.special1 },
 		['@property.class.scss'] = { fg = theme.syn.type },
 		['@property.class.css'] = { fg = theme.syn.type },
+		['@braces.rust'] = { fg = theme.syn.type },
 		['@type.scss'] = { fg = theme.syn.special1 },
 		['@type.css'] = { fg = theme.syn.special1 },
 		['@string.unit.scss'] = { fg = theme.syn.type },

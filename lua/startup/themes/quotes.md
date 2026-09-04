@@ -42,3 +42,6 @@ The best security for the fidelity of men is to make interest coincide with duty
 
 When you stand before god, you cannot say "But I was told by others to do thus". This will not suffice.
     - Baldwin IV, Kingdom of Heaven
+
+All models are wrong, but some are useful
+	- George E. P. Box

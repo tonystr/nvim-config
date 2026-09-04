@@ -220,7 +220,24 @@ maps.n['<leader>fb'] = '<cmd>Telescope buffers<cr>'
 maps.n['<leader>fh'] = '<cmd>Telescope help_tags<cr>'
 maps.n['<leader>fr'] = '<cmd>Telescope registers<cr>'
 maps.n['<leader>fs'] = '<cmd>Telescope spell_suggest<cr>'
-maps.n['z='] = '<cmd>Telescope spell_suggest<cr>'
+-- maps.n['z='] = '<cmd>Telescope spell_suggest<cr>'
+
+local function spell_suggest()
+	local count = vim.v.count
+	if count == 0 then
+		vim.cmd'Telescope spell_suggest'
+	else
+		-- Fall back to default behavior (e.g., 1z=, 2z=, etc.)
+		vim.cmd('normal! ' .. count .. 'z=')
+	end
+end
+
+vim.keymap.set('n', 'z=', spell_suggest, {
+	noremap = true,
+	silent = true,
+	expr = false,
+})
+
 maps.n['<leader>fd'] = '<cmd>Telescope diagnostics<cr>'
 maps.n['<leader>fu'] = '<cmd>Telescope undo<cr>'
 maps.n['<leader>gr'] = '<cmd>Telescope repo list<cr>'
@@ -337,6 +354,7 @@ maps.n['<A-S-o>'] = '<C-w>o<Cmd>BufferCloseAllButCurrent<CR>'
 maps.n['<A-e>'] = '<Cmd>BufferDelete #<CR>'
 maps.n['<A-r>'] = '<Cmd>BufferRestore<CR>'
 maps.n['<A-s>'] = '<C-w>s'
+maps.n['<C-w>M'] = '<C-w>_<C-w>|<CR>'
 
 maps.n['<F11>'] = function()
 	if vim.g.neovide_fullscreen then

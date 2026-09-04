@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<GetServicesResponse xmlns="http://schemas.ferrygateway.org/1.1.0" Mode="OnBoard OnBoardMeal OnBoardAccommodations Land">
+  <Context AgentAccountNumber="GB1033" Currency="NOK" ExternalBookingReference="62550202-f436-410d-a33d-02aeeec43f38" OriginatingSystem="TestClientDev" TimeStamp="2026-09-02T10:32:48.015+02:00" TransactionId="e7ec625c-09db-4540-98a7-5baa0e2415ea"/>
+  <Request>
+    <GetServicesRequest Mode="OnBoard OnBoardMeal OnBoardAccommodations Land">
+      <Context AgentAccountNumber="GB1033" Currency="NOK" ExternalBookingReference="62550202-f436-410d-a33d-02aeeec43f38" OriginatingSystem="TestClientDev" TimeStamp="2018-09-03T12:16:18+02:00" TransactionId="e7ec625c-09db-4540-98a7-5baa0e2415ea"/>
+      <Passengers>
+        <Passenger Category="Adult" Id="1"/>
+        <Passenger Category="Adult" Id="2"/>
+        <Passenger Category="Child" Id="3" SubCategory="Child"/>
+      </Passengers>
+      <Pets/>
+      <Vehicles/>
+      <FerryComponent>
+        <Sailings>
+          <Sailing AllPassengers="false" AllPets="false" AllVehicles="false" Id="KRSHIR201809260800">
+            <PassengerRefs>
+              <Ref Id="1"/>
+              <Ref Id="2"/>
+              <Ref Id="3"/>
+            </PassengerRefs>
+            <PetRefs/>
+            <VehicleRefs/>
+            <SailingInfo DepartDateTime="2018-09-26T08:00:00+02:00" DepartPort="NOKRS" DestinationPort="DKHIR" OperatorCode="COLOR"/>
+            <FareDetails FareType="EC"/>
+            <Services>
+              <OnBoardAccommodationServices>
+                <OnBoardAccommodationService Code="DS" Quantity="1">
+                  <PassengerRefs>
+                    <Ref Id="1"/>
+                  </PassengerRefs>
+                </OnBoardAccommodationService>
+                <OnBoardAccommodationService Code="DS" Quantity="1">
+                  <PassengerRefs>
+                    <Ref Id="2"/>
+                  </PassengerRefs>
+                </OnBoardAccommodationService>
+                <OnBoardAccommodationService Code="DS" Quantity="1">
+                  <PassengerRefs>
+                    <Ref Id="3"/>
+                  </PassengerRefs>
+                </OnBoardAccommodationService>
+              </OnBoardAccommodationServices>
+              <OnBoardMealServices/>
+              <OnBoardServices/>
+              <LandServices/>
+            </Services>
+          </Sailing>
+          <Sailing AllPassengers="false" AllPets="false" AllVehicles="false" Id="HIRKRS201810012045">
+            <PassengerRefs>
+              <Ref Id="1"/>
+              <Ref Id="2"/>
+              <Ref Id="3"/>
+            </PassengerRefs>
+            <PetRefs/>
+            <VehicleRefs/>
+            <SailingInfo DepartDateTime="2018-10-01T20:45:00+02:00" DepartPort="DKHIR" DestinationPort="NOKRS" OperatorCode="COLOR"/>
+            <FareDetails FareType="EC"/>
+            <Services>
+              <OnBoardAccommodationServices>
+                <OnBoardAccommodationService Code="DS" Quantity="1">
+                  <PassengerRefs>
+                    <Ref Id="1"/>
+                  </PassengerRefs>
+                </OnBoardAccommodationService>
+                <OnBoardAccommodationService Code="DS" Quantity="1">
+                  <PassengerRefs>
+                    <Ref Id="2"/>
+                  </PassengerRefs>
+                </OnBoardAccommodationService>
+                <OnBoardAccommodationService Code="DS" Quantity="1">
+                  <PassengerRefs>
+                    <Ref Id="3"/>
+                  </PassengerRefs>
+                </OnBoardAccommodationService>
+              </OnBoardAccommodationServices>
+              <OnBoardMealServices/>
+              <OnBoardServices/>
+              <LandServices/>
+            </Services>
+          </Sailing>
+        </Sailings>
+      </FerryComponent>
+    </GetServicesRequest>
+  </Request>
+  <Pets/>
+  <Passengers>
+    <Passenger Category="Adult" Id="1"/>
+    <Passenger Category="Adult" Id="2"/>
+    <Passenger Category="Child" Id="3" SubCategory="Child"/>
+  </Passengers>
+  <Vehicles/>
+  <FerryComponents>
+    <FerryComponent>
+      <Messages>
+        <Message Code="902" Description="Agreement EUR18 TO ND Group16% Dyn with id: 212 and description: Dynamic groupprice for touroperators 16%com. on ship product and 10% on other&#10;            products&#10;           (bucket F, subbucket F10-F01) was selected for agent GB1033." Severity="Information" xml:lang="en"/>
+        <Message Code="902" Description="If you don’t fill any contact details, the first passenger will automatically be selected as lead passenger. If you fill in a name of a passenger as contact details, this passenger will be selected as lead." Severity="Information" xml:lang="en"/>
+        <Message Code="902" Description="Non-accommodation services which are allocated on multiple passengers must be booked for all passengers or must not be booked at all." Severity="Information" xml:lang="en"/>
+      </Messages>
+      <OfferCode/>
+      <Sailings>
+        <Sailing AllPassengers="false" AllPets="false" AllVehicles="false" Id="KRSHIR201809260800" IsAvailable="true">
+          <PassengerRefs>
+            <Ref Id="1"/>
+            <Ref Id="2"/>
+            <Ref Id="3"/>
+          </PassengerRefs>
+          <PetRefs/>
+          <VehicleRefs/>
+          <SailingInfo ArriveDateTime="2018-09-26T11:15:00.000+02:00" DepartDateTime="2018-09-26T08:00:00.000+02:00" DepartPort="NOKRS" DepartPortName="Kristiansand" DestinationPort="DKHIR" DestinationPortName="Hirtshals" IsAccommodationMandatory="true" OperatorCode="COLOR"/>
+          <Ship IsFastCraft="false" ShipName="SuperSpeed 1">
+            <Medias/>
+          </Ship>
+          <FareDetails FareType="EC"/>
+          <Services>
+            <OnBoardAccommodationServices>
+              <OnBoardAccommodationService Category="Accommodation" Code="DS" Description="Reserved seat - " MaxOccupancy="1" MinOccupancy="1" Quantity="1" TotalCost="0">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="DS"/>
+                  <Media Priority="20" Type="text/plain" URI="Sitteplass"/>
+                  <Media Priority="21" Type="text/plain" URI="Ønsker du et fast sted å sitte under overfarten anbefaler vi deg å forhåndsbestille dette. Velg mellom komfortable flystoler eller plass i restaurant. Dersom buffet eller sitteplass ikke kommer opp som alternativ er det dessverre utsolgt. Det kan allikevel være ledig plass når du kommer om bord."/>
+                  <Media Priority="22" Type="image/jpeg" URI="/polopoly_fs/7.96121.1642858718!/image/2064001521.jpg"/>
+                  <Media Priority="23" Type="text/plain" URI="Sitteplasser i Voyager Class"/>
+                </Medias>
+                <PassengerRefs>
+                  <Ref Id="1"/>
+                </PassengerRefs>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Category="Accommodation" Code="DS" Description="Reserved seat - " MaxOccupancy="1" MinOccupancy="1" Quantity="1" TotalCost="0">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="DS"/>
+                  <Media Priority="20" Type="text/plain" URI="Sitteplass"/>
+                  <Media Priority="21" Type="text/plain" URI="Ønsker du et fast sted å sitte under overfarten anbefaler vi deg å forhåndsbestille dette. Velg mellom komfortable flystoler eller plass i restaurant. Dersom buffet eller sitteplass ikke kommer opp som alternativ er det dessverre utsolgt. Det kan allikevel være ledig plass når du kommer om bord."/>
+                  <Media Priority="22" Type="image/jpeg" URI="/polopoly_fs/7.96121.1642858718!/image/2064001521.jpg"/>
+                  <Media Priority="23" Type="text/plain" URI="Sitteplasser i Voyager Class"/>
+                </Medias>
+                <PassengerRefs>
+                  <Ref Id="2"/>
+                </PassengerRefs>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Category="Accommodation" Code="DS" Description="Reserved seat - " MaxOccupancy="1" MinOccupancy="1" Quantity="1" TotalCost="0">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="DS"/>
+                  <Media Priority="20" Type="text/plain" URI="Sitteplass"/>
+                  <Media Priority="21" Type="text/plain" URI="Ønsker du et fast sted å sitte under overfarten anbefaler vi deg å forhåndsbestille dette. Velg mellom komfortable flystoler eller plass i restaurant. Dersom buffet eller sitteplass ikke kommer opp som alternativ er det dessverre utsolgt. Det kan allikevel være ledig plass når du kommer om bord."/>
+                  <Media Priority="22" Type="image/jpeg" URI="/polopoly_fs/7.96121.1642858718!/image/2064001521.jpg"/>
+                  <Media Priority="23" Type="text/plain" URI="Sitteplasser i Voyager Class"/>
+                </Medias>
+                <PassengerRefs>
+                  <Ref Id="3"/>
+                </PassengerRefs>
+              </OnBoardAccommodationService>
+            </OnBoardAccommodationServices>
+            <OnBoardMealServices/>
+            <OnBoardServices/>
+            <LandServices/>
+          </Services>
+          <ServicesOptions>
+            <OnBoardAccommodationServices>
+              <OnBoardAccommodationService Category="Accommodation" Code="BC" Description="Reserved seat - " MaxOccupancy="1" MinOccupancy="1" QuantityAvailable="6" UnitCost="238">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="BC"/>
+                  <Media Priority="2" Type="text/plain" URI="Business Class"/>
+                  <Media Priority="3" Type="text/plain" URI="Len deg tilbake og nyt overfarten"/>
+                  <Media Priority="4" Type="text/plain" URI="Komfortable flystoler som kan reguleres til en behagelig hvilestilling.&amp;nbsp;Dagens aviser, tilgang til trådløst nett, kaffe, te, mineralvann og fersk frukt er inkludert.Se gratis tv og opptak av populære tv-program på din mobil, nettbrett eller PC. Alt du trenger å gjøre er å koble deg på nettet om bord (Color Business Class), og logge deg på med en kode du selv printer ut i Business Class eller får utlevert i resepsjonen.Sitteplassen beholder du under hele overfarten."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 8"/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.95992.1642848158!/image/442255709.jpg"/>
+                  <Media Priority="7" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.95993.1642848950!/image/3506477816.jpg"/>
+                  <Media Priority="7" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.95994.1642848969!/image/434115976.jpg"/>
+                  <Media Priority="7" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.95995.1642848937!/image/1663059688.jpg"/>
+                  <Media Priority="8" Type="text/plain" URI="Jan 25, 2018 1:51:23 PM"/>
+                  <Media Priority="9" Type="text/plain" URI="Jan 25, 2049 12:00:00 AM"/>
+                </Medias>
+                <PassengerRefs/>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Category="Accommodation" Code="CC-XE-KN6UWTLBYKSMMM" Description="Reserved seat - &#10;Breakfast buffet&#10;served in the Catch Me If You Can - Restaurant. You keep your&#10;          seat during the entire voyage. Cannot be refunden on board.&#10;        &#10;Catch Me If You Can is the right place to be tempted by the sight&#10;          and aromas of known and new dishes. You'll find everything from high-quality Norwegian&#10;          seafood and exotic tastes from different continents. There is also a separate Captain Kid&#10;          - buffet for children. Every season has a different theme, and the content of the buffet&#10;          differs accordingly. Soft drinks, milk, juice, coffee and tee are included. Beer and wine&#10;          are included on all sailings between Norway and Danmark after 1200 Hrs.&#10;        &#10;2018-09-23 08:00:00" MaxOccupancy="1" MinOccupancy="1" QuantityAvailable="6" UnitCost="149">
+                <Medias/>
+                <PassengerRefs/>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Category="Accommodation" Code="DS" Description="Reserved seat - " MaxOccupancy="1" MinOccupancy="1" QuantityAvailable="3" UnitCost="0">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="DS"/>
+                  <Media Priority="20" Type="text/plain" URI="Sitteplass"/>
+                  <Media Priority="21" Type="text/plain" URI="Ønsker du et fast sted å sitte under overfarten anbefaler vi deg å forhåndsbestille dette. Velg mellom komfortable flystoler eller plass i restaurant. Dersom buffet eller sitteplass ikke kommer opp som alternativ er det dessverre utsolgt. Det kan allikevel være ledig plass når du kommer om bord."/>
+                  <Media Priority="22" Type="image/jpeg" URI="/polopoly_fs/7.96121.1642858718!/image/2064001521.jpg"/>
+                  <Media Priority="23" Type="text/plain" URI="Sitteplasser i Voyager Class"/>
+                </Medias>
+                <PassengerRefs/>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Category="Accommodation" Code="VC" Description="Reserved seat - " MaxOccupancy="1" MinOccupancy="1" QuantityAvailable="6" UnitCost="42">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="VC"/>
+                  <Media Priority="2" Type="text/plain" URI="Voyager Class"/>
+                  <Media Priority="3" Type="text/plain" URI="Komfortable seter"/>
+                  <Media Priority="4" Type="text/plain" URI="Voyager Class ligger på dekk 9, og har gode flystoler som kan reguleres til en behagelig hvilestilling. Her kan du slappe av og nyte overfarten.Sitteplassen beholder du under hele overfarten."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 9"/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.106317.1642848166!/image/2854053040.jpg"/>
+                  <Media Priority="7" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.106318.1642848939!/image/230021918.jpg"/>
+                  <Media Priority="8" Type="text/plain" URI="Jan 25, 2018 1:53:53 PM"/>
+                  <Media Priority="9" Type="text/plain" URI="Jan 25, 2049 12:00:00 AM"/>
+                </Medias>
+                <PassengerRefs/>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Category="Accommodation" Code="VCH" Description="Reserved seat - " MaxOccupancy="1" MinOccupancy="1" QuantityAvailable="6" UnitCost="0">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="VCH"/>
+                  <Media Priority="2" Type="text/plain" URI="Plass til Rullestol i Voyager Class"/>
+                  <Media Priority="3" Type="text/plain" URI="Slapp av og nyt seilingen"/>
+                  <Media Priority="4" Type="text/plain" URI="Her kan du slappe av og nyte overfarten. Sitteplassen beholder du under hele overfarten."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 9"/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.95997.1642848112!/image/2207706432.jpg"/>
+                  <Media Priority="8" Type="text/plain" URI="Jan 25, 2018 1:54:35 PM"/>
+                  <Media Priority="9" Type="text/plain" URI="Jan 25, 2049 12:00:00 AM"/>
+                </Medias>
+                <PassengerRefs/>
+              </OnBoardAccommodationService>
+            </OnBoardAccommodationServices>
+            <OnBoardMealServices/>
+            <OnBoardServices/>
+            <LandServices/>
+          </ServicesOptions>
+        </Sailing>
+        <Sailing AllPassengers="false" AllPets="false" AllVehicles="false" Id="HIRKRS201810012045" IsAvailable="true">
+          <PassengerRefs>
+            <Ref Id="1"/>
+            <Ref Id="2"/>
+            <Ref Id="3"/>
+          </PassengerRefs>
+          <PetRefs/>
+          <VehicleRefs/>
+          <SailingInfo ArriveDateTime="2018-10-01T23:59:00.000+02:00" DepartDateTime="2018-10-01T20:45:00.000+02:00" DepartPort="DKHIR" DepartPortName="Hirtshals" DestinationPort="NOKRS" DestinationPortName="Kristiansand" IsAccommodationMandatory="true" OperatorCode="COLOR"/>
+          <Ship IsFastCraft="false" ShipName="SuperSpeed 1">
+            <Medias/>
+          </Ship>
+          <FareDetails FareType="EC"/>
+          <Services>
+            <OnBoardAccommodationServices>
+              <OnBoardAccommodationService Category="Accommodation" Code="DS" Description="Reserved seat - " MaxOccupancy="1" MinOccupancy="1" Quantity="1" TotalCost="0">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="DS"/>
+                  <Media Priority="20" Type="text/plain" URI="Sitteplass"/>
+                  <Media Priority="21" Type="text/plain" URI="Ønsker du et fast sted å sitte under overfarten anbefaler vi deg å forhåndsbestille dette. Velg mellom komfortable flystoler eller plass i restaurant. Dersom buffet eller sitteplass ikke kommer opp som alternativ er det dessverre utsolgt. Det kan allikevel være ledig plass når du kommer om bord."/>
+                  <Media Priority="22" Type="image/jpeg" URI="/polopoly_fs/7.96121.1642858718!/image/2064001521.jpg"/>
+                  <Media Priority="23" Type="text/plain" URI="Sitteplasser i Voyager Class"/>
+                </Medias>
+                <PassengerRefs>
+                  <Ref Id="1"/>
+                </PassengerRefs>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Category="Accommodation" Code="DS" Description="Reserved seat - " MaxOccupancy="1" MinOccupancy="1" Quantity="1" TotalCost="0">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="DS"/>
+                  <Media Priority="20" Type="text/plain" URI="Sitteplass"/>
+                  <Media Priority="21" Type="text/plain" URI="Ønsker du et fast sted å sitte under overfarten anbefaler vi deg å forhåndsbestille dette. Velg mellom komfortable flystoler eller plass i restaurant. Dersom buffet eller sitteplass ikke kommer opp som alternativ er det dessverre utsolgt. Det kan allikevel være ledig plass når du kommer om bord."/>
+                  <Media Priority="22" Type="image/jpeg" URI="/polopoly_fs/7.96121.1642858718!/image/2064001521.jpg"/>
+                  <Media Priority="23" Type="text/plain" URI="Sitteplasser i Voyager Class"/>
+                </Medias>
+                <PassengerRefs>
+                  <Ref Id="2"/>
+                </PassengerRefs>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Category="Accommodation" Code="DS" Description="Reserved seat - " MaxOccupancy="1" MinOccupancy="1" Quantity="1" TotalCost="0">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="DS"/>
+                  <Media Priority="20" Type="text/plain" URI="Sitteplass"/>
+                  <Media Priority="21" Type="text/plain" URI="Ønsker du et fast sted å sitte under overfarten anbefaler vi deg å forhåndsbestille dette. Velg mellom komfortable flystoler eller plass i restaurant. Dersom buffet eller sitteplass ikke kommer opp som alternativ er det dessverre utsolgt. Det kan allikevel være ledig plass når du kommer om bord."/>
+                  <Media Priority="22" Type="image/jpeg" URI="/polopoly_fs/7.96121.1642858718!/image/2064001521.jpg"/>
+                  <Media Priority="23" Type="text/plain" URI="Sitteplasser i Voyager Class"/>
+                </Medias>
+                <PassengerRefs>
+                  <Ref Id="3"/>
+                </PassengerRefs>
+              </OnBoardAccommodationService>
+            </OnBoardAccommodationServices>
+            <OnBoardMealServices/>
+            <OnBoardServices/>
+            <LandServices/>
+          </Services>
+          <ServicesOptions>
+            <OnBoardAccommodationServices>
+              <OnBoardAccommodationService Category="Accommodation" Code="BC" Description="Reserved seat - " MaxOccupancy="1" MinOccupancy="1" QuantityAvailable="6" UnitCost="238">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="BC"/>
+                  <Media Priority="2" Type="text/plain" URI="Business Class"/>
+                  <Media Priority="3" Type="text/plain" URI="Len deg tilbake og nyt overfarten"/>
+                  <Media Priority="4" Type="text/plain" URI="Komfortable flystoler som kan reguleres til en behagelig hvilestilling.&amp;nbsp;Dagens aviser, tilgang til trådløst nett, kaffe, te, mineralvann og fersk frukt er inkludert.Se gratis tv og opptak av populære tv-program på din mobil, nettbrett eller PC. Alt du trenger å gjøre er å koble deg på nettet om bord (Color Business Class), og logge deg på med en kode du selv printer ut i Business Class eller får utlevert i resepsjonen.Sitteplassen beholder du under hele overfarten."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 8"/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.95992.1642848158!/image/442255709.jpg"/>
+                  <Media Priority="7" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.95993.1642848950!/image/3506477816.jpg"/>
+                  <Media Priority="7" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.95994.1642848969!/image/434115976.jpg"/>
+                  <Media Priority="7" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.95995.1642848937!/image/1663059688.jpg"/>
+                  <Media Priority="8" Type="text/plain" URI="Jan 25, 2018 1:51:23 PM"/>
+                  <Media Priority="9" Type="text/plain" URI="Jan 25, 2049 12:00:00 AM"/>
+                </Medias>
+                <PassengerRefs/>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Category="Accommodation" Code="CC-XE-X2HXWTNRYK4DM9" Description="Reserved seat - &#10;Evening Buffet&#10;served in the Catch Me If You Can - Restaurant. You keep your&#10;          seat during the entire voyage. Cannot be refunden on board.&#10;        &#10;Catch Me If You Can is the right place to be tempted by the sight&#10;          and aromas of known and new dishes. You'll find everything from high-quality Norwegian&#10;          seafood and exotic tastes from different continents. There is also a separate Captain Kid&#10;          - buffet for children. Every season has a different theme, and the content of the buffet&#10;          differs accordingly. Soft drinks, milk, juice, coffee and tee are included. Beer and wine&#10;          are included on all sailings between Norway and Danmark after 1200 Hrs.&#10;        &#10;2018-09-24 16:30:00" MaxOccupancy="1" MinOccupancy="1" QuantityAvailable="6" UnitCost="299">
+                <Medias/>
+                <PassengerRefs/>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Category="Accommodation" Code="DS" Description="Reserved seat - " MaxOccupancy="1" MinOccupancy="1" QuantityAvailable="3" UnitCost="0">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="DS"/>
+                  <Media Priority="20" Type="text/plain" URI="Sitteplass"/>
+                  <Media Priority="21" Type="text/plain" URI="Ønsker du et fast sted å sitte under overfarten anbefaler vi deg å forhåndsbestille dette. Velg mellom komfortable flystoler eller plass i restaurant. Dersom buffet eller sitteplass ikke kommer opp som alternativ er det dessverre utsolgt. Det kan allikevel være ledig plass når du kommer om bord."/>
+                  <Media Priority="22" Type="image/jpeg" URI="/polopoly_fs/7.96121.1642858718!/image/2064001521.jpg"/>
+                  <Media Priority="23" Type="text/plain" URI="Sitteplasser i Voyager Class"/>
+                </Medias>
+                <PassengerRefs/>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Category="Accommodation" Code="VC" Description="Reserved seat - " MaxOccupancy="1" MinOccupancy="1" QuantityAvailable="6" UnitCost="42">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="VC"/>
+                  <Media Priority="2" Type="text/plain" URI="Voyager Class"/>
+                  <Media Priority="3" Type="text/plain" URI="Komfortable seter"/>
+                  <Media Priority="4" Type="text/plain" URI="Voyager Class ligger på dekk 9, og har gode flystoler som kan reguleres til en behagelig hvilestilling. Her kan du slappe av og nyte overfarten.Sitteplassen beholder du under hele overfarten."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 9"/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.106317.1642848166!/image/2854053040.jpg"/>
+                  <Media Priority="7" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.106318.1642848939!/image/230021918.jpg"/>
+                  <Media Priority="8" Type="text/plain" URI="Jan 25, 2018 1:53:53 PM"/>
+                  <Media Priority="9" Type="text/plain" URI="Jan 25, 2049 12:00:00 AM"/>
+                </Medias>
+                <PassengerRefs/>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Category="Accommodation" Code="VCH" Description="Reserved seat - " MaxOccupancy="1" MinOccupancy="1" QuantityAvailable="6" UnitCost="0">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="VCH"/>
+                  <Media Priority="2" Type="text/plain" URI="Plass til Rullestol i Voyager Class"/>
+                  <Media Priority="3" Type="text/plain" URI="Slapp av og nyt seilingen"/>
+                  <Media Priority="4" Type="text/plain" URI="Her kan du slappe av og nyte overfarten. Sitteplassen beholder du under hele overfarten."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 9"/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.95997.1642848112!/image/2207706432.jpg"/>
+                  <Media Priority="8" Type="text/plain" URI="Jan 25, 2018 1:54:35 PM"/>
+                  <Media Priority="9" Type="text/plain" URI="Jan 25, 2049 12:00:00 AM"/>
+                </Medias>
+                <PassengerRefs/>
+              </OnBoardAccommodationService>
+            </OnBoardAccommodationServices>
+            <OnBoardMealServices/>
+            <OnBoardServices/>
+            <LandServices/>
+          </ServicesOptions>
+        </Sailing>
+      </Sailings>
+      <Cost>
+        <CostDetails GrossAmount="595" SailingId="KRSHIR201809260800">
+          <CostDetail Category="Passenger" Label="CHD" Quantity="1" TotalAmount="119"/>
+          <CostDetail Category="Passenger" Label="ADT" Quantity="2" TotalAmount="476"/>
+          <CostDetail Category="OnBoardAccommodation" Label="DS" Quantity="1" TotalAmount="0"/>
+          <CostDetail Category="OnBoardAccommodation" Label="DS" Quantity="1" TotalAmount="0"/>
+          <CostDetail Category="OnBoardAccommodation" Label="DS" Quantity="1" TotalAmount="0"/>
+        </CostDetails>
+        <CostDetails GrossAmount="595" SailingId="HIRKRS201810012045">
+          <CostDetail Category="Passenger" Label="CHD" Quantity="1" TotalAmount="119"/>
+          <CostDetail Category="Passenger" Label="ADT" Quantity="2" TotalAmount="476"/>
+          <CostDetail Category="OnBoardAccommodation" Label="DS" Quantity="1" TotalAmount="0"/>
+          <CostDetail Category="OnBoardAccommodation" Label="DS" Quantity="1" TotalAmount="0"/>
+          <CostDetail Category="OnBoardAccommodation" Label="DS" Quantity="1" TotalAmount="0"/>
+        </CostDetails>
+      </Cost>
+    </FerryComponent>
+  </FerryComponents>
+  <Messages>
+    <Message Code="902" Description="Agreement EUR18 TO ND Group16% Dyn with id: 212 and description: Dynamic groupprice for touroperators 16%com. on ship product and 10% on other&#10;            products&#10;           (bucket F, subbucket F10-F01) was selected for agent GB1033." Severity="Information" xml:lang="en"/>
+    <Message Code="902" Description="If you don’t fill any contact details, the first passenger will automatically be selected as lead passenger. If you fill in a name of a passenger as contact details, this passenger will be selected as lead." Severity="Information" xml:lang="en"/>
+    <Message Code="902" Description="Non-accommodation services which are allocated on multiple passengers must be booked for all passengers or must not be booked at all." Severity="Information" xml:lang="en"/>
+  </Messages>
+</GetServicesResponse>

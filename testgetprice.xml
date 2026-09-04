@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<GetPriceResponse xmlns="http://schemas.ferrygateway.org/1.3.1">
+  <Context AgentAccountNumber="GB1033" Currency="NOK" ExternalBookingReference="145653d1-35a5-42ef-8dbc-8f93520bacf4" OriginatingSystem="TestClientDev" TimeStamp="2026-09-03T12:36:33.021+02:00" TransactionId="f86a69f0-6688-475f-ad4e-4c45c6c8b6d4"/>
+  <Request>
+    <GetPriceRequest>
+      <Context AgentAccountNumber="GB1033" Currency="NOK" ExternalBookingReference="145653d1-35a5-42ef-8dbc-8f93520bacf4" OriginatingSystem="TestClientDev" TimeStamp="2018-09-19T15:25:44+02:00" TransactionId="f86a69f0-6688-475f-ad4e-4c45c6c8b6d4"/>
+      <Passengers>
+        <Passenger Category="Adult" Id="1"/>
+        <Passenger Category="Adult" Id="2"/>
+      </Passengers>
+      <Pets/>
+      <Vehicles/>
+      <FerryComponent>
+        <OfferCode/>
+        <Sailings>
+          <Sailing AllPassengers="false" AllPets="false" AllVehicles="false" Id="OSLKEL201809281400">
+            <PassengerRefs>
+              <Ref Id="1"/>
+              <Ref Id="2"/>
+            </PassengerRefs>
+            <PetRefs/>
+            <VehicleRefs/>
+            <SailingInfo DepartDateTime="2018-09-28T14:00:00+02:00" DepartPort="NOOSL" DestinationPort="DEKEL" OperatorCode="COLOR"/>
+            <FareDetails FareType="EC"/>
+            <Services>
+              <OnBoardAccommodationServices>
+                <OnBoardAccommodationService Code="O72" Quantity="1">
+                  <PassengerRefs>
+                    <Ref Id="1"/>
+                    <Ref Id="2"/>
+                  </PassengerRefs>
+                </OnBoardAccommodationService>
+              </OnBoardAccommodationServices>
+              <OnBoardMealServices/>
+              <OnBoardServices/>
+              <LandServices/>
+            </Services>
+          </Sailing>
+        </Sailings>
+      </FerryComponent>
+    </GetPriceRequest>
+  </Request>
+  <Passengers>
+    <Passenger Category="Adult" Id="1"/>
+    <Passenger Category="Adult" Id="2"/>
+  </Passengers>
+  <Pets/>
+  <Vehicles/>
+  <FerryComponents>
+    <FerryComponent>
+      <Messages>
+        <Message Code="902" Description="Agreement EUR* TA/TO comm 10% with id: 4 and description: 10% standard agreementcommission. Dynamic prices. (bucket F, subbucket F10-F01) was selected for agent GB1033." Severity="Information" xml:lang="en"/>
+        <Message Code="902" Description="If you don’t fill any contact details, the first passenger will automatically be selected as lead passenger. If you fill in a name of a passenger as contact details, this passenger will be selected as lead." Severity="Information" xml:lang="en"/>
+        <Message Code="902" Description="Non-accommodation services which are allocated on multiple passengers must be booked for all passengers or must not be booked at all." Severity="Information" xml:lang="en"/>
+      </Messages>
+      <OfferCode/>
+      <Sailings>
+        <Sailing AllPassengers="false" AllPets="false" AllVehicles="false" Id="OSLKEL201809281400" IsAvailable="true">
+          <PassengerRefs>
+            <Ref Id="1"/>
+            <Ref Id="2"/>
+          </PassengerRefs>
+          <PetRefs/>
+          <VehicleRefs/>
+          <SailingInfo ArriveDateTime="2018-09-29T10:00:00.000+02:00" DepartDateTime="2018-09-28T14:00:00.000+02:00" DepartPort="NOOSL" DepartPortName="Oslo" DestinationPort="DEKEL" DestinationPortName="Kiel" IsAccommodationMandatory="true" OperatorCode="COLOR"/>
+          <Ship IsFastCraft="false" ShipName="Fantasy">
+            <Medias/>
+          </Ship>
+          <FareDetails FareType="EC"/>
+          <Services>
+            <OnBoardAccommodationServices>
+              <OnBoardAccommodationService Berths="2" Category="Accommodation" Code="O72" Description="Bed type: D" MaxOccupancy="2" MinOccupancy="2" Quantity="1" TotalCost="9150">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="O72"/>
+                  <Media Priority="2" Type="text/plain" URI="Rederlugar Owner's Suite"/>
+                  <Media Priority="3" Type="text/plain" URI="Skipets mest luksuriøse lugar på 35m². Spektakulær utsikt foran i skipet og separat soverom."/>
+                  <Media Priority="4" Type="text/plain" URI="Skipets mest luksuriøse lugarer, med separat soverom og eget oppholdsrom med både sofagruppe og spisebord med stoler. Spektakulær utsikt til havet foran skipet.Lugarene ligger uforstyrret i et eget område, hvor kun de som bor på 5-stjerners lugarer har adgang med nøkkelkort.&amp;nbsp;Nyt frokosten i Observation Club på dekk 15, med fantastisk utsikt.Reiser du uten bil får du tidlig ombordstigning fra kl 1100 og tilgang til VIP Lounge i Cosmpolitan/Manhattan Bar før avgang.I lugaren er det TV, PC-uttak, telefon, buksepresse, safe, bad med dusj og WC samt to badekåper til utlån."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 10 og 11.&lt;br /&gt;&amp;nbsp;"/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.97880.1642848148!/image/2057166297.jpg"/>
+                  <Media Priority="10" Type="text/plain" URI="Havutsikt"/>
+                  <Media Priority="11" Type="text/plain" URI="true"/>
+                  <Media Priority="12" Type="text/plain" URI="true"/>
+                  <Media Priority="13" Type="text/plain" URI="true"/>
+                  <Media Priority="14" Type="text/plain" URI="true"/>
+                  <Media Priority="15" Type="text/plain" URI="5"/>
+                  <Media Priority="16" Type="text/plain" URI="35.0"/>
+                  <Media Priority="17" Type="text/plain" URI="Lugaren har plass til barneseng. Det finnes et begrenset antall barnesenger til barn under 4 år som kan lånes gratis om bord."/>
+                </Medias>
+                <PassengerRefs>
+                  <Ref Id="1"/>
+                  <Ref Id="2"/>
+                </PassengerRefs>
+              </OnBoardAccommodationService>
+            </OnBoardAccommodationServices>
+            <OnBoardMealServices/>
+            <OnBoardServices/>
+            <LandServices/>
+          </Services>
+          <ServicesOptions>
+            <OnBoardAccommodationServices>
+              <OnBoardAccommodationService Berths="3" Category="Accommodation" Code="I31" Description="Bed type: D" MaxOccupancy="1" MinOccupancy="1" QuantityAvailable="2" UnitCost="3752">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="I31"/>
+                  <Media Priority="2" Type="text/plain" URI="Standard"/>
+                  <Media Priority="3" Type="text/plain" URI="Komfortabel lugar på 10,5m² med køyesenger."/>
+                  <Media Priority="4" Type="text/plain" URI="Komfortable&amp;nbsp;lugarer med køyesenger og et fint, lyst bad med dusj. Det er ikke vindu i lugarene, men et stort speil ved sengene gir en større romfølelse. I denne lugaren er det telefon og TV."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 8, 9, 10 og 11 (og dekk 5 på Color Magic)."/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.97858.1642848126!/image/3680602183.jpg"/>
+                  <Media Priority="10" Type="text/plain" URI="Innvendig"/>
+                  <Media Priority="11" Type="text/plain" URI="false"/>
+                  <Media Priority="12" Type="text/plain" URI="false"/>
+                  <Media Priority="13" Type="text/plain" URI="false"/>
+                  <Media Priority="14" Type="text/plain" URI="false"/>
+                  <Media Priority="15" Type="text/plain" URI="3"/>
+                  <Media Priority="16" Type="text/plain" URI="10.5"/>
+                  <Media Priority="17" Type="text/plain" URI="Lugaren har plass til barneseng. Det finnes et begrenset antall barnesenger til barn under 4 år som kan lånes gratis om bord."/>
+                </Medias>
+                <PassengerRefs/>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Berths="2" Category="Accommodation" Code="I31D" Description="Bed type: D" MaxOccupancy="1" MinOccupancy="1" QuantityAvailable="2" UnitCost="3752">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="I31D"/>
+                  <Media Priority="2" Type="text/plain" URI="Standard"/>
+                  <Media Priority="3" Type="text/plain" URI="Komfortabel lugar på 10,5m² med dobbeltseng."/>
+                  <Media Priority="4" Type="text/plain" URI="Komfortable lugarer med dobbeltseng og et fint og lyst bad med dusj. Det er ikke vindu i lugarene, men et stort speil over sengen gir en større romfølelse. I denne lugaren er det telefon og TV."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 8, 9, 10 og 11 (og dekk 5 på Color Magic)."/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.97859.1642848168!/image/3138508693.jpg"/>
+                  <Media Priority="10" Type="text/plain" URI="Innvendig"/>
+                  <Media Priority="11" Type="text/plain" URI="false"/>
+                  <Media Priority="12" Type="text/plain" URI="false"/>
+                  <Media Priority="13" Type="text/plain" URI="false"/>
+                  <Media Priority="14" Type="text/plain" URI="false"/>
+                  <Media Priority="15" Type="text/plain" URI="3"/>
+                  <Media Priority="16" Type="text/plain" URI="10.5"/>
+                  <Media Priority="17" Type="text/plain" URI="Det er dessverre ikke plass til barneseng i denne lugaren."/>
+                </Medias>
+                <PassengerRefs/>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Berths="3" Category="Accommodation" Code="I32" Description="Bed type: D" MaxOccupancy="2" MinOccupancy="2" QuantityAvailable="1" UnitCost="3843">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="I32"/>
+                  <Media Priority="2" Type="text/plain" URI="Standard"/>
+                  <Media Priority="3" Type="text/plain" URI="Komfortabel lugar på 10,5m² med køyesenger.&#13;&#10;"/>
+                  <Media Priority="4" Type="text/plain" URI="Komfortable&amp;nbsp;lugarer med køyesenger&amp;nbsp;og et fint, lyst bad med dusj. Det er ikke vindu i lugarene, men et stort speil ved sengene gir en større romfølelse. I denne lugaren er det telefon og TV."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 8, 9, 10 og 11 (og dekk 5 på Color Magic)."/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.97858.1642848126!/image/3680602183.jpg"/>
+                  <Media Priority="10" Type="text/plain" URI="Innvendig"/>
+                  <Media Priority="11" Type="text/plain" URI="false"/>
+                  <Media Priority="12" Type="text/plain" URI="false"/>
+                  <Media Priority="13" Type="text/plain" URI="false"/>
+                  <Media Priority="14" Type="text/plain" URI="false"/>
+                  <Media Priority="15" Type="text/plain" URI="3"/>
+                  <Media Priority="16" Type="text/plain" URI="10.5"/>
+                  <Media Priority="17" Type="text/plain" URI="Lugaren har plass til barneseng. Det finnes et begrenset antall barnesenger til barn under 4 år som kan lånes gratis om bord."/>
+                </Medias>
+                <PassengerRefs>
+                  <Ref Id="1"/>
+                  <Ref Id="2"/>
+                </PassengerRefs>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Berths="2" Category="Accommodation" Code="I32D" Description="Bed type: D" MaxOccupancy="2" MinOccupancy="2" QuantityAvailable="1" UnitCost="3843">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="I32D"/>
+                  <Media Priority="2" Type="text/plain" URI="Standard"/>
+                  <Media Priority="3" Type="text/plain" URI="Komfortabel lugar på 10,5m² med dobbeltseng. "/>
+                  <Media Priority="4" Type="text/plain" URI="Komfortable lugarer med dobbeltseng og et fint og lyst bad med dusj. Det er ikke vindu i lugarene, men et stort speil over sengen gir en større romfølelse. I denne lugaren er det telefon og TV."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 8, 9, 10 og 11 (og dekk 5 på Color Magic)."/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.97859.1642848168!/image/3138508693.jpg"/>
+                  <Media Priority="10" Type="text/plain" URI="innvendig"/>
+                  <Media Priority="11" Type="text/plain" URI="false"/>
+                  <Media Priority="12" Type="text/plain" URI="false"/>
+                  <Media Priority="13" Type="text/plain" URI="false"/>
+                  <Media Priority="14" Type="text/plain" URI="false"/>
+                  <Media Priority="15" Type="text/plain" URI="3"/>
+                  <Media Priority="16" Type="text/plain" URI="10.5"/>
+                  <Media Priority="17" Type="text/plain" URI="Det er dessverre ikke plass til barneseng i denne lugaren."/>
+                </Medias>
+                <PassengerRefs>
+                  <Ref Id="1"/>
+                  <Ref Id="2"/>
+                </PassengerRefs>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Berths="4" Category="Accommodation" Code="O31" Description="Bed type: D" MaxOccupancy="1" MinOccupancy="1" QuantityAvailable="2" UnitCost="4301">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="O31"/>
+                  <Media Priority="2" Type="text/plain" URI="Standard"/>
+                  <Media Priority="3" Type="text/plain" URI="Komfortabel lugar på 10,5m² med køyesenger."/>
+                  <Media Priority="4" Type="text/plain" URI="Komfortable lugarer med køyesenger, vakker havutsikt&amp;nbsp;og et fint, lyst bad med dusj. I denne lugaren er det også telefon og TV.&amp;nbsp;"/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 5, 8, 9, 10 og 11."/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.117637.1642848130!/image/2368497263.jpg"/>
+                  <Media Priority="10" Type="text/plain" URI="Havutsikt"/>
+                  <Media Priority="11" Type="text/plain" URI="false"/>
+                  <Media Priority="12" Type="text/plain" URI="false"/>
+                  <Media Priority="13" Type="text/plain" URI="false"/>
+                  <Media Priority="14" Type="text/plain" URI="false"/>
+                  <Media Priority="15" Type="text/plain" URI="3"/>
+                  <Media Priority="16" Type="text/plain" URI="10.5"/>
+                  <Media Priority="17" Type="text/plain" URI="Lugaren har plass til barneseng. Det finnes et begrenset antall barnesenger til barn under 4 år som kan lånes gratis om bord."/>
+                </Medias>
+                <PassengerRefs/>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Berths="2" Category="Accommodation" Code="O31D" Description="Bed type: D" MaxOccupancy="1" MinOccupancy="1" QuantityAvailable="2" UnitCost="4301">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="O31D"/>
+                  <Media Priority="2" Type="text/plain" URI="Standard"/>
+                  <Media Priority="3" Type="text/plain" URI="Komfortabel lugar på 10,5m² med dobbeltseng."/>
+                  <Media Priority="4" Type="text/plain" URI="Komfortable lugarer med dobbeltseng, vakker havutsikt&amp;nbsp;og et fint, lyst bad med dusj. I denne lugaren er det også telefon og TV.&amp;nbsp;"/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 8, 9, 10 og 11."/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.106269.1642848122!/image/464730610.jpg"/>
+                  <Media Priority="10" Type="text/plain" URI="Havutsikt"/>
+                  <Media Priority="11" Type="text/plain" URI="false"/>
+                  <Media Priority="12" Type="text/plain" URI="false"/>
+                  <Media Priority="13" Type="text/plain" URI="false"/>
+                  <Media Priority="14" Type="text/plain" URI="false"/>
+                  <Media Priority="15" Type="text/plain" URI="3"/>
+                  <Media Priority="16" Type="text/plain" URI="10.5"/>
+                  <Media Priority="17" Type="text/plain" URI="Det er dessverre ikke plass til barneseng i denne lugaren."/>
+                </Medias>
+                <PassengerRefs/>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Berths="4" Category="Accommodation" Code="O32" Description="Bed type: D" MaxOccupancy="2" MinOccupancy="2" QuantityAvailable="1" UnitCost="4392">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="O32"/>
+                  <Media Priority="2" Type="text/plain" URI="Standard"/>
+                  <Media Priority="3" Type="text/plain" URI="Komfortabel lugar på 10,5m² med køyesenger. "/>
+                  <Media Priority="4" Type="text/plain" URI="Komfortable lugarer med køyesenger, vakker havutsikt&amp;nbsp;og et fint, lyst bad med dusj. I denne lugaren er det også telefon og TV.&amp;nbsp;"/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 5, 8, 9, 10 og 11."/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.117637.1642848130!/image/2368497263.jpg"/>
+                  <Media Priority="10" Type="text/plain" URI="Havutsikt"/>
+                  <Media Priority="11" Type="text/plain" URI="false"/>
+                  <Media Priority="12" Type="text/plain" URI="false"/>
+                  <Media Priority="13" Type="text/plain" URI="false"/>
+                  <Media Priority="14" Type="text/plain" URI="false"/>
+                  <Media Priority="15" Type="text/plain" URI="3"/>
+                  <Media Priority="16" Type="text/plain" URI="10.5"/>
+                  <Media Priority="17" Type="text/plain" URI="Lugaren har plass til barneseng. Det finnes et begrenset antall barnesenger til barn under 4 år som kan lånes gratis om bord."/>
+                </Medias>
+                <PassengerRefs>
+                  <Ref Id="1"/>
+                  <Ref Id="2"/>
+                </PassengerRefs>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Berths="2" Category="Accommodation" Code="O32D" Description="Bed type: D" MaxOccupancy="2" MinOccupancy="2" QuantityAvailable="1" UnitCost="4392">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="O32D"/>
+                  <Media Priority="2" Type="text/plain" URI="Standard"/>
+                  <Media Priority="3" Type="text/plain" URI="Komfortabel lugar på 10,5m² med dobbeltseng. "/>
+                  <Media Priority="4" Type="text/plain" URI="Komfortable lugarer med dobbeltseng, vakker havutsikt&amp;nbsp;og et fint, lyst bad med dusj. I denne lugaren er det også telefon og TV.&amp;nbsp;"/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 8, 9, 10 og 11."/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.106270.1642848169!/image/464730610.jpg"/>
+                  <Media Priority="10" Type="text/plain" URI="Havutsikt"/>
+                  <Media Priority="11" Type="text/plain" URI="false"/>
+                  <Media Priority="12" Type="text/plain" URI="false"/>
+                  <Media Priority="13" Type="text/plain" URI="false"/>
+                  <Media Priority="14" Type="text/plain" URI="false"/>
+                  <Media Priority="15" Type="text/plain" URI="3"/>
+                  <Media Priority="16" Type="text/plain" URI="10.5"/>
+                  <Media Priority="17" Type="text/plain" URI="Det er dessverre ikke plass til barneseng i denne lugaren."/>
+                </Medias>
+                <PassengerRefs>
+                  <Ref Id="1"/>
+                  <Ref Id="2"/>
+                </PassengerRefs>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Berths="3" Category="Accommodation" Code="O41" Description="Bed type: D" MaxOccupancy="1" MinOccupancy="1" QuantityAvailable="2" UnitCost="5307">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="O41"/>
+                  <Media Priority="2" Type="text/plain" URI="Color Class"/>
+                  <Media Priority="3" Type="text/plain" URI="Lekker og romslig lugar på 14m² med dobbeltseng og havutsikt. Nyt frokosten i Oceanic à la carte."/>
+                  <Media Priority="4" Type="text/plain" URI="Lekker og romslig lugar med havutsikt, dobbeltseng og en stol som kan gjøres om til seng.Bor du i en slik lugar kan du nyte frokosten i Oceanic à la carte. Reiser du på 2-døgns Cruise er frokost inkludert begge veier.Lugaren har TV, telefon, lenestol og bord, buksepresse, safe og bad med dusj og WC samt to badekåper til utlån.Den velfylte minibaren fylles ikke opp igjen på returen. Ønsker du påfyll av minibaren anbefaler vi deg å velge en 5-stjerners lugar."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 8, 9, 10 og 11."/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.97883.1642848142!/image/1219233248.JPG"/>
+                  <Media Priority="10" Type="text/plain" URI="Havutsikt"/>
+                  <Media Priority="11" Type="text/plain" URI="true"/>
+                  <Media Priority="12" Type="text/plain" URI="true"/>
+                  <Media Priority="13" Type="text/plain" URI="true"/>
+                  <Media Priority="14" Type="text/plain" URI="false"/>
+                  <Media Priority="15" Type="text/plain" URI="4"/>
+                  <Media Priority="16" Type="text/plain" URI="14.0"/>
+                  <Media Priority="17" Type="text/plain" URI="Denne lugaren har plass til en barneseng. Det finnes et begrenset antall barnesenger til barn under 4 år som kan lånes gratis om bord."/>
+                </Medias>
+                <PassengerRefs/>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Berths="3" Category="Accommodation" Code="O42" Description="Bed type: D" MaxOccupancy="2" MinOccupancy="2" QuantityAvailable="1" UnitCost="5399">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="O42"/>
+                  <Media Priority="2" Type="text/plain" URI="Color Class"/>
+                  <Media Priority="3" Type="text/plain" URI="Lekker og romslig lugar på 14m² med dobbeltseng og havutsikt. Nyt frokosten i Oceanic à la carte."/>
+                  <Media Priority="4" Type="text/plain" URI="Lekker og romslig lugar med havutsikt, dobbeltseng og en stol som kan gjøres om til seng.&amp;nbsp;Bor du i en slik lugar kan du nyte frokosten i Oceanic à la carte. Reiser du på 2-døgns Cruise er frokost inkludert begge veier.Lugaren har TV, telefon, lenestol og bord, buksepresse, safe og bad med dusj og WC samt to badekåper til utlån.Den velfylte minibaren fylles ikke opp igjen på returen. Ønsker du påfyll av minibaren anbefaler vi deg å velge en 5-stjerners lugar."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 8, 9, 10 og 11."/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.97883.1642848142!/image/1219233248.JPG"/>
+                  <Media Priority="10" Type="text/plain" URI="Havutsikt"/>
+                  <Media Priority="11" Type="text/plain" URI="true"/>
+                  <Media Priority="12" Type="text/plain" URI="true"/>
+                  <Media Priority="13" Type="text/plain" URI="true"/>
+                  <Media Priority="14" Type="text/plain" URI="false"/>
+                  <Media Priority="15" Type="text/plain" URI="4"/>
+                  <Media Priority="16" Type="text/plain" URI="14.0"/>
+                  <Media Priority="17" Type="text/plain" URI="Denne lugaren har plass til en barneseng. Det finnes et begrenset antall barnesenger til barn under 4 år som kan lånes gratis om bord."/>
+                </Medias>
+                <PassengerRefs>
+                  <Ref Id="1"/>
+                  <Ref Id="2"/>
+                </PassengerRefs>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Berths="4" Category="Accommodation" Code="O62" Description="Bed type: D" MaxOccupancy="2" MinOccupancy="2" QuantityAvailable="1" UnitCost="6771">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="O62"/>
+                  <Media Priority="2" Type="text/plain" URI="Color Suitexx"/>
+                  <Media Priority="3" Type="text/plain" URI="Eksklusiv suite på 24,5m² med havutsikt, dobbeltseng og koselig sittegruppe.xx"/>
+                  <Media Priority="4" Type="text/plain" URI="xxEksklusive suiter med havutsikt, dobbeltseng (150 cm) og en koselig sittegruppe. Lugarene ligger uforstyrret i et eget område, hvor kun de som bor på 5-stjerners lugarer har adgang med nøkkelkort. Nyt frokosten i Observation Club på dekk 15, med fantastisk utsikt.xxReiser du uten bil får du tidlig ombordstigning fra kl 1100 og tilgang til VIP Lounge i Cosmpolitan/Manhattan Bar før avgang.I lugaren er det TV, PC-uttak, telefon, buksepresse, safe, bad med dusj og WC samt to badekåper til utlån."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 10 og 11 på Color Fantasy og dekk 9,10 og 11 på Color Magic."/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.97885.1642848117!/image/821255356.JPG"/>
+                  <Media Priority="10" Type="text/plain" URI="Havutsiktxx"/>
+                  <Media Priority="11" Type="text/plain" URI="true"/>
+                  <Media Priority="12" Type="text/plain" URI="true"/>
+                  <Media Priority="13" Type="text/plain" URI="true"/>
+                  <Media Priority="14" Type="text/plain" URI="true"/>
+                  <Media Priority="15" Type="text/plain" URI="5"/>
+                  <Media Priority="16" Type="text/plain" URI="24.5"/>
+                  <Media Priority="17" Type="text/plain" URI="Lugaren har plass til barneseng. Det finnes et begrenset antall barnesenger til barn under 4 år som kan lånes gratis om bord."/>
+                </Medias>
+                <PassengerRefs>
+                  <Ref Id="1"/>
+                  <Ref Id="2"/>
+                </PassengerRefs>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Berths="2" Category="Accommodation" Code="O71" Description="Bed type: D" MaxOccupancy="1" MinOccupancy="1" QuantityAvailable="2" UnitCost="9059">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="O71"/>
+                  <Media Priority="2" Type="text/plain" URI="Rederlugar Owner's Suite"/>
+                  <Media Priority="3" Type="text/plain" URI="Skipets mest luksuriøse lugar på 35m². Spektakulær havutsikt og separat soverom."/>
+                  <Media Priority="4" Type="text/plain" URI="Skipets mest luksuriøse lugarer, med separat soverom og eget oppholdsrom med både sofagruppe og spisebord med stoler. Spektakulær utsikt til havet foran skipet.Lugarene ligger uforstyrret i et eget område, hvor kun de som bor på 5-stjerners lugarer har adgang med nøkkelkort.&amp;nbsp;Nyt frokosten i Observation Club på dekk 15, med fantastisk utsikt.Reiser du uten bil får du tidlig ombordstigning fra kl 1100 og tilgang til VIP Lounge i Cosmpolitan/Manhattan Bar før avgang.I lugaren er det TV, PC-uttak, telefon, buksepresse, safe, bad med dusj og WC samt to badekåper til utlån."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 10 og 11.&lt;br /&gt;&amp;nbsp;"/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.97880.1642848148!/image/2057166297.jpg"/>
+                  <Media Priority="10" Type="text/plain" URI="Havutsikt"/>
+                  <Media Priority="11" Type="text/plain" URI="true"/>
+                  <Media Priority="12" Type="text/plain" URI="true"/>
+                  <Media Priority="13" Type="text/plain" URI="true"/>
+                  <Media Priority="14" Type="text/plain" URI="true"/>
+                  <Media Priority="15" Type="text/plain" URI="5"/>
+                  <Media Priority="16" Type="text/plain" URI="35.0"/>
+                  <Media Priority="17" Type="text/plain" URI="Lugaren har plass til barneseng. Det finnes et begrenset antall barnesenger til barn under 4 år som kan lånes gratis om bord."/>
+                </Medias>
+                <PassengerRefs/>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Berths="2" Category="Accommodation" Code="O72" Description="Bed type: D" MaxOccupancy="2" MinOccupancy="2" QuantityAvailable="1" UnitCost="9150">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="O72"/>
+                  <Media Priority="2" Type="text/plain" URI="Rederlugar Owner's Suite"/>
+                  <Media Priority="3" Type="text/plain" URI="Skipets mest luksuriøse lugar på 35m². Spektakulær utsikt foran i skipet og separat soverom."/>
+                  <Media Priority="4" Type="text/plain" URI="Skipets mest luksuriøse lugarer, med separat soverom og eget oppholdsrom med både sofagruppe og spisebord med stoler. Spektakulær utsikt til havet foran skipet.Lugarene ligger uforstyrret i et eget område, hvor kun de som bor på 5-stjerners lugarer har adgang med nøkkelkort.&amp;nbsp;Nyt frokosten i Observation Club på dekk 15, med fantastisk utsikt.Reiser du uten bil får du tidlig ombordstigning fra kl 1100 og tilgang til VIP Lounge i Cosmpolitan/Manhattan Bar før avgang.I lugaren er det TV, PC-uttak, telefon, buksepresse, safe, bad med dusj og WC samt to badekåper til utlån."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 10 og 11.&lt;br /&gt;&amp;nbsp;"/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.97880.1642848148!/image/2057166297.jpg"/>
+                  <Media Priority="10" Type="text/plain" URI="Havutsikt"/>
+                  <Media Priority="11" Type="text/plain" URI="true"/>
+                  <Media Priority="12" Type="text/plain" URI="true"/>
+                  <Media Priority="13" Type="text/plain" URI="true"/>
+                  <Media Priority="14" Type="text/plain" URI="true"/>
+                  <Media Priority="15" Type="text/plain" URI="5"/>
+                  <Media Priority="16" Type="text/plain" URI="35.0"/>
+                  <Media Priority="17" Type="text/plain" URI="Lugaren har plass til barneseng. Det finnes et begrenset antall barnesenger til barn under 4 år som kan lånes gratis om bord."/>
+                </Medias>
+                <PassengerRefs>
+                  <Ref Id="1"/>
+                  <Ref Id="2"/>
+                </PassengerRefs>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Berths="2" Category="Accommodation" Code="P21" Description="Bed type: B" MaxOccupancy="1" MinOccupancy="1" QuantityAvailable="2" UnitCost="3679">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="P21"/>
+                  <Media Priority="2" Type="text/plain" URI="Standard"/>
+                  <Media Priority="3" Type="text/plain" URI="Lugar på 8m² med køyesenger og utsikt mot skipets handlegate. &#13;&#10;"/>
+                  <Media Priority="4" Type="text/plain" URI="Lugarer med køyesenger og et fint, lyst bad med dusj. Det er utsikt mot skipets handlegate og folkelivet der. I denne lugaren er det telefon og TV.PS. Noen av lugarene har utsikt ned til Monkey/Donkey Pub. Noe støy fra musikk og pubens gjester vil derfor kunne forekomme."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 8 og 9."/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.97878.1642848135!/image/650689898.JPG"/>
+                  <Media Priority="10" Type="text/plain" URI="Promenadeutsikt"/>
+                  <Media Priority="11" Type="text/plain" URI="false"/>
+                  <Media Priority="12" Type="text/plain" URI="false"/>
+                  <Media Priority="13" Type="text/plain" URI="false"/>
+                  <Media Priority="14" Type="text/plain" URI="false"/>
+                  <Media Priority="15" Type="text/plain" URI="3"/>
+                  <Media Priority="16" Type="text/plain" URI="8.0"/>
+                  <Media Priority="17" Type="text/plain" URI="Lugaren har plass til barneseng. Det finnes et begrenset antall barnesenger til barn under 4 år som kan lånes gratis om bord."/>
+                </Medias>
+                <PassengerRefs/>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Berths="2" Category="Accommodation" Code="P22" Description="Bed type: D" MaxOccupancy="2" MinOccupancy="2" QuantityAvailable="1" UnitCost="3770">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="P22"/>
+                  <Media Priority="2" Type="text/plain" URI="Standard"/>
+                  <Media Priority="3" Type="text/plain" URI="Lugar på 8m² med køyesenger og utsikt mot skipets handlegate. "/>
+                  <Media Priority="4" Type="text/plain" URI="Lugarer med køyesenger og et fint, lyst bad med dusj. Det er utsikt mot skipets handlegate og folkelivet der. I denne lugaren er det telefon og TV.PS. Noen av lugarene har utsikt ned til Monkey/Donkey Pub. Noe støy fra musikk og pubens gjester vil derfor kunne forekomme."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 8 og 9."/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.97878.1642848135!/image/650689898.JPG"/>
+                  <Media Priority="10" Type="text/plain" URI="Promenadeutsikt"/>
+                  <Media Priority="11" Type="text/plain" URI="false"/>
+                  <Media Priority="12" Type="text/plain" URI="false"/>
+                  <Media Priority="13" Type="text/plain" URI="false"/>
+                  <Media Priority="14" Type="text/plain" URI="false"/>
+                  <Media Priority="15" Type="text/plain" URI="3"/>
+                  <Media Priority="16" Type="text/plain" URI="8.0"/>
+                  <Media Priority="17" Type="text/plain" URI="Lugaren har plass til barneseng. Det finnes et begrenset antall barnesenger til barn under 4 år som kan lånes gratis om bord."/>
+                </Medias>
+                <PassengerRefs>
+                  <Ref Id="1"/>
+                  <Ref Id="2"/>
+                </PassengerRefs>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Berths="2" Category="Accommodation" Code="P31" Description="Bed type: D" MaxOccupancy="1" MinOccupancy="1" QuantityAvailable="2" UnitCost="3935">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="P31"/>
+                  <Media Priority="2" Type="text/plain" URI="Standard"/>
+                  <Media Priority="3" Type="text/plain" URI="Lugar på 10,5m² med dobbeltseng og utsikt mot skipets handlegate."/>
+                  <Media Priority="4" Type="text/plain" URI="Lugarer med dobbeltseng og et fint, lyst bad med dusj. De har utsikt mot skipets handlegate&amp;nbsp;eller restaurant Oceanic à la Carte. Lugarene har et karnappvindu med en liten sofabenk, med unntak av de lugarene som har utsikt ned mot restauranten. De har et rundt vindu uten karnapp. I denne lugaren er det telefon og TV.PS. Noen av lugarene har utsikt ned til Monkey/Donkey Pub. Noe støy fra musikk og pubens gjester vil derfor kunne forekomme."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 8 og 9."/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.97879.1649331189!/image/3032483849.JPG"/>
+                  <Media Priority="10" Type="text/plain" URI="Promenadeutsikt"/>
+                  <Media Priority="11" Type="text/plain" URI="false"/>
+                  <Media Priority="12" Type="text/plain" URI="false"/>
+                  <Media Priority="13" Type="text/plain" URI="false"/>
+                  <Media Priority="14" Type="text/plain" URI="false"/>
+                  <Media Priority="15" Type="text/plain" URI="3"/>
+                  <Media Priority="16" Type="text/plain" URI="10.5"/>
+                  <Media Priority="17" Type="text/plain" URI="Det er dessverre ikke plass til barneseng i denne lugaren."/>
+                </Medias>
+                <PassengerRefs/>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Berths="2" Category="Accommodation" Code="P32" Description="Bed type: D" MaxOccupancy="2" MinOccupancy="2" QuantityAvailable="1" UnitCost="4026">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="P32"/>
+                  <Media Priority="2" Type="text/plain" URI="Standard"/>
+                  <Media Priority="3" Type="text/plain" URI="Lugar på 10,5m² med dobbeltseng og utsikt mot skipets handlegate eller restaurant Oceanic à la Carte.&#13;&#10;"/>
+                  <Media Priority="4" Type="text/plain" URI="Lugarer med dobbeltseng og et fint, lyst bad med dusj. De har utsikt mot skipets handlegate&amp;nbsp;eller restaurant Oceanic à la Carte. Lugarene har et karnappvindu med en liten sofabenk, med unntak av de lugarene som har utsikt ned mot restauranten. De har et rundt vindu uten karnapp. I denne lugaren er det telefon og TV.PS. Noen av lugarene har utsikt ned til Monkey/Donkey Pub. Noe støy fra musikk og pubens gjester vil derfor kunne forekomme"/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 8 og 9."/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.97879.1649331189!/image/3032483849.JPG"/>
+                  <Media Priority="10" Type="text/plain" URI="Promenadeutsikt"/>
+                  <Media Priority="11" Type="text/plain" URI="false"/>
+                  <Media Priority="12" Type="text/plain" URI="false"/>
+                  <Media Priority="13" Type="text/plain" URI="false"/>
+                  <Media Priority="14" Type="text/plain" URI="false"/>
+                  <Media Priority="15" Type="text/plain" URI="3"/>
+                  <Media Priority="16" Type="text/plain" URI="10.5"/>
+                  <Media Priority="17" Type="text/plain" URI="Det er dessverre ikke plass til barneseng i denne lugaren."/>
+                </Medias>
+                <PassengerRefs>
+                  <Ref Id="1"/>
+                  <Ref Id="2"/>
+                </PassengerRefs>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Berths="3" Category="Accommodation" Code="P41" Description="Bed type: B" MaxOccupancy="1" MinOccupancy="1" QuantityAvailable="2" UnitCost="5124">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="P41"/>
+                  <Media Priority="2" Type="text/plain" URI="Color Class"/>
+                  <Media Priority="3" Type="text/plain" URI="Lekker og romslig lugar på 14m² med dobbeltseng og utsikt til skipets handlegate. Nyt frokosten i Oceanic à la carte."/>
+                  <Media Priority="4" Type="text/plain" URI="Lekker og romslig lugar med promenadeutsikt, dobbeltseng og en stol som kan gjøres om til seng.Bor du i en slik lugar kan du nyte frokosten i Oceanic à la carte. Reiser du på 2-døgns Cruise er frokost inkludert begge veier.Lugaren har TV, telefon, lenestol og bord, buksepresse, safe og bad med dusj og WC samt to badekåper til utlån.Den velfylte minibaren fylles ikke opp igjen på returen. Ønsker du påfyll av minibaren anbefaler vi deg å velge en 5-stjerners lugar."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 8 og 9.&lt;br /&gt;&amp;nbsp;"/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.97958.1642848128!/image/1908259424.jpg"/>
+                  <Media Priority="10" Type="text/plain" URI="Promenadeutsikt"/>
+                  <Media Priority="11" Type="text/plain" URI="true"/>
+                  <Media Priority="12" Type="text/plain" URI="true"/>
+                  <Media Priority="13" Type="text/plain" URI="true"/>
+                  <Media Priority="14" Type="text/plain" URI="false"/>
+                  <Media Priority="15" Type="text/plain" URI="4"/>
+                  <Media Priority="16" Type="text/plain" URI="14.0"/>
+                  <Media Priority="17" Type="text/plain" URI="Denne lugaren har plass til en barneseng. Det finnes et begrenset antall barnesenger til barn under 4 år som kan lånes gratis om bord."/>
+                </Medias>
+                <PassengerRefs/>
+              </OnBoardAccommodationService>
+              <OnBoardAccommodationService Berths="3" Category="Accommodation" Code="P42" Description="Bed type: D" MaxOccupancy="2" MinOccupancy="2" QuantityAvailable="1" UnitCost="5216">
+                <Medias>
+                  <Media Priority="1" Type="text/plain" URI="P42"/>
+                  <Media Priority="2" Type="text/plain" URI="Color Class"/>
+                  <Media Priority="3" Type="text/plain" URI="Lekker og romslig lugar på 14m² med dobbeltseng og utsikt til skipets handlegate. Nyt frokosten i Oceanic à la carte."/>
+                  <Media Priority="4" Type="text/plain" URI="Lekker og romslig lugar med promenadeutsikt, dobbeltseng og en stol som kan gjøres om til seng.Bor du i en slik lugar kan du nyte frokosten i Oceanic à la carte. Reiser du på 2-døgns Cruise er frokost inkludert begge veier.Lugaren har TV, telefon, lenestol og bord, buksepresse, safe og bad med dusj og WC samt to badekåper til utlån.Den velfylte minibaren fylles ikke opp igjen på returen. Ønsker du påfyll av minibaren anbefaler vi deg å velge en 5-stjerners lugar."/>
+                  <Media Priority="5" Type="text/plain" URI="Dekk 8 og 9.&lt;br /&gt;&amp;nbsp;"/>
+                  <Media Priority="6" Type="image/jpeg" URI="https://www.sit5.test.nbi.colorline.no/polopoly_fs/7.97958.1642848128!/image/1908259424.jpg"/>
+                  <Media Priority="10" Type="text/plain" URI="Promenadeutsikt"/>
+                  <Media Priority="11" Type="text/plain" URI="true"/>
+                  <Media Priority="12" Type="text/plain" URI="true"/>
+                  <Media Priority="13" Type="text/plain" URI="true"/>
+                  <Media Priority="14" Type="text/plain" URI="false"/>
+                  <Media Priority="15" Type="text/plain" URI="4"/>
+                  <Media Priority="16" Type="text/plain" URI="14.0"/>
+                  <Media Priority="17" Type="text/plain" URI="Denne lugaren har plass til en barneseng. Det finnes et begrenset antall barnesenger til barn under 4 år som kan lånes gratis om bord."/>
+                </Medias>
+                <PassengerRefs>
+                  <Ref Id="1"/>
+                  <Ref Id="2"/>
+                </PassengerRefs>
+              </OnBoardAccommodationService>
+            </OnBoardAccommodationServices>
+            <OnBoardMealServices/>
+            <OnBoardServices/>
+            <LandServices/>
+          </ServicesOptions>
+        </Sailing>
+      </Sailings>
+      <Cost>
+        <CostDetails GrossAmount="9150" SailingId="OSLKEL201809281400">
+          <CostDetail Category="Passenger" Label="ADT" Quantity="2" TotalAmount="0"/>
+          <CostDetail Category="OnBoardAccommodation" Label="O72" Quantity="1" TotalAmount="9150"/>
+        </CostDetails>
+      </Cost>
+    </FerryComponent>
+  </FerryComponents>
+  <Messages>
+    <Message Code="902" Description="Agreement EUR* TA/TO comm 10% with id: 4 and description: 10% standard agreementcommission. Dynamic prices. (bucket F, subbucket F10-F01) was selected for agent GB1033." Severity="Information" xml:lang="en"/>
+    <Message Code="902" Description="If you don’t fill any contact details, the first passenger will automatically be selected as lead passenger. If you fill in a name of a passenger as contact details, this passenger will be selected as lead." Severity="Information" xml:lang="en"/>
+    <Message Code="902" Description="Non-accommodation services which are allocated on multiple passengers must be booked for all passengers or must not be booked at all." Severity="Information" xml:lang="en"/>
+  </Messages>
+</GetPriceResponse>

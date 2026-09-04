@@ -48,19 +48,19 @@ require'lazy'.setup({
 	-- },
 
 	-- Misc
-	{
-		'kawre/leetcode.nvim',
-		build = ':TSUpdate html', -- if you have `nvim-treesitter` installed
-		cmd = { 'Leet' },
-		dependencies = {
-			-- include a picker of your choice, see picker section for more details
-			'nvim-lua/plenary.nvim',
-			'MunifTanjim/nui.nvim',
-		},
-		opts = {
-			-- configuration goes here
-		},
-	},
+	-- {
+	-- 	'kawre/leetcode.nvim',
+	-- 	build = ':TSUpdate html', -- if you have `nvim-treesitter` installed
+	-- 	cmd = { 'Leet' },
+	-- 	dependencies = {
+	-- 		-- include a picker of your choice, see picker section for more details
+	-- 		'nvim-lua/plenary.nvim',
+	-- 		'MunifTanjim/nui.nvim',
+	-- 	},
+	-- 	opts = {
+	-- 		-- configuration goes here
+	-- 	},
+	-- },
 	{
 		'Goose97/timber.nvim',
 		keys = { 'gl' },
@@ -286,12 +286,42 @@ require'lazy'.setup({
 		},
 	},
 	{
+		'mistweaverco/kulala.nvim',
+		keys = {
+			{ '<leader>Rs', desc = 'Send request' },
+			{ '<leader>Ra', desc = 'Send all requests' },
+			{ '<leader>Rb', desc = 'Open scratchpad' },
+		},
+		ft = {'http', 'rest', 'javascript', 'lua'},
+		opts = {
+			global_keymaps = true,
+			global_keymaps_prefix = '<leader>R',
+			kulala_keymaps_prefix = '',
+			disable_news_popup = true,
+			response_format = {
+				indent = 2,
+			},
+			contenttypes = {
+				["xml"] = {
+					ft = "xml",
+					formatter = vim.fn.executable("xmllint") == 1 and { "xmllint", "--format", "-" },
+					pathresolver = vim.fn.executable("xmllint") == 1 and { "xmllint", "--xpath", "{{path}}", "-" },
+				},
+			},
+			lsp = {
+				keymaps = true
+			}
+		},
+	},
+	{
 		'nvim-treesitter/nvim-treesitter',
-		event = 'VeryLazy',
+		branch = 'master',
+		-- event = 'VeryLazy',
+		lazy = false,
 		build = ':TSUpdate',
 		config = function ()
 			local tsi = require'nvim-treesitter.install'
-			tsi.compilers = { "zig", "clang", "gcc" }
+			tsi.compilers = { 'zig', 'clang', 'gcc' }
 			tsi.prefer_git = false
 
 			require'nvim-treesitter.configs'.setup {

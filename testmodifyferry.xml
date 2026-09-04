@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<BookResponse xmlns="http://schemas.ferrygateway.org/1.1.0">
+  <Context AgentAccountNumber="GB1033" Currency="NOK" ExternalBookingReference="31d69705-120d-4145-b159-9ee4939025b3" OriginatingSystem="TestClientProd" TimeStamp="2026-09-02T12:42:57.450+02:00" TransactionId="3f68fa49-5dc9-4601-8225-ddf7b2725181"/>
+  <Request>
+    <BookRequest>
+      <Context AgentAccountNumber="GB1033" Currency="NOK" ExternalBookingReference="31d69705-120d-4145-b159-9ee4939025b3" OriginatingSystem="TestClientProd" TimeStamp="2019-04-04T10:04:21+02:00" TransactionId="3f68fa49-5dc9-4601-8225-ddf7b2725181"/>
+      <Passengers>
+        <Passenger Age="30" Category="Adult" DateOfBirth="1989-04-11+02:00" Forename="Name" Gender="Male" Id="1" IdentityIssueCountry="NOR" Surname="Surname"/>
+        <Passenger Category="Adult" DateOfBirth="1989-04-11+02:00" Forename="Name" Gender="Male" Id="2" IdentityIssueCountry="NOR" IdentityNumber="" Surname="Surname"/>
+      </Passengers>
+      <ContactDetails AddressLine1="Na PetÅinÃ¡ch 1896" City="Prague" CountryCode="CZE" Email="wrent.00@gmail.com" Forename="Name" MobileNumber="+420253568986" PassengerId="" Surname="Surname" ZipPostCode="16200"/>
+      <Vehicles>
+        <Vehicle Id="1">
+          <Lead Height="180" IsHireCar="false" Length="350" OperatorCode="SCAR"/>
+        </Vehicle>
+      </Vehicles>
+      <FerryComponent>
+        <OfferCode/>
+        <Sailings>
+          <Sailing AllPassengers="true" AllPets="true" AllVehicles="true" Id="OSLKEL201905021400">
+            <PassengerRefs>
+              <Ref Id="1"/>
+              <Ref Id="2"/>
+            </PassengerRefs>
+            <PetRefs/>
+            <VehicleRefs>
+              <Ref Id="1"/>
+            </VehicleRefs>
+            <SailingInfo DepartDateTime="2019-05-02T14:00:00+02:00" DepartPort="NOOSL" DestinationPort="DEKEL" OperatorCode="COLOR"/>
+            <FareDetails FareType="EC"/>
+            <Services>
+              <OnBoardAccommodationServices>
+                <OnBoardAccommodationService Code="I32" Quantity="1">
+                  <PassengerRefs>
+                    <Ref Id="1"/>
+                    <Ref Id="2"/>
+                  </PassengerRefs>
+                </OnBoardAccommodationService>
+              </OnBoardAccommodationServices>
+              <OnBoardMealServices>
+                <OnBoardMealService Code="XE-N9LPRDV4UZL7VP" PassengerCategory="Adult" Quantity="1" Time="2019-05-02T20:00:00+02:00"/>
+                <OnBoardMealService Code="XE-N9LPRDV4UZL7VP" PassengerCategory="Adult" Quantity="1" Time="2019-05-02T20:00:00+02:00"/>
+              </OnBoardMealServices>
+              <OnBoardServices>
+                <OnBoardService Code="XE-E3CXQQR6EZHG2V" Quantity="2" Time="2019-05-02T15:00:00+02:00"/>
+              </OnBoardServices>
+              <LandServices/>
+            </Services>
+          </Sailing>
+        </Sailings>
+        <QuotedCost>
+          <CostDetails GrossAmount="3061.6" SailingId="OSLKEL201905021400">
+            <CostDetail Category="Vehicle" Quantity="1" TotalAmount="900"/>
+            <CostDetail Category="OnBoardAccommodation" Label="I32" Quantity="1" TotalAmount="2000"/>
+            <CostDetail Category="OnBoardService" Label="XE-N9LPRDV4UZL7VP" Quantity="1" TotalAmount="45.8"/>
+            <CostDetail Category="OnBoardService" Label="XE-N9LPRDV4UZL7VP" Quantity="1" TotalAmount="45.8"/>
+            <CostDetail Category="OnBoardService" Label="XE-E3CXQQR6EZHG2V" Quantity="2" TotalAmount="70"/>
+          </CostDetails>
+        </QuotedCost>
+        <BookingReference Reference="XZU3494"/>
+      </FerryComponent>
+    </BookRequest>
+  </Request>
+  <Messages>
+    <Message Code="19" Description="The booking is not possible. The non-accommodation product could not be found" Severity="Fatal" xml:lang="en"/>
+  </Messages>
+</BookResponse>
